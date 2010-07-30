@@ -1,0 +1,44 @@
+<config>
+    <moduleName>qtsvg</moduleName>
+    <parentModules>
+        <module>qtcore</module>
+        <module>qtgui</module>
+    </parentModules>
+    <parts>1</parts>
+    <scalarTypes>
+        <!-- QString is a class, but represented as a scalar (#) in munged names -->
+        <typeName>QString</typeName>
+    </scalarTypes>
+    <voidpTypes>
+        <!-- both are classes, but they are represented as Smoke::t_voidp -->
+        <typeName>QStringList</typeName>
+        <typeName>QString</typeName>
+    </voidpTypes>
+    <exclude>
+        <!-- we don't want private stuff in smoke.. -->
+        <signature>.*::d</signature>
+        <signature>.*::d_ptr</signature>
+        <signature>.*::q_ptr</signature>
+        <signature>.*\(.*Private.*\).*</signature>
+        <!-- Thread related stuff belongs to the bindings language -->
+        <signature>.*QtConcurrent.*</signature>
+        <signature>.*QDomNode.*</signature>
+        <!-- this doesn't link, internal stuff.. -->
+        <signature>.*qFindString.*</signature>
+        <!-- windows internal helper functions -->
+        <signature>.*qFrom.*Endian_helper.*</signature>
+   </exclude>
+    <functions>
+        <!-- include functions starting with 'q' -->
+        <name>^q.*</name>
+        <name>.*::q.*</name>
+        <!-- and operators -->
+        <name>.*operator.*</name>
+    </functions>
+    <classList>
+        <class>QGraphicsSvgItem</class>
+        <class>QSvgGenerator</class>
+        <class>QSvgRenderer</class>
+        <class>QSvgWidget</class>
+     </classList>
+</config>

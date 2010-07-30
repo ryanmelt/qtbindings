@@ -1,0 +1,125 @@
+10
+
+dir
+1157362
+svn://anonsvn.kde.org/home/kde/trunk/KDE/kdebindings/ruby
+svn://anonsvn.kde.org/home/kde
+
+
+
+2010-07-28T20:51:29.258258Z
+1156302
+arnorehn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+283d02a7-25f6-0310-bc7c-ecb5cbfe19da
+
+khtml
+dir
+
+soprano
+dir
+
+kio
+dir
+
+kate
+dir
+
+qttest
+dir
+
+qtruby
+dir
+
+qtwebkit
+dir
+
+okular
+dir
+
+kdevplatform
+dir
+
+phonon
+dir
+
+qscintilla
+dir
+
+krossruby
+dir
+
+qtuitools
+dir
+
+korundum
+dir
+
+akonadi
+dir
+
+ktexteditor
+dir
+
+qtscript
+dir
+
+solid
+dir
+
+qwt
+dir
+
+plasma
+dir
+
+CMakeLists.txt
+file
+
+
+
+
+2010-07-30T20:27:12.000000Z
+9b9697df06ef53344b68fe22a66e635a
+2010-07-06T17:19:13.315317Z
+1146792
+arnorehn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4684
+
+nepomuk
+dir
+

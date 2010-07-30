@@ -1,0 +1,36 @@
+<config>
+    <moduleName>qttest</moduleName>
+    <parentModules>
+        <module>qtcore</module>
+    </parentModules>
+    <parts>1</parts>
+    <scalarTypes>
+        <!-- QString is a class, but represented as a scalar (#) in munged names -->
+        <typeName>QString</typeName>
+    </scalarTypes>
+    <voidpTypes>
+        <!-- both are classes, but they are represented as Smoke::t_voidp -->
+        <typeName>QStringList</typeName>
+        <typeName>QString</typeName>
+    </voidpTypes>
+    <exclude>
+        <signature>QTest::QTouchEventSequence QTest::touchEvent.*</signature>
+    </exclude>
+    <functions>
+        <name>^QTest::.*</name>
+    </functions>
+    <classList>
+        <class>QSignalSpy</class>
+        <class>QTest</class>
+        <class>QTestAccessibility</class>
+        <class>QTestAccessibilityEvent</class>
+        <class>QTestData</class>
+        <class>QTestDelayEvent</class>
+        <class>QTestEvent</class>
+        <class>QTestEventList</class>
+        <class>QTestEventLoop</class>
+        <class>QTestKeyClicksEvent</class>
+        <class>QTestKeyEvent</class>
+        <class>QTestMouseEvent</class>
+    </classList>
+</config>

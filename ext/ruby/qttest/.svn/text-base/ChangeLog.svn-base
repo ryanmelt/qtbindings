@@ -1,0 +1,9 @@
+2009-11-16  Richard Dale  <richard.j.dale@gmail.com>
+
+* The code strings for methods like QVERIFY are now evaluated in the context
+of the test function that they are in. A trace_func_proc is used to trap each
+call to a test function slot, and the binding is then saved as 
+'current_binding' in the Qt::Test class.
+* If a method like QVERIFY() fails, the rest of the code in the test function
+isn't executed.
+* Added an example 'myfirsttest.rb' converted from the C++ version by Jan Pilz.

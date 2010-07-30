@@ -1,0 +1,33 @@
+# This is an example configuration file for RuBoids. It sets all of the
+# possible properties. The values here are the default values set in
+# Params.rb.
+
+world.sleep_millis = 75
+world.width = 400
+world.height = 400
+world.depth = 400
+window.width = 500
+window.height = 500
+flock.boids = 10
+boid.max_speed = 30
+boid.bounds_limit_pull = 5
+boid.bounds_limit_above_ground_level = 5
+boid.wing_length = 10
+boid.personal_space_dist = 12
+boid.square_of_personal_space_dist = 144
+boid.max_perching_turns = 150
+boid.perch_wing_flap_percent = 30
+cloud.count = 10
+cloud.min_speed = 2
+cloud.max_speed = 50
+cloud.min_bubbles = 3
+cloud.max_bubbles = 10
+cloud.max_bubble_radius = 10
+cloud.min_altitude = 250
+camera.x = 0
+camera.y = 0
+camera.z = 60
+camera.rot_x = 50
+camera.rot_y = 10
+camera.rot_z = 0
+camera.zoom = 1

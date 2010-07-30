@@ -1,0 +1,53 @@
+INTRODUCTION
+============
+
+RuBoids is a Boids simulation written in Ruby and using OpenGL and Qt. For
+information on Boids, see http://www.red3d.com/cwr/boids/.
+
+Ruby is an object-oriented scripting language by Yukihiro Matsumoto. The
+official Ruby Web site (http://www.ruby-lang.org/) contains information and
+pointers to resources for this wonderful language.
+
+RuBoids is developed and maintained by Jim Menard (<jimm@io.com>). The
+latest version of RuBoids can be found on the Ruby Application Archive or
+on the official RuBoids Web page
+(http://www.io.com/~jimm/downloads/ruboids/).
+
+RUNNING
+=======
+
+	cd ruboids
+	ruboids.rb
+
+RuBoids looks for an optional properties file. If none is specified on the
+command line, it looks for a file named 'boids.properties' in the current
+directory. For example, to load the example properties file in this
+directory:
+
+	cd ruboids
+	ruboids.rb ../boids.properties
+
+DEPENDENCIES
+============
+
+RuBoids requires the OpenGL and Qt packages, which can be found on the Ruby
+Application Archive.
+
+COPYING
+=======
+
+RuBoids is copyrighted free software by Jim Menard and is released under the
+same license as Ruby. See the Ruby license
+(http://www.ruby-lang.org/en/LICENSE.txt).
+
+RuBoids may be freely copied in its entirety providing this notice, all
+source code, all documentation, and all other files are included.
+
+RuBoids is copyright (c) 2001 by Jim Menard.
+
+WARRANTY
+========
+
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.

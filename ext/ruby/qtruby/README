@@ -1,0 +1,264 @@
+/***************************************************************************
+ * 	(C) 2003-2007 Richard Dale All rights reserved.                        *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as               *
+ *   published by the Free Software Foundation; either version 2 of the    *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ ***************************************************************************/
+
+Here is a Ruby SMOKE adaptor for Qt
+
+Why ruby? From the rubytalk list
+
+On 8/28/03 8:56 PM, "Scott Thompson" wrote:
+
+>> : Can anyone give me a good reason why I would want to use Ruby over
+>> Python?
+>> 
+>> Ruby smells better than Python. Also, it has cuter girls.
+>> 
+>> Python sometimes tastes better if you prepare it right.
+> 
+> I hadn't noticed the odor thing. It does have a faintly floral aroma
+> doesn't it.
+> 
+> Of course it is no surprise that you can get more and cuter girls with
+> Rubies than you can with Pythons.
+> 
+> Scott
+
+So there you have it! :)
+
+Here is 'Hello World' in QtRuby:
+
+#!/usr/bin/ruby -w
+
+require 'Qt'
+
+a = Qt::Application.new(ARGV)
+hello = Qt::PushButton.new("Hello World!")
+hello.resize(100, 30)
+hello.show
+a.exec
+
+Ruby 1.8 is unfortunately implicitly required as with 1.6.x it is not possible to:
+
+   Make dynamic constants available (thus forcing syntax such as Qt.RichText rather than Qt::RichText)<br>
+   Call super in the initialize method thus making subclassing of non trivial classes impossible
+
+QtRuby features a very complete coverage of the Qt api:
+
+	- You can call all Qt public and protected methods, and all friend methods
+		such as bitBlt() etc
+		
+	- Virtual methods
+		All virtual methods can be overriden, not just event handlers
+		
+	- Properties 
+		'fooBar = 5' is a synonym for 'setFooBar(5)'
+		
+	- Predicates
+		'if foo?' is a synonym for 'if isFoo()' or 'if hasFoo()'
+		
+	- Use underscore naming for method names instead of camel case if you 
+		prefer. Any underscores in method names are removed, and the following
+		character is capitalised. For example, you can use either of these two 
+		forms to call the same method:
+		
+		create_standard_status_bar_action()
+		
+		createStandardStatusBarAction()
+		
+	- Operator overloading
+		The full range of Qt operator methods is available, for example:
+		
+			p1 = Qt::Point.new(5,5)   => (5, 5)
+			p2 = Qt::Point.new(20,20) => (20, 20)
+			p1 + p2                   => (25, 25)
+			
+	- Declare signals and slots
+	 	Signals and slots are declared as list of strings like this:
+		
+			slots 'setColor(QColor)', 'slotLoad(const QString&)'..
+			signals 'clicked()'..
+			
+		If the slots or signal have no arguments they can also be declared as
+			Symbols:
+
+			slots :click, :toggle
+			signals :clicked
+
+		Currently C++ type signatures must be used, a future version of QtRuby
+			will allow ruby type signatures instead.
+		
+		Connect slots and signals like this:
+					
+			Qt::Object.connect( @_colormenu, SIGNAL( "activated( int )" ),
+						 		self, SLOT( "slotColorMenu( int )" ) )
+	
+		And emit signals like this:
+		
+			emit colorChanged( black )
+
+	- Constructors
+		You can call constructors in the conventional style:
+		
+		    quit = Qt::PushButton.new("Quit", self, "quit")
+			
+		Or you can pass a block if you prefer:
+		
+			w = MyWidget.new { setCaption("foobar") }
+			
+		The block will be called in the context of the newly created instance.
+		
+		Ordinary arguments can be provided as well as a block at the end:
+			
+			w = MyWidget.new(nil) { setCaption("foobar") }
+			
+		They are run in the context of the new instance.
+		
+		And there's more! You can also pass an arg to the block, and it will
+			be run in the context of the arg:
+			
+			w = MyWidget.new { |theWidget| theWidget.setCaption "foobar" }
+			
+	- Garbage Collection
+		When a ruby instance is garbage collected, the underlying C++ instance will only be
+		deleted if it isn't 'owned' by a parent object. Normally this will 'just work', but
+		there are occasions when you need to delete the C++ ahead of garbage collection, and
+		whether or not it has a parent. Use the dispose() and isDisposed() methods like this:
+		
+			item2.dispose
+			if item2.isDisposed
+				puts "item2 is disposed"
+			end
+			
+	- C++ 'int*' and 'int&' argument types
+		Ruby passes numeric values by value, and so they can't be changed when passed to a
+		method. The Qt::Integer class provides a mutable numeric type which does get updated
+		when passed as an argument. For example, this C++ method 'findByFileContent()':
+		
+			# static Ptr findByFileContent( const QString &fileName, int *accuracy=0 );
+
+			acc = Qt::Integer.new(0)
+        	fc = KDE::MimeType.findByFileContent("mimetype.rb", acc)
+		
+		It supports the arithmetic operators, and so expressions such as 'acc + 3' will work.
+	
+	- C++ 'bool*' and 'bool&' argument types
+		There is a similar problem for bool arg types, and the mutable Qt::Boolean class can be
+		used like this:
+		
+			# QFont getFont(bool * ok, const QFont&initial, QWidget* parent = 0, const char *name = 0);		
+		
+			ok = Qt::Boolean.new
+			font = Qt::FontDialog.getFont(ok, Qt::Font.new("Helvetica [Cronyx]", 10), self)
+			if !ok.nil? 
+        		# font is set to the font the user selected
+			else 
+        		# the user canceled the dialog
+			end
+		
+		Use 'nil?' to test the value returned in the Boolean
+
+	- Debugging
+		If a method call can't be matched in the Smoke library giving a 'method_missing' 
+		error, you can turn on debugging to trace the matching process:
+		
+			a = Qt::Application.new(ARGV)
+			Qt.debug_level = Qt::DebugLevel::High
+			a.loadLibrary("foo")  # Non existent method
+
+		Will give the following output:
+		
+			classname    == QApplication
+			:: method == loadLibrary$
+			-> methodIds == []
+			candidate list:
+			Possible prototypes:
+        			static QWidget* QApplication::widgetAt(int, int, bool)
+					...
+		
+		Here, the list of candidate methods 'methodIds' is empty
+		
+		Another debugging mechanism allows various trace 'channels' to be switched on.
+		
+		You can trace virtual method callbacks:
+		    Qt::Internal::setDebug(Qt::QtDebugChannel::QTDB_VIRTUAL)
+			
+		Or trace QtRuby garbage collection:
+		    Qt::Internal::setDebug(Qt::QtDebugChannel::QTDB_GC)
+		
+	- String i18n 
+	
+	   QtRuby supports $KCODE values of 'u', 'e' and 
+	  's' or the corresponding '-K' options from the command line. Qt Designer
+	  .ui files have UTF-8 strings so if you use any 8 bit UTF-8 characters, you
+	  will need to set $KCODE='u' or use the -Ku command line option.
+ 	
+	- Qt Designer
+		A 'rbuic4' tool is included in tools/rbuic to compile
+		.ui files into ruby code. As described above, Qt Designer uses UTF-8.
+		In addition to the options in the original uic C++ utility an '-x' flag
+		has been added. This will generate a top level stub in the code:
+		
+		$ rbuic4 mainwindowbase.ui -x -o mainwindowbase.rb
+		
+		Will add this to the end of the generated code:
+
+			if $0 == __FILE__
+				a = Qt::Application.new(ARGV)
+				u = Ui_MainWindowBase.new
+				w = Qt::MainWindow.new
+				u.setupUi(w)
+				w.show
+				a.exec
+			end
+			
+		Then you can test the example code straight away:
+			
+		$ ruby mainwindowbase.rb
+
+	- Loading .ui files at runtime with Qt::UiLoader
+		You can load a Qt Designer .ui file at runtime with Qt::UiLoader,
+		for example:
+		
+			require 'Qt'
+			...
+
+			loader = Qt::UiLoader.new
+			
+			file = Qt::File.new(":/forms/calculatorform.ui")
+			file.open(Qt::File::ReadOnly)
+			formWidget = loader.load(file, self)
+			file.close
+			
+			@ui_inputSpinBox1 = findChild(Qt::SpinBox, "inputSpinBox1")
+			@ui_inputSpinBox2 = findChild(Qt::SpinBox, "inputSpinBox2")
+			@ui_outputWidget = findChild(Qt::Label, "outputWidget")
+			
+			Qt::MetaObject.connectSlotsByName(self)
+			
+			self.layout = Qt::VBoxLayout.new do |l|
+				l.addWidget(formWidget)
+			end
+
+	- API reference
+		Use the bin/rbqtapi tool to discover which methods are available in
+		the QtRuby api.
+			
+	- Example programs
+		The best way to start programming QtRuby is to look at some existing
+		code and start messing with it.. 
+		The are various samples under qtruby/examples.
+
+	- Optional QScintilla text editing widget support
+		Great for building your own ruby IDE..
+
+	- Optional Qwt scientific plotting library support
+
+Have Fun!
+
+-- Richard

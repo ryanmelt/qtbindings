@@ -1,0 +1,94 @@
+10
+
+dir
+1157362
+svn://anonsvn.kde.org/home/kde/trunk/KDE/kdebindings/ruby/qtruby/examples
+svn://anonsvn.kde.org/home/kde
+
+
+
+2009-09-19T12:40:38.353760Z
+1025692
+arnorehn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+283d02a7-25f6-0310-bc7c-ecb5cbfe19da
+
+dialogs
+dir
+
+opengl
+dir
+
+draganddrop
+dir
+
+killerfilter
+dir
+
+network
+dir
+
+qtscribble
+dir
+
+richtext
+dir
+
+textedit
+dir
+
+graphicsview
+dir
+
+passivepopup
+dir
+
+mainwindows
+dir
+
+layouts
+dir
+
+designer
+dir
+
+xml
+dir
+
+tutorial
+dir
+
+widgets
+dir
+
+ruboids
+dir
+
+painting
+dir
+
+desktop
+dir
+
+base
+dir
+
+itemviews
+dir
+
+qdbus
+dir
+

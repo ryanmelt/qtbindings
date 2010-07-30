@@ -1,0 +1,20 @@
+<config>
+    <moduleName>qtuitools</moduleName>
+    <parentModules>
+        <module>qtcore</module>
+        <module>qtgui</module>
+    </parentModules>
+    <parts>1</parts>
+    <scalarTypes>
+        <!-- QString is a class, but represented as a scalar (#) in munged names -->
+        <typeName>QString</typeName>
+    </scalarTypes>
+    <voidpTypes>
+        <!-- both are classes, but they are represented as Smoke::t_voidp -->
+        <typeName>QStringList</typeName>
+        <typeName>QString</typeName>
+    </voidpTypes>
+    <classList>
+        <class>QUiLoader</class>
+    </classList>
+</config>
