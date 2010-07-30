@@ -1,4 +1,8 @@
 #include <ruby.h>
+#undef read
+#undef write
+#undef connect
+#undef accept
 
 #include <QHash>
 #include <QList>

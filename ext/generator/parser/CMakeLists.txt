@@ -38,4 +38,4 @@ add_definitions(-D__CPPPARSER_BUILDING)
 add_library(cppparser SHARED ${cppparser_LIB_SRCS})
 target_link_libraries(cppparser ${QT_QTCORE_LIBRARY})
 
-install(TARGETS cppparser LIBRARY DESTINATION ${LIB_INSTALL_DIR})
+install(TARGETS cppparser DESTINATION ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX} )

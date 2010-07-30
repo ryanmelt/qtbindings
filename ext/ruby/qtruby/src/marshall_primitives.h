@@ -250,7 +250,7 @@ VALUE primitive_to_ruby<int*>(int* sv)
 
 #if defined(Q_OS_WIN32)
 template <>
-static WId ruby_to_primitive<WId>(VALUE v)
+WId ruby_to_primitive<WId>(VALUE v)
 {
 	if(v == Qnil)
 		return 0;
@@ -262,7 +262,7 @@ static WId ruby_to_primitive<WId>(VALUE v)
 }
 
 template <>
-static VALUE primitive_to_ruby<WId>(WId sv)
+VALUE primitive_to_ruby<WId>(WId sv)
 {
 #ifdef Q_WS_MAC32
 	return INT2NUM((unsigned long) sv);
@@ -272,7 +272,7 @@ static VALUE primitive_to_ruby<WId>(WId sv)
 }
 
 template <>
-static Q_PID ruby_to_primitive<Q_PID>(VALUE v)
+Q_PID ruby_to_primitive<Q_PID>(VALUE v)
 {
 	if(v == Qnil)
 		return 0;
@@ -281,7 +281,7 @@ static Q_PID ruby_to_primitive<Q_PID>(VALUE v)
 }
 
 template <>
-static VALUE primitive_to_ruby<Q_PID>(Q_PID sv)
+VALUE primitive_to_ruby<Q_PID>(Q_PID sv)
 {
 	return ULONG2NUM((unsigned long) sv);
 }

@@ -57,9 +57,6 @@
         <class>QAccessible2Interface</class>
         <class>QAccessibleActionInterface</class>
         <class>QAccessibleApplication</class>
-        <class>QAccessibleBridge</class>
-        <class>QAccessibleBridgeFactoryInterface</class>
-        <class>QAccessibleBridgePlugin</class>
         <class>QAccessible</class>
         <class>QAccessibleEditableTextInterface</class>
         <class>QAccessibleEvent</class>

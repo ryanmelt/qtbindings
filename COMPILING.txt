@@ -1,0 +1,13 @@
+Compiling qtbindings requires the following prerequisites:
+1. cmake 2.6.3+ installed and in your path
+2. QT SDK 4.6.x installed and in your path
+3. Ruby installed and in your path
+
+Additionally: all of the operating system prequisites for compiling, window system development, opengl,
+etc must be installed.
+
+On Debian based systems this should provide everything you need excluding the prereqs above:
+sudo aptitude install build-essential bison openssl libreadline5 libreadline-dev curl git-core 
+                      zlib1g zlib1g-dev libssl-dev vim libsqlite3-0 libsqlite3-dev sqlite3 
+                      libreadline5-dev libreadline6-dev libxml2-dev git-core subversion autoconf
+                      xorg-dev libgl1-mesa-dev libglu1-mesa-dev

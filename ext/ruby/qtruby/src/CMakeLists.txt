@@ -1,6 +1,3 @@
-
-add_subdirectory( lib )
-
 IF(QT_QTDBUS_FOUND)
     ADD_DEFINITIONS (-DQT_QTDBUS)
 ENDIF(QT_QTDBUS_FOUND)
@@ -30,36 +27,66 @@ set(qtruby_LIB_SRCS qtruby.cpp)
 add_library(qtruby4shared SHARED ${qtrubyshared_LIB_SRCS})
 add_library(qtruby4 MODULE ${qtruby_LIB_SRCS})
 
-target_link_libraries(  qtruby4shared 
-                            ${QT_QTCORE_LIBRARY} 
-                            ${QT_QTGUI_LIBRARY} 
-                            ${RUBY_LIBRARY} 
-                            ${QT_QTNETWORK_LIBRARY}
-                            smokebase
-                            smokeqtcore 
-                            smokeqtgui 
-                            smokeqtxml 
-                            smokeqtopengl 
-                            smokeqtsql 
-                            smokeqtnetwork 
-                            smokeqtdbus 
-                            smokeqtsvg )
+if(QT_QTDBUS_FOUND)
+  target_link_libraries(  qtruby4shared 
+                              ${QT_QTCORE_LIBRARY} 
+                              ${QT_QTGUI_LIBRARY} 
+                              ${RUBY_LIBRARY} 
+                              ${QT_QTNETWORK_LIBRARY}
+                              smokebase
+                              smokeqtcore 
+                              smokeqtgui 
+                              smokeqtxml 
+                              smokeqtopengl 
+                              smokeqtsql 
+                              smokeqtnetwork 
+                              smokeqtdbus 
+                              smokeqtsvg )
 
-target_link_libraries(  qtruby4 
-                            ${QT_QTCORE_LIBRARY} 
-                            ${QT_QTGUI_LIBRARY} 
-                            ${QT_QTDBUS_LIBRARY} 
-                            ${RUBY_LIBRARY} 
-                            ${QT_QTNETWORK_LIBRARY} 
-                            smokeqtcore 
-                            smokeqtgui 
-                            smokeqtxml 
-                            smokeqtopengl 
-                            smokeqtsql 
-                            smokeqtnetwork 
-                            smokeqtdbus 
-                            smokeqtsvg
-                            qtruby4shared )
+  target_link_libraries(  qtruby4 
+                              ${QT_QTCORE_LIBRARY} 
+                              ${QT_QTGUI_LIBRARY} 
+                              ${QT_QTDBUS_LIBRARY} 
+                              ${RUBY_LIBRARY} 
+                              ${QT_QTNETWORK_LIBRARY} 
+                              smokeqtcore 
+                              smokeqtgui 
+                              smokeqtxml 
+                              smokeqtopengl 
+                              smokeqtsql 
+                              smokeqtnetwork 
+                              smokeqtdbus 
+                              smokeqtsvg
+                              qtruby4shared )
+else(QT_DBUS_FOUND)
+  target_link_libraries(  qtruby4shared 
+                              ${QT_QTCORE_LIBRARY} 
+                              ${QT_QTGUI_LIBRARY} 
+                              ${RUBY_LIBRARY} 
+                              ${QT_QTNETWORK_LIBRARY}
+                              smokebase
+                              smokeqtcore 
+                              smokeqtgui 
+                              smokeqtxml 
+                              smokeqtopengl 
+                              smokeqtsql 
+                              smokeqtnetwork 
+                              smokeqtsvg )
+
+  target_link_libraries(  qtruby4 
+                              ${QT_QTCORE_LIBRARY} 
+                              ${QT_QTGUI_LIBRARY} 
+                              ${RUBY_LIBRARY} 
+                              ${QT_QTNETWORK_LIBRARY} 
+                              smokeqtcore 
+                              smokeqtgui 
+                              smokeqtxml 
+                              smokeqtopengl 
+                              smokeqtsql 
+                              smokeqtnetwork 
+                              smokeqtsvg
+                              qtruby4shared )
+endif(QT_DBUS_FOUND)
 
 # target_link_libraries(qtrubyinternal ${QT_QTCORE_LIBRARY} ${RUBY_LIBRARY} ${QT_QTNETWORK_LIBRARY})
 

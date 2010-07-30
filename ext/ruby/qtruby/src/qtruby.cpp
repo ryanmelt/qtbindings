@@ -52,9 +52,16 @@
 #include <smoke/qtopengl_smoke.h>
 #include <smoke/qtnetwork_smoke.h>
 #include <smoke/qtsvg_smoke.h>
+
+#ifdef QT_QTDBUS
 #include <smoke/qtdbus_smoke.h>
+#endif
 
 #include <ruby.h>
+#undef read
+#undef write
+#undef connect
+#undef accept
 
 #include "marshall_types.h"
 #include "qtruby.h"
@@ -2129,12 +2136,14 @@ getClassList(VALUE /*self*/)
         if (qtsvg_Smoke->classes[i].className && !qtsvg_Smoke->classes[i].external)
             rb_ary_push(class_list, rb_str_new2(qtsvg_Smoke->classes[i].className));
     }
-
+    
+#ifdef QT_QTDBUS
     for (int i = 1; i <= qtdbus_Smoke->numClasses; i++) {
         if (qtdbus_Smoke->classes[i].className && !qtdbus_Smoke->classes[i].external)
             rb_ary_push(class_list, rb_str_new2(qtdbus_Smoke->classes[i].className));
     }
-
+#endif
+    
     return class_list;
 }
 
@@ -2344,8 +2353,9 @@ Init_qtruby4()
     init_qtopengl_Smoke();
     init_qtnetwork_Smoke();
     init_qtsvg_Smoke();
+#ifdef QT_QTDBUS  
     init_qtdbus_Smoke();
-	
+#endif
     install_handlers(Qt_handlers);
 	
     INIT_BINDING(qtcore)
@@ -2355,7 +2365,9 @@ Init_qtruby4()
     INIT_BINDING(qtopengl)
     INIT_BINDING(qtnetwork)
     INIT_BINDING(qtsvg)
+#ifdef QT_QTDBUS  
     INIT_BINDING(qtdbus)
+#endif
 
 	if (qt_module == Qnil) {
 		qt_module = rb_define_module("Qt");

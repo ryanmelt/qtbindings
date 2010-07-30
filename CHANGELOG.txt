@@ -1,0 +1,9 @@
+qtbindings Changelog:
+-----------------
+2010/07/27 - Apply Ryan Melton's patches to build on Windows
+2010/07/27 - Apply Ryan Melton's patch to fix ExtraSelection
+2010/07/28 - Sync with kde-bindings trunk rev 1156258
+2010/07/28 - Apply Paolo Capriotti's patch to handle long long type
+2010/07/28 - Apply Paolo Capriotti's patch for deferred objects
+2010/07/28 - Apply Paolo Capriotti's patch for marking QGraphicsEffect
+2010/07/28 - Sync with kde-bindings trunk rev 1156329

@@ -137,8 +137,18 @@ void marshall_to_ruby<SmokeClassWrapper>(Marshall *m)
 	void *p = m->item().s_voidp;
 	VALUE obj = getPointerObject(p);
 	if (obj != Qnil) {
-		*(m->var()) = obj;
-		return ;
+    const char* ruby_class  = RSTRING_PTR(rb_funcall(rb_funcall(obj, rb_intern("class"), 0), rb_intern("to_s"), 0));
+    const char* smoke_class = m->type().name();
+    
+    if ((strcmp(ruby_class, "Qt::TextEdit::ExtraSelection") == 0) && (strcmp(smoke_class, "QTextCursor&") == 0))
+    {
+      /* Intentional Fall Through for ExtraSelection returning a cursor */
+    }
+    else
+    {
+		  *(m->var()) = obj;
+		  return ;
+    }
 	}
 
 	smokeruby_object  * o = alloc_smokeruby_object(false, m->smoke(), m->type().classId(), p);

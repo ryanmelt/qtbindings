@@ -16,6 +16,10 @@
  ***************************************************************************/
 
 #include <ruby.h>
+#undef read
+#undef write
+#undef connect
+#undef accept
 
 #include <qtruby.h>
 #include <smokeruby.h>
