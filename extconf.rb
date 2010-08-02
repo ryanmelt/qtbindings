@@ -4,8 +4,10 @@
 # 3. Copies the built .so files into the correct places
 
 windows = false
+macosx  = false
 processor, platform, *rest = RUBY_PLATFORM.split("-")
 windows = true if platform == 'mswin32' or platform == 'mingw32'
+macosx  = true if platform =~ /darwin/
 
 ruby_version = '1.9'
 ruby_version = '1.8' if RUBY_VERSION.split('.')[1].to_i == 8
@@ -182,30 +184,43 @@ File.open('Makefile', 'w') do |file|
     file.puts "\tcd ext/build; make"
     file.puts ""    
     file.puts "install: makedirs"
-    file.puts "\tcp ext/build/smoke/deptool/smokedeptool bin/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtcore/libsmokeqtcore.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtdbus/libsmokeqtdbus.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtgui/libsmokeqtgui.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtmultimedia/libsmokeqtmultimedia.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtnetwork/libsmokeqtnetwork.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtopengl/libsmokeqtopengl.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtscript/libsmokeqtscript.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtsql/libsmokeqtsql.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtsvg/libsmokeqtsvg.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qttest/libsmokeqttest.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtuitools/libsmokeqtuitools.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtwebkit/libsmokeqtwebkit.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtxml/libsmokeqtxml.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/qtxmlpatterns/libsmokeqtxmlpatterns.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/smokeapi/smokeapi bin/#{ruby_version}"
-    file.puts "\tcp ext/build/smoke/smokebase/libsmokebase.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qtruby/src/libqtruby4shared.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qtruby/src/qtruby4.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qtscript/qtscript.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qttest/qttest.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qtuitools/qtuitools.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qtwebkit/qtwebkit.* lib/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qtruby/tools/rbrcc/rbrcc bin/#{ruby_version}"
-    file.puts "\tcp ext/build/ruby/qtruby/tools/rbuic/rbuic4 bin/#{ruby_version}"
+    if macosx
+      file.puts "\tcp ext/build/smoke/smokeapi/smokeapi bin/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/deptool/smokedeptool bin/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtruby/src/qtruby4.so lib/#{ruby_version}/qtruby4.bundle"
+      file.puts "\tcp ext/build/ruby/qtscript/qtscript.* lib/#{ruby_version}/qtscript.bundle"
+      file.puts "\tcp ext/build/ruby/qttest/qttest.* lib/#{ruby_version}/qttest.bundle"
+      file.puts "\tcp ext/build/ruby/qtuitools/qtuitools.* lib/#{ruby_version}/qtuitools.bundle"
+      file.puts "\tcp ext/build/ruby/qtwebkit/qtwebkit.* lib/#{ruby_version}/qtwebkit.bundle"
+      file.puts "\tcp ext/build/ruby/qtruby/tools/rbrcc/rbrcc bin/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtruby/tools/rbuic/rbuic4 bin/#{ruby_version}"
+
+    else
+      file.puts "\tcp ext/build/smoke/deptool/smokedeptool bin/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtcore/libsmokeqtcore.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtdbus/libsmokeqtdbus.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtgui/libsmokeqtgui.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtmultimedia/libsmokeqtmultimedia.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtnetwork/libsmokeqtnetwork.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtopengl/libsmokeqtopengl.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtscript/libsmokeqtscript.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtsql/libsmokeqtsql.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtsvg/libsmokeqtsvg.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qttest/libsmokeqttest.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtuitools/libsmokeqtuitools.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtwebkit/libsmokeqtwebkit.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtxml/libsmokeqtxml.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/qtxmlpatterns/libsmokeqtxmlpatterns.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/smokeapi/smokeapi bin/#{ruby_version}"
+      file.puts "\tcp ext/build/smoke/smokebase/libsmokebase.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtruby/src/libqtruby4shared.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtruby/src/qtruby4.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtscript/qtscript.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qttest/qttest.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtuitools/qtuitools.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtwebkit/qtwebkit.* lib/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtruby/tools/rbrcc/rbrcc bin/#{ruby_version}"
+      file.puts "\tcp ext/build/ruby/qtruby/tools/rbuic/rbuic4 bin/#{ruby_version}"
+    end
   end
 end

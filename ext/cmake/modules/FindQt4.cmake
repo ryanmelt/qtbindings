@@ -1045,8 +1045,6 @@ IF (QT4_QMAKE_FOUND)
   # is the framework directory in that case), since this will make the cmake include_directories()
   # command recognize that we need the framework flag with the respective directory (-F)
   IF(QT_USE_FRAMEWORKS)
-    SET(QT_INCLUDES       ${QT_INCLUDES} ${QT_QTCORE_LIBRARY} )
-    SET(QT_INCLUDE_DIR ${QT_INCLUDE_DIR} ${QT_QTCORE_LIBRARY} )
   ENDIF(QT_USE_FRAMEWORKS)
 
 

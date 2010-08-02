@@ -642,7 +642,7 @@ int main(int argc, char ** argv)
 #endif
 
 #ifdef TEST_QT_NO_STYLE_MAC
-#include "QtGui/macstyle.h"
+#include "QtGui/qmacstyle_mac.h"
 
 int main(int argc, char ** argv)
 {
