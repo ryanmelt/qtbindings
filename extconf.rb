@@ -61,7 +61,9 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd ext\\build && \\"
     file.puts "cmake \\"
     file.puts "-G \"MinGW Makefiles\" \\"
-    file.puts "-DCMAKE_SHARED_LINKER_FLAGS=\"--enable-auto-import\" \\"
+    if ARGV[0] == '-d'
+      file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
+    end
     file.puts "-DCMAKE_MAKE_PROGRAM=mingw32-make.exe \\"
     file.puts "-Wno-dev \\"
     file.puts "-DENABLE_SMOKE=on \\"
@@ -147,6 +149,9 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd bin && rm *.dll"
     file.puts "\t-cd bin && rm *.so"
     file.puts "\t-cd bin && rm *.exe"
+    if ARGV[0] == '-d'
+      file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
+    end   
     file.puts "\t-cd bin\\plugins && rm *"
     file.puts "\t-cd bin\\1.8 && rm *"
     file.puts "\t-cd bin\\1.9 && rm *"
@@ -159,6 +164,7 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd ext/build; \\"
     file.puts "cmake \\"
     file.puts "-G \"Unix Makefiles\" \\"
+    
     file.puts "-Wno-dev \\"
     file.puts "-DENABLE_SMOKE=on \\"
     file.puts "-DENABLE_QTCORE_SMOKE=on \\"
@@ -194,7 +200,6 @@ File.open('Makefile', 'w') do |file|
       file.puts "\tcp ext/build/ruby/qtwebkit/qtwebkit.* lib/#{ruby_version}/qtwebkit.bundle"
       file.puts "\tcp ext/build/ruby/qtruby/tools/rbrcc/rbrcc bin/#{ruby_version}"
       file.puts "\tcp ext/build/ruby/qtruby/tools/rbuic/rbuic4 bin/#{ruby_version}"
-
     else
       file.puts "\tcp ext/build/smoke/deptool/smokedeptool bin/#{ruby_version}"
       file.puts "\tcp ext/build/smoke/qtcore/libsmokeqtcore.* lib/#{ruby_version}"

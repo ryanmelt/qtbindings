@@ -5,7 +5,7 @@ spec = Gem::Specification.new do |s|
   s.email = 'kde-bindings@kde.org'
   s.rubyforge_project = 'qtbindings'
   s.summary = "Qt bindings for ruby"
-  s.homepage = "http://rubyforge.org/projects/qtbindings"
+  s.homepage = "http://github.com/ryanmelt/qtbindings"
   s.name = 'qtbindings'
   s.version = QTBINDINGS_VERSION
   s.requirements << 'none'
@@ -14,4 +14,5 @@ spec = Gem::Specification.new do |s|
   s.extensions = ['extconf.rb']
   s.executables = ['smokeapi', 'smokedeptool', 'rbrcc', 'rbuic4', 'rbqtapi']
   s.description = 'qtbindings provides ruby bindings to QT4.x. It is derived from the kdebindings project.'
+  s.licenses = ['LGPLv2.1']
 end
