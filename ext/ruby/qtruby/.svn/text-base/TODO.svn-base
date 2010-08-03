@@ -1,8 +1,0 @@
-	* Allow 'String' and other ruby types to be used in SIGNALs/SLOTs,
-		or Rails-like Symbols
-	
-	* More documentation or example code - contributions welcome!
-
-	* Add an option to rbqtapi to show the api in ruby format, rather than C++
-	
-	* Write a graphic class browser based on rbqtapi

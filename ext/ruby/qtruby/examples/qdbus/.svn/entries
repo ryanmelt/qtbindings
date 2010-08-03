@@ -1,43 +1,0 @@
-10
-
-dir
-1157362
-svn://anonsvn.kde.org/home/kde/trunk/KDE/kdebindings/ruby/qtruby/examples/qdbus
-svn://anonsvn.kde.org/home/kde
-
-
-
-2009-09-19T12:40:38.353760Z
-1025692
-arnorehn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-283d02a7-25f6-0310-bc7c-ecb5cbfe19da
-
-chat
-dir
-
-listnames
-dir
-
-pingpong
-dir
-
-remotecontrolledcar
-dir
-
-complexpingpong
-dir
-

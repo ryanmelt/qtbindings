@@ -1,79 +1,0 @@
-10
-
-dir
-1157362
-svn://anonsvn.kde.org/home/kde/trunk/KDE/kdebindings/ruby/qtruby/examples/widgets
-svn://anonsvn.kde.org/home/kde
-
-
-
-2008-04-07T16:54:48.205833Z
-794478
-rdale
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-283d02a7-25f6-0310-bc7c-ecb5cbfe19da
-
-tetrix
-dir
-
-movie
-dir
-
-lineedits
-dir
-
-windowflags
-dir
-
-scribble
-dir
-
-digitalclock
-dir
-
-calculator
-dir
-
-charactermap
-dir
-
-wiggly
-dir
-
-imageviewer
-dir
-
-sliders
-dir
-
-groupbox
-dir
-
-spinboxes
-dir
-
-icons
-dir
-
-screenshot
-dir
-
-tooltips
-dir
-
-analogclock
-dir
-

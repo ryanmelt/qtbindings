@@ -1,1 +1,0 @@
-require 'qtruby4'
