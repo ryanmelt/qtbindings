@@ -1,1 +1,0 @@
-install( PROGRAMS rbqtapi DESTINATION ${CMAKE_INSTALL_PREFIX}/bin )

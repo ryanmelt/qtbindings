@@ -1,49 +1,0 @@
-10
-
-dir
-1157362
-svn://anonsvn.kde.org/home/kde/trunk/KDE/kdebindings/ruby/qtruby/examples/network
-svn://anonsvn.kde.org/home/kde
-
-
-
-2008-01-02T00:10:07.267883Z
-755647
-uwolfer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-283d02a7-25f6-0310-bc7c-ecb5cbfe19da
-
-http
-dir
-
-fortuneclient
-dir
-
-broadcastsender
-dir
-
-broadcastreceiver
-dir
-
-fortuneserver
-dir
-
-ftp
-dir
-
-loopback
-dir
-
