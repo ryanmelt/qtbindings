@@ -34,7 +34,10 @@
 #   RUBY_LIBRUBYARG=`$RUBY -r rbconfig -e 'printf("%s",Config::CONFIG@<:@"LIBRUBYARG_SHARED"@:>@)'`
 
 # uncomment the following line to get debug output for this file
-# SET(_RUBY_DEBUG_OUTPUT TRUE)
+SET(_RUBY_DEBUG_OUTPUT TRUE)
+
+# Set this so the .rvm rubies will beat the system ruby on Mac OSX
+SET(CMAKE_FIND_FRAMEWORK LAST)
 
 # Determine the list of possible names of the ruby executable depending
 # on which version of ruby is required
