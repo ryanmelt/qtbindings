@@ -1794,14 +1794,14 @@ void marshall_voidP(Marshall *m) {
 	{
 	    VALUE rv = *(m->var());
 	    if (rv != Qnil)
-		m->item().s_voidp = (void*)NUM2INT(*(m->var()));
+		m->item().s_voidp = (void*)NUM2LONG(*(m->var()));
 	    else
 		m->item().s_voidp = 0;
 	}
 	break;
       case Marshall::ToVALUE:
 	{
-	    *(m->var()) = Data_Wrap_Struct(rb_cObject, 0, 0, m->item().s_voidp);
+	    *(m->var()) = LONG2NUM((unsigned long) m->item().s_voidp);
 	}
 	break;
       default:
@@ -2557,6 +2557,14 @@ Q_DECL_EXPORT TypeHandler Qt_handlers[] = {
     { "void", marshall_void },
     { "void**", marshall_voidP_array },
     { "WId", marshall_it<WId> },
+    { "HBITMAP__*", marshall_voidP },
+    { "HDC__*", marshall_voidP },
+    { "HFONT__*", marshall_voidP },
+    { "HICON__*", marshall_voidP },
+    { "HINSTANCE__*", marshall_voidP },
+    { "HPALETTE__*", marshall_voidP },
+    { "HRGN__*", marshall_voidP },
+    { "HWND__*", marshall_voidP },
 #if QT_VERSION >= 0x40200
     { "QList<QGraphicsItem*>", marshall_QGraphicsItemList },
     { "QList<QGraphicsItem*>&", marshall_QGraphicsItemList },
