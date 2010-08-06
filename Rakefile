@@ -81,16 +81,16 @@ task :gemwindows => [:installqt, :gemnative]
 
 task :ryanbuildwindows do
   if RUBY_VERSION.split('.')[1].to_i == 9
-    system("move C:\\Ruby C:\\Ruby19 && move C:\\Ruby18 C:\\Ruby")
+    system("move C:\\Ruby C:\\Ruby191 && move C:\\Ruby187 C:\\Ruby")
   end
   Rake::Task[:extconf].execute
   Rake::Task[:all].execute
   Rake::Task[:install].execute
-  system("move C:\\Ruby C:\\Ruby18 && move C:\\Ruby19 C:\\Ruby")
+  system("move C:\\Ruby C:\\Ruby187 && move C:\\Ruby191 C:\\Ruby")
   Rake::Task[:extconf].execute
   Rake::Task[:all].execute
   Rake::Task[:install].execute
-  system("move C:\\Ruby C:\\Ruby19 && move C:\\Ruby18 C:\\Ruby")
+  system("move C:\\Ruby C:\\Ruby191 && move C:\\Ruby187 C:\\Ruby")
 end
 
 task :ryangemwindows => [:ryanbuildwindows, :gemwindows]
