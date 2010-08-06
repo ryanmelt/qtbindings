@@ -65,7 +65,7 @@ camera_zoom
 )
 
     def Params.readParamsFromFile(paramFileName)
-	File.open(paramFileName).each { | line |
+	File.open(File.join("..", paramFileName)).each { | line |
 	    line.chomp!
 	    next if line.empty? || line =~ /^#/
 

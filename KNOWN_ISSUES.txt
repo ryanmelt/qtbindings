@@ -1,0 +1,20 @@
+1. draggableicons example fails - No << for Module
+2. puzzle example fails - No << for Module
+3. chart example fails - undefined method state=
+4. spinboxdelegate example fails - undefined method setData
+5. dockwidgets example fails - undefined method empty?
+6. mdi example fails - undefined method empty?
+7. broadcastsender example fails - undefined method writeDatagram
+8. fortuneserver example fails - undefined method seek
+9. ftp example fails - undefined method icon=
+10. http example fails - undefined method empty? for nil
+11. textures example fails - Cannot handle Gluint
+12. fontsample example fails - undefined method checkState for nil
+13. svgviewer example fails - undefined method rx= for Qt::Point
+14. passivepopup example fails - seg fault
+15. qtscribble example fails - method_missing undefined method drawPixmap
+16. textedit example fails - undefined method setTextFormat
+17. digitalclock example fails - unresolved constructor call DigitalClock
+18. icons example fails - images not shown
+19. movie example fails - movie not shown 
+20. sliders example error - No such slot SlidersGroup::setValue

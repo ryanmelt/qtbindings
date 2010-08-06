@@ -24,6 +24,7 @@
 =end
 	
 require 'Qt'
+require 'qtuitools'
 require 'qrc_calculatorbuilder.rb'
 require 'calculatorform.rb'
 
