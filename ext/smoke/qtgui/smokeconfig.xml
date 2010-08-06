@@ -7,11 +7,27 @@
     <scalarTypes>
         <!-- QString is a class, but represented as a scalar (#) in munged names -->
         <typeName>QString</typeName>
+        <typeName>HBITMAP__</typeName>
+        <typeName>HDC__</typeName>
+        <typeName>HFONT__</typeName>
+        <typeName>HICON__</typeName>
+        <typeName>HINSTANCE__</typeName>
+        <typeName>HPALETTE__</typeName>
+        <typeName>HRGN__</typeName>
+        <typeName>HWND__</typeName>          
     </scalarTypes>
     <voidpTypes>
         <!-- both are classes, but they are represented as Smoke::t_voidp -->
         <typeName>QStringList</typeName>
         <typeName>QString</typeName>
+        <typeName>HBITMAP__</typeName>
+        <typeName>HDC__</typeName>
+        <typeName>HFONT__</typeName>
+        <typeName>HICON__</typeName>
+        <typeName>HINSTANCE__</typeName>
+        <typeName>HPALETTE__</typeName>
+        <typeName>HRGN__</typeName>
+        <typeName>HWND__</typeName>  
     </voidpTypes>
     <exclude>
         <!-- we don't want private stuff in smoke.. -->

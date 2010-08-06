@@ -9,10 +9,12 @@ if RUBY_VERSION.split('.')[1].to_i == 8
   if windows
     ENV['PATH'] = File.join(File.dirname(__FILE__), '../bin') + ';' + File.join(File.dirname(__FILE__), '../lib/1.8') + ';' + File.join(File.dirname(__FILE__), '../bin/plugins') + ';' + File.join(File.dirname(__FILE__), '../bin/1.8') + ';' + ENV['PATH']
   end
+  $: << File.join(File.dirname(__FILE__), '../lib/1.8')
   require '1.8/qtruby4'
 else
   if windows
     ENV['PATH'] = File.join(File.dirname(__FILE__), '../bin') + ';' + File.join(File.dirname(__FILE__), '../lib/1.9') + ';' + File.join(File.dirname(__FILE__), '../bin/plugins') + ';' + File.join(File.dirname(__FILE__), '../bin/1.9') + ';' + ENV['PATH']
   end
+  $: << File.join(File.dirname(__FILE__), '../lib/1.9')
   require '1.9/qtruby4'
 end
