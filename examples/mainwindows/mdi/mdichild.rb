@@ -80,7 +80,7 @@ class MdiChild < Qt::TextEdit
 	def saveAs()
 	    fileName = Qt::FileDialog.getSaveFileName(self, tr("Save As"),
 	                                                    @currentFile)
-	    if fileName.empty?
+	    if not fileName or fileName.empty?
 	        return false
 		end
 	

@@ -117,7 +117,7 @@ class MainWindow < Qt::MainWindow
 	    fileName = Qt::FileDialog.getSaveFileName(self,
 	                        tr("Choose a file name"), ".",
 	                        tr("HTML (*.html *.htm)"))
-	    if fileName.empty?
+	    if not fileName or fileName.empty?
 	        return
 		end
 	    file = Qt::File.new(fileName)

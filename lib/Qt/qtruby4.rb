@@ -2740,11 +2740,11 @@ module Qt
 					# Multiple matches are an error; the equality test below _cannot_ be commented out.
 					# If ambiguous matches occur the problem must be fixed be adjusting the relative
 					# ranking of the arg types involved in checkarg().
-					elsif current_match == best_match
+					elsif current_match == best_match && id.smoke == chosen.smoke
 						puts "multiple methods matching, this is an error" if debug_level >= DebugLevel::Minimal
 						chosen = nil
 					end
-					puts "match => #{id.index} score: #{current_match}" if debug_level >= DebugLevel::High
+					puts "match => #{id.index} score: #{current_match} chosen: #{chosen}" if debug_level >= DebugLevel::High
 				end
 					
 				puts "Resolved to id: #{chosen.index}" if !chosen.nil? && debug_level >= DebugLevel::High
@@ -2764,7 +2764,7 @@ module Qt
 				method_ids = hash.values_at(*constructor_names).flatten
 				puts dumpCandidates(method_ids)
 			else
-				puts "setCurrentMethod(smokeList index: #{chosen.smoke}, meth index: #{chosen.index})" if debug_level >= DebugLevel::High
+				puts "setCurrentMethod(smokeList index: #{chosen.smoke}, meth index: #{chosen.index})" if debug_level >= DebugLevel::High && chosen
 			end
 			setCurrentMethod(chosen) if chosen
 			return nil

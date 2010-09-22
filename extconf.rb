@@ -149,9 +149,6 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd bin && rm *.dll"
     file.puts "\t-cd bin && rm *.so"
     file.puts "\t-cd bin && rm *.exe"
-    if ARGV[0] == '-d'
-      file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
-    end   
     file.puts "\t-cd bin\\plugins && rm *"
     file.puts "\t-cd bin\\1.8 && rm *"
     file.puts "\t-cd bin\\1.9 && rm *"
@@ -164,7 +161,9 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd ext/build; \\"
     file.puts "cmake \\"
     file.puts "-G \"Unix Makefiles\" \\"
-    
+    if ARGV[0] == '-d'
+      file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
+    end   
     file.puts "-Wno-dev \\"
     file.puts "-DENABLE_SMOKE=on \\"
     file.puts "-DENABLE_QTCORE_SMOKE=on \\"

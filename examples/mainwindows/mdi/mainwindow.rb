@@ -24,7 +24,7 @@
 =end
     
     
-require 'mdichild.rb'
+require './mdichild.rb'
     
 class MainWindow < Qt::MainWindow
     

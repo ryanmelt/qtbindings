@@ -526,6 +526,7 @@ findMethod(VALUE /*self*/, VALUE c_value, VALUE name_value)
     VALUE result = rb_ary_new();
     Smoke::ModuleIndex classId = Smoke::findClass(c);    
     Smoke::ModuleIndex meth = Smoke::NullModuleIndex;
+    QList<Smoke::ModuleIndex> milist;
     if (classId.smoke != 0) {
         meth = classId.smoke->findMethod(c, name);
     }
@@ -540,39 +541,47 @@ findMethod(VALUE /*self*/, VALUE c_value, VALUE name_value)
             Smoke::ModuleIndex mnid = s->idMethodName(name);
             if (!cid.index || !mnid.index) continue;
             meth = s->idMethod(cid.index, mnid.index);
-            if (meth.index) break;
+            if (meth.index) milist.append(meth);
         }
 #ifdef DEBUG
         if (do_debug & qtdb_calls) qWarning("Found method QGlobalSpace::%s => %d", name, meth.index);
 #endif
     }
+    else
+    {
+        milist.append(meth);
+    }
 
-    if (meth.index == 0) {
+    if (milist.count() == 0) {
         return result;
     // empty list
-    } else if (meth.index > 0) {
-        Smoke::Index i = meth.smoke->methodMaps[meth.index].method;
-        if (i == 0) {		// shouldn't happen
-            rb_raise(rb_eArgError, "Corrupt method %s::%s", c, name);
-        } else if(i > 0) {	// single match
-            const Smoke::Method &methodRef = meth.smoke->methods[i];
-            if ((methodRef.flags & Smoke::mf_internal) == 0) {
-                rb_ary_push(result, rb_funcall(moduleindex_class, rb_intern("new"), 2, INT2NUM(smokeList.indexOf(meth.smoke)), INT2NUM(i)));
-            }
-        } else {		// multiple match
-            i = -i;		// turn into ambiguousMethodList index
-            while (meth.smoke->ambiguousMethodList[i]) {
-                const Smoke::Method &methodRef = meth.smoke->methods[meth.smoke->ambiguousMethodList[i]];
-                if ((methodRef.flags & Smoke::mf_internal) == 0) {
-                    rb_ary_push(result, rb_funcall(moduleindex_class, rb_intern("new"), 2, INT2NUM(smokeList.indexOf(meth.smoke)), INT2NUM(meth.smoke->ambiguousMethodList[i])));
+    } else {
+        foreach (Smoke::ModuleIndex meth, milist) { 
+            if (meth.index > 0) {
+                Smoke::Index i = meth.smoke->methodMaps[meth.index].method;
+                if (i == 0) {		// shouldn't happen
+                    rb_raise(rb_eArgError, "Corrupt method %s::%s", c, name);
+                } else if(i > 0) {	// single match
+                    const Smoke::Method &methodRef = meth.smoke->methods[i];
+                    if ((methodRef.flags & Smoke::mf_internal) == 0) {
+                        rb_ary_push(result, rb_funcall(moduleindex_class, rb_intern("new"), 2, INT2NUM(smokeList.indexOf(meth.smoke)), INT2NUM(i)));
+                    }
+                } else {		// multiple match
+                    i = -i;		// turn into ambiguousMethodList index
+                    while (meth.smoke->ambiguousMethodList[i]) {
+                        const Smoke::Method &methodRef = meth.smoke->methods[meth.smoke->ambiguousMethodList[i]];
+                        if ((methodRef.flags & Smoke::mf_internal) == 0) {
+                            rb_ary_push(result, rb_funcall(moduleindex_class, rb_intern("new"), 2, INT2NUM(smokeList.indexOf(meth.smoke)), INT2NUM(meth.smoke->ambiguousMethodList[i])));
 //#ifdef DEBUG
-                    if (do_debug & qtdb_calls) qWarning("Ambiguous Method %s::%s => %d", c, name, meth.smoke->ambiguousMethodList[i]);
+                            if (do_debug & qtdb_calls) qWarning("Ambiguous Method %s::%s => %d", c, name, meth.smoke->ambiguousMethodList[i]);
 //#endif
 
-                }
-            i++;
+                        }
+                        i++;
+                    }
+	        }
             }
-	    }
+        }
     }
     return result;
 }
