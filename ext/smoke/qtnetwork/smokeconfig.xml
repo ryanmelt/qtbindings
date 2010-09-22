@@ -35,17 +35,17 @@
         <name>.*operator.*</name>
     </functions>
     <classList>
-        <class>QAbstractNetworkCache</class>                                                                                   
-        <class>QAbstractSocket</class>                                                                                         
-        <class>QAuthenticator</class>                                                                                          
-        <class>QFtp</class>                                                                                                    
-        <class>QHostAddress</class>                                                                                            
-        <class>QHostInfo</class>                                                                                               
-        <class>QHttp</class>                                                                                                   
-        <class>QHttpHeader</class>                                                                                             
-        <class>QHttpRequestHeader</class>                                                                                      
-        <class>QHttpResponseHeader</class>                                                                                     
-        <class>QIPv6Address</class>                                                                                            
+        <class>QAbstractNetworkCache</class>
+        <class>QAbstractSocket</class>
+        <class>QAuthenticator</class>
+        <class>QFtp</class>
+        <class>QHostAddress</class>
+        <class>QHostInfo</class>
+        <class>QHttp</class>
+        <class>QHttpHeader</class>
+        <class>QHttpRequestHeader</class>
+        <class>QHttpResponseHeader</class>
+        <class>QIPv6Address</class>
         <class>QLocalServer</class>
         <class>QLocalSocket</class>
         <class>QNetworkAccessManager</class>
@@ -53,6 +53,8 @@
         <class>QNetworkCacheMetaData</class>
         <class>QNetworkCookie</class>
         <class>QNetworkCookieJar</class>
+        <class>QNetworkConfiguration</class>
+        <class>QNetworkConfigurationManager</class>
         <class>QNetworkDiskCache</class>
         <class>QNetworkInterface</class>
         <class>QNetworkProxy</class>
@@ -60,6 +62,7 @@
         <class>QNetworkProxyQuery</class>
         <class>QNetworkReply</class>
         <class>QNetworkRequest</class>
+        <class>QNetworkSession</class>
         <class>QSslCertificate</class>
         <class>QSslCipher</class>
         <class>QSslConfiguration</class>

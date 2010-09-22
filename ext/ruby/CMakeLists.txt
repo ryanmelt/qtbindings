@@ -21,6 +21,7 @@ SET(CUSTOM_RUBY_SITE_LIB_DIR ${RUBY_SITELIB_DIR} CACHE DIR "custom installation 
 MATH(EXPR RUBY_VERSION_NUMBER "${RUBY_VERSION_MAJOR}*10000 + ${RUBY_VERSION_MINOR}*100 + ${RUBY_VERSION_PATCH}")
 
 macro_optional_add_bindings(QT_QTCORE_FOUND "QtRuby" qtruby)
+macro_optional_add_bindings(QT_QTDECLARATIVE_FOUND "QtDeclarative" qtdeclarative)
 macro_optional_add_bindings(QT_QTWEBKIT_FOUND "QtWebKit" qtwebkit)
 macro_optional_add_bindings(QT_QTUITOOLS_FOUND "QtUiTools" qtuitools)
 macro_optional_add_bindings(QT_QTSCRIPT_FOUND "QtScript" qtscript)

@@ -1,5 +1,5 @@
 <config>
-    <moduleName>qtopengl</moduleName>
+    <moduleName>qtdeclarative</moduleName>
     <parentModules>
         <module>qtcore</module>
         <module>qtgui</module>
@@ -22,12 +22,11 @@
         <signature>.*\(.*Private.*\).*</signature>
         <!-- Thread related stuff belongs to the bindings language -->
         <signature>.*QtConcurrent.*</signature>
-        <signature>.*QDomNode.*</signature>
         <!-- this doesn't link, internal stuff.. -->
         <signature>.*qFindString.*</signature>
+        <signature>.*qmlRegisterTypeNotAvailable.*</signature>
         <!-- windows internal helper functions -->
         <signature>.*qFrom.*Endian_helper.*</signature>
-        <signature>.*qt_mac_set_cursor.*</signature>
    </exclude>
     <functions>
         <!-- include functions starting with 'q' -->
@@ -37,21 +36,23 @@
         <name>.*operator.*</name>
     </functions>
     <classList>
-        <class>QGLColormap</class>
-        <class>QGLContext</class>
-        <class>QGLBuffer</class>
-        <class>QGLFormat</class>
-        <class>QGLFramebufferObject</class>
-        <class>QGLFramebufferObjectFormat</class>
-        <class>QGLOverlayWidget</class>
-        <class>QGLPixelBuffer</class>
-        <class>QGLScreen</class>
-        <class>QGLScreenSurfaceFunctions</class>
-        <class>QGLShader</class>
-        <class>QGLShaderProgram</class>
-        <class>QGLWidget</class>
-
+        <class>QDeclarativeComponent</class>
+        <class>QDeclarativeContext</class>
+        <class>QDeclarativeEngine</class>
+        <class>QDeclarativeError</class>
+        <class>QDeclarativeExpression</class>
+        <class>QDeclarativeExtensionPlugin</class>
+        <class>QDeclarativeImageProvider</class>
+        <class>QDeclarativeItem</class>
+        <class>QDeclarativeListProperty</class>
+        <class>QDeclarativeListReference</class>
+        <class>QDeclarativeNetworkAccessManagerFactory</class>
+        <class>QDeclarativeParserStatus</class>
+        <class>QDeclarativeProperty</class>
+        <class>QDeclarativePropertyMap</class>
+        <class>QDeclarativeScriptString</class>
+        <class>QDeclarativeView</class>
+        
         <!-- namespaces -->
-        <class>QGL</class>
      </classList>
 </config>

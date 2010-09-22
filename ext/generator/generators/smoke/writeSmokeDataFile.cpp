@@ -115,7 +115,7 @@ QString SmokeDataFile::getTypeFlags(const Type *t, int *classIdx)
         flags += "|Smoke::t_voidp";
     } else if (t->getClass()) {
         if (t->getClass()->isTemplate()) {
-            if (Options::qtMode && t->getClass()->name() == "QFlags") {
+            if (Options::qtMode && t->getClass()->name() == "QFlags" && !t->isRef() && t->pointerDepth() == 0) {
                 flags += "|Smoke::t_uint";
             } else {
                 flags += "|Smoke::t_voidp";

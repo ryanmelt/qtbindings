@@ -95,6 +95,7 @@ QT_NO_XML)
 
 # macro is defined in qt-copy/src/qbase.pri but couldn't be found by qtguess, so I append it manually
 list(APPEND qtdefines "QT_NO_CAST_TO_ASCII")
+list(APPEND qtdefines "QT_GUI_LIB")
 
 # check for MSVC compiler
 if (MSVC)

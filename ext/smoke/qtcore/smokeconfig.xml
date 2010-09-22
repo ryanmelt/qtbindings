@@ -77,6 +77,7 @@
         <class>QDirIterator</class>
         <class>QDynamicPropertyChangeEvent</class>
         <class>QEasingCurve</class>
+        <class>QElapsedTimer</class>
         <class>QEvent</class>
         <class>QEventLoop</class>
         <class>QEventTransition</class>

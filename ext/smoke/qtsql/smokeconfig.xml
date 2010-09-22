@@ -2,6 +2,7 @@
     <moduleName>qtsql</moduleName>
     <parentModules>
         <module>qtcore</module>
+        <module>qtgui</module>
     </parentModules>
     <parts>1</parts>
     <scalarTypes>
@@ -47,6 +48,7 @@
         <class>QSqlQueryModel</class>
         <class>QSqlRecord</class>
         <class>QSqlRelation</class>
+        <class>QSqlRelationalDelegate</class>
         <class>QSqlRelationalTableModel</class>
         <class>QSqlResult</class>
         <class>QSqlTableModel</class>

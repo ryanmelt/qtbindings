@@ -7,3 +7,6 @@ qtbindings Changelog:
 2010/07/28 - Apply Paolo Capriotti's patch for deferred objects
 2010/07/28 - Apply Paolo Capriotti's patch for marking QGraphicsEffect
 2010/07/28 - Sync with kde-bindings trunk rev 1156329
+2010/09/21 - Update examples to work with Ruby 1.9.2
+2010/09/21 - Fix 4 examples
+2010/09/21 - Sync with kde-bindings trunk rev 1178034

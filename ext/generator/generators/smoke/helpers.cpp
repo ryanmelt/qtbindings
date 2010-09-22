@@ -131,10 +131,10 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
         // map this method to the function, so we can later retrieve the header it was defined in
         globalFunctionMap[&parent->methods().last()] = &fn;
         
-        int methIndex = parent->methods().length() - 1;
+        int methIndex = parent->methods().size() - 1;
         addOverloads(meth);
         // handle the methods appended by addOverloads()
-        for (int i = parent->methods().length() - 1; i > methIndex; --i)
+        for (int i = parent->methods().size() - 1; i > methIndex; --i)
             globalFunctionMap[&parent->methods()[i]] = &fn;
 
         (*usedTypes) << meth.type();
@@ -617,12 +617,13 @@ void Util::addAccessorMethods(const Field& field, QSet<Type*> *usedTypes)
     // reset
     type = field.type();
     // to avoid copying around more stuff than necessary, convert setFoo(Bar) to setFoo(const Bar&)
-    if (type->pointerDepth() == 0 && type->getClass()) {
+    if (type->pointerDepth() == 0 && type->getClass() && !(ParserOptions::qtMode && type->getClass()->name() == "QFlags")) {
         Type newType = *type;
         newType.setIsRef(true);
         newType.setIsConst(true);
         type = Type::registerType(newType);
     }
+
     (*usedTypes) << type;
     setter.appendParameter(Parameter(QString(), type));
     if (klass->methods().contains(setter))
