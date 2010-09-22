@@ -28,7 +28,7 @@ QT SDK 4.6.3
 Cmake 2.8.2
 Ruby 1.8.7p299 installed from rubyinstaller.org
 
-Ubuntu Linux
+Ubuntu Linux 10.4
 QT SDK 4.6.3
 Cmake 2.8.2
 
@@ -74,7 +74,8 @@ installed or the compile will fail.
 gem install qtbindings
 
 This should always work flawlessly on Windows because everything is nicely 
-packaged into a binary gem.  
+packaged into a binary gem. However, the gem is very large ~49MB, so please
+be patient while gem downloads the file. 
 
 To get help:
 Sign up to the kdebindings mailing list at:
