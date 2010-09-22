@@ -169,13 +169,13 @@ class PieView < Qt::AbstractItemView
             end
     
             case index.column
-            when 0:
+            when 0
                 itemHeight = Qt::FontMetrics.new(viewOptions().font).height()
     
                 return Qt::Rect.new(@totalSize,
                              (@margin + listItem*itemHeight).to_i,
                              @totalSize - @margin, itemHeight.to_i)
-            when 1:
+            when 1
                 return viewport().rect()
             end
     
