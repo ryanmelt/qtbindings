@@ -122,13 +122,12 @@ class Client < Qt::Dialog
     
     def displayError(socketError)
         case socketError
-        when Qt::AbstractSocket::RemoteHostClosedError:
-            ;
-        when Qt::AbstractSocket::HostNotFoundError:
+        when Qt::AbstractSocket::RemoteHostClosedError
+        when Qt::AbstractSocket::HostNotFoundError
             Qt::MessageBox.information(self, tr("Fortune Client"),
                                      tr("The host was not found. Please check the " +
                                         "host name and port settings."))
-        when Qt::AbstractSocket::ConnectionRefusedError:
+        when Qt::AbstractSocket::ConnectionRefusedError
             Qt::MessageBox.information(self, tr("Fortune Client"),
                                      tr("The connection was refused by the peer. " +
                                         "Make sure the fortune server is running, " +
