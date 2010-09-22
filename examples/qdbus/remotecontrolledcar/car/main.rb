@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'car.rb'
+require './car.rb'
 
 app = Qt::Application.new(ARGV)
 

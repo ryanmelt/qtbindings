@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'svgwindow.rb'
+require './svgwindow.rb'
     
 class MainWindow < Qt::MainWindow
         

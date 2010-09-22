@@ -24,8 +24,8 @@
 =end
 
 require 'Qt'
-require 'mainwindow.rb'
-require 'qrc_svgviewer.rb'
+require './mainwindow.rb'
+require './qrc_svgviewer.rb'
 
 app = Qt::Application.new(ARGV)
 window = MainWindow.new

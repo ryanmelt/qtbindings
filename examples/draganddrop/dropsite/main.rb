@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'dropsitewindow.rb'
+require './dropsitewindow.rb'
 
 app = Qt::Application.new(ARGV)
 window = DropSiteWindow.new

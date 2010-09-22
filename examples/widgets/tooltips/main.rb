@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'sortingbox.rb'
+require './sortingbox.rb'
 
 app = Qt::Application.new(ARGV)
 sortingBox = SortingBox.new

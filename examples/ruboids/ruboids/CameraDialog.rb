@@ -6,8 +6,8 @@
 #
 
 require 'Qt'
-require 'World'
-require 'Camera'
+require './World'
+require './Camera'
 
 class Adjustor
     attr_accessor :slider, :num, :origValue

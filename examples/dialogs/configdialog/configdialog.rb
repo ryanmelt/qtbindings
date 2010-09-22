@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'pages.rb'
+require './pages.rb'
 
 class ConfigDialog < Qt::Dialog
     

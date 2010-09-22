@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'imageviewer.rb'
+require './imageviewer.rb'
 
 app = Qt::Application.new(ARGV)
 imageViewer = ImageViewer.new

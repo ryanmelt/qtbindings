@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'previewwindow.rb'
+require './previewwindow.rb'
 
 class ControllerWindow < Qt::Widget
     

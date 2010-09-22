@@ -5,10 +5,10 @@
 # http://www.ruby-lang.org/en/LICENSE.txt.
 #
 
-require 'BoidView'
-require 'Flock'
-require 'Point'
-require 'Params'
+require './BoidView'
+require './Flock'
+require './Point'
+require './Params'
 
 class Boid < Thing
 

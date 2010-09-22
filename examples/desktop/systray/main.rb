@@ -24,8 +24,8 @@
 =end
 
 require 'Qt'
-require 'qrc_systray.rb'
-require 'window.rb'
+require './qrc_systray.rb'
+require './window.rb'
 
 app = Qt::Application.new(ARGV)
 

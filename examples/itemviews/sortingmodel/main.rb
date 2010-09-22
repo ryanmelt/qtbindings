@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'treemodel.rb'
+require './treemodel.rb'
 
 app = Qt::Application.new(ARGV)
 

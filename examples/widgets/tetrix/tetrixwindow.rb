@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'tetrixboard.rb'
+require './tetrixboard.rb'
     
 class TetrixWindow < Qt::Widget
     

@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'simplewizard.rb'
+require './simplewizard.rb'
     
 class ClassWizard < SimpleWizard
 

@@ -23,8 +23,8 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'pixeldelegate.rb'
-require 'imagemodel.rb'
+require './pixeldelegate.rb'
+require './imagemodel.rb'
 
 class MainWindow < Qt::MainWindow
     

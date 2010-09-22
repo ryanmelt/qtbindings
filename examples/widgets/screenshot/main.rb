@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'screenshot.rb'
+require './screenshot.rb'
 
 app = Qt::Application.new(ARGV)
 screenshot = Screenshot.new

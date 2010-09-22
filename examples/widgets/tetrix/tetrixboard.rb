@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'tetrixpiece.rb'
+require './tetrixpiece.rb'
 
 class TetrixBoard < Qt::Frame
     

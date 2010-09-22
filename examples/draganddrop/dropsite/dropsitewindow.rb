@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 		
-require 'dropsitewidget.rb'
+require './dropsitewidget.rb'
 	
 class DropSiteWindow < Qt::Widget
 	

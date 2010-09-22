@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'treeitem.rb'
+require './treeitem.rb'
 	
 #	Provides a simple tree model to show how to create and use hierarchical
 #	models.

@@ -23,8 +23,8 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'piecesmodel.rb'
-require 'puzzlewidget.rb'
+require './piecesmodel.rb'
+require './puzzlewidget.rb'
 
 class MainWindow < Qt::MainWindow
     

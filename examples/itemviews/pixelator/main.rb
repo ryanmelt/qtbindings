@@ -24,8 +24,8 @@
 =end
 
 require 'Qt'
-require 'qrc_images.rb'
-require 'mainwindow.rb'
+require './qrc_images.rb'
+require './mainwindow.rb'
 
 app = Qt::Application.new(ARGV)
 window = MainWindow.new

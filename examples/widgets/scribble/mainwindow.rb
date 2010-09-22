@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'scribblearea.rb'
+require './scribblearea.rb'
 
 class MainWindow < Qt::MainWindow
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'Qt'
-require 'digitalclock.rb'
+require './digitalclock.rb'
 
 app = Qt::Application.new(ARGV)
 clock = DigitalClock.new

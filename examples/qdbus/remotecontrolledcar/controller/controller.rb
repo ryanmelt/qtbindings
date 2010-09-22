@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'ui_controller.rb'
+require './ui_controller.rb'
 
 class Controller < Qt::Widget
 	

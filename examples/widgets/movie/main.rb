@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'movieplayer.rb'
+require './movieplayer.rb'
 
 app = Qt::Application.new(ARGV)
 player = MoviePlayer.new

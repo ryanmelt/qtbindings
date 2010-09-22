@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'xbeltree.rb'
+require './xbeltree.rb'
 	
 class MainWindow < Qt::MainWindow
 		

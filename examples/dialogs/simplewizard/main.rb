@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'classwizard.rb'
+require './classwizard.rb'
 
 app = Qt::Application.new(ARGV)
 wizard = ClassWizard.new

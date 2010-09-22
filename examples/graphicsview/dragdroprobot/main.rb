@@ -24,9 +24,9 @@
 =end
     
 require 'Qt'
-require 'qrc_robot.rb'
-require 'coloritem.rb'
-require 'robot.rb'
+require './qrc_robot.rb'
+require './coloritem.rb'
+require './robot.rb'
 
 app = Qt::Application.new(ARGV)
 

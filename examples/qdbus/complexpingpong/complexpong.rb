@@ -26,7 +26,7 @@
 =end
 
 require 'Qt'
-require 'ping-common.rb'
+require './ping-common.rb'
 
 class Pong < Qt::DBusAbstractAdaptor
     q_classinfo("D-Bus Interface", "com.trolltech.QtDBus.ComplexPong.Pong")

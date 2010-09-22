@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'window.rb'
+require './window.rb'
 
 app = Qt::Application.new(ARGV)
 window = Window.new

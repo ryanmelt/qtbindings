@@ -24,8 +24,8 @@
 =end
     
 require 'Qt'
-require 'chat_interface.rb'
-require 'chat_adaptor.rb'
+require './chat_interface.rb'
+require './chat_adaptor.rb'
 
 class Ui_ChatMainWindow < Qt::MainWindow
     signals 'message(const QString&, const QString&)',

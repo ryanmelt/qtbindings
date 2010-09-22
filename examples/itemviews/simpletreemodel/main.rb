@@ -24,8 +24,8 @@
 =end
 
 require 'Qt'
-require 'qrc_simpletreemodel.rb'
-require 'treemodel.rb'
+require './qrc_simpletreemodel.rb'
+require './treemodel.rb'
 
 app = Qt::Application.new(ARGV)
 file = Qt::File.new(":/default.txt")

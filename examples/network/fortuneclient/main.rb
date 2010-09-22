@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'client.rb'
+require './client.rb'
 
 app = Qt::Application.new(ARGV)
 client = Client.new

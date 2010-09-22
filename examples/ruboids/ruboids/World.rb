@@ -7,12 +7,12 @@
 
 require 'singleton'
 require 'Qt'
-require 'Params'
-require 'Cloud'
-require 'Flock'
-require 'Boid'
-require 'Camera'
-require 'Canvas'
+require './Params'
+require './Cloud'
+require './Flock'
+require './Boid'
+require './Camera'
+require './Canvas'
 
 class World < Qt::Object
 	slots 'slotMove()'

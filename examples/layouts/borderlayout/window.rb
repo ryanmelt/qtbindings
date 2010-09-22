@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'borderlayout.rb'
+require './borderlayout.rb'
 	
 class Window < Qt::Widget
 	

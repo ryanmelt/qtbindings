@@ -6,11 +6,11 @@
 #
 
 require 'Qt'
-require 'View'
-require 'Cloud'
-require 'Params'
-require 'World'
-require 'Graphics'
+require './View'
+require './Cloud'
+require './Params'
+require './World'
+require './Graphics'
 
 class CloudView < View
 

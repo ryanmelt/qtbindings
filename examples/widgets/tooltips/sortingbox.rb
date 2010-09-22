@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'shapeitem.rb'
+require './shapeitem.rb'
 
 class SortingBox < Qt::Widget
 	

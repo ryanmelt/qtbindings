@@ -25,8 +25,8 @@
 	
 require 'Qt'
 require 'qtuitools'
-require 'qrc_calculatorbuilder.rb'
-require 'calculatorform.rb'
+require './qrc_calculatorbuilder.rb'
+require './calculatorform.rb'
 
 app = Qt::Application.new(ARGV)
 calculator = CalculatorForm.new

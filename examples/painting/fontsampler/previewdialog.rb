@@ -23,8 +23,8 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'ui_previewdialogbase.rb'
-require 'previewlabel.rb'
+require './ui_previewdialogbase.rb'
+require './previewlabel.rb'
 
 class PreviewDialog < Qt::Dialog
     

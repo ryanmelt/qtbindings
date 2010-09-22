@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'xbelhandler.rb'
+require './xbelhandler.rb'
 	
 class MainWindow < Qt::MainWindow
 		

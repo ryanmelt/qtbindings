@@ -24,8 +24,8 @@
 =end
 
 require 'Qt'
-require 'imagecomposer.rb'
-require 'qrc_imagecomposition.rb'
+require './imagecomposer.rb'
+require './qrc_imagecomposition.rb'
 
 app = Qt::Application.new(ARGV)
 composer = ImageComposer.new

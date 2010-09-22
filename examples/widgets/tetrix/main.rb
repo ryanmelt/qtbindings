@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'tetrixwindow.rb'
+require './tetrixwindow.rb'
 
 app = Qt::Application.new(ARGV)
 window = TetrixWindow.new

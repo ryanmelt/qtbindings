@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'receiver.rb'
+require './receiver.rb'
 
 app = Qt::Application.new(ARGV)
 receiver = Receiver.new

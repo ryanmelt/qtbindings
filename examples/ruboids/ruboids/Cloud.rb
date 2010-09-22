@@ -5,9 +5,9 @@
 # http://www.ruby-lang.org/en/LICENSE.txt.
 #
 
-require 'Thing'
-require 'CloudView'
-require 'Params'
+require './Thing'
+require './CloudView'
+require './Params'
 
 class Bubble
 

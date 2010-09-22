@@ -6,8 +6,8 @@
 #
 
 require 'Qt'
-require 'Canvas'
-require 'CameraDialog'
+require './Canvas'
+require './CameraDialog'
 
 class WorldWindow < Qt::MainWindow
 

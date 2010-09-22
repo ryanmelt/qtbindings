@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'licensewizard.rb'
+require './licensewizard.rb'
 
 app = Qt::Application.new(ARGV)
 wizard = LicenseWizard.new

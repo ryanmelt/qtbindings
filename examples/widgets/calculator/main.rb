@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'calculator.rb'
+require './calculator.rb'
 
 app = Qt::Application.new(ARGV)
 calc = Calculator.new

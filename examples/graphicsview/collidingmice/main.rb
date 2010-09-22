@@ -24,8 +24,8 @@
 =end
     
 require 'Qt'
-require 'qrc_mice.rb'
-require 'mouse.rb'
+require './qrc_mice.rb'
+require './mouse.rb'
 
 MouseCount = 7
 app = Qt::Application.new(ARGV)

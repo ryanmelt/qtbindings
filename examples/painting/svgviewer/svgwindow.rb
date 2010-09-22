@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'svgview.rb'
+require './svgview.rb'
 
 class SvgWindow < Qt::ScrollArea
 

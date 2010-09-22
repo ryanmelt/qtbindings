@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
         
-require 'domitem.rb'
+require './domitem.rb'
     
 class DomModel < Qt::AbstractItemModel
 

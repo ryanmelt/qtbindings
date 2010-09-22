@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'characterwidget.rb'
+require './characterwidget.rb'
 
 class MainWindow < Qt::MainWindow
 

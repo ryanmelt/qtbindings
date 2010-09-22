@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'renderarea.rb'
+require './renderarea.rb'
 
 class Window < Qt::Widget
 	

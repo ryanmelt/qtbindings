@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'glwidget.rb'
+require './glwidget.rb'
 
 class MainWindow < Qt::MainWindow
         

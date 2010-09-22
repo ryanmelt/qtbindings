@@ -2,8 +2,8 @@
 $VERBOSE = true; $:.unshift File.dirname($0)
 
 require 'Qt'
-require 'lcdrange.rb'
-require 'cannon.rb'
+require './lcdrange.rb'
+require './cannon.rb'
 
 class MyWidget < Qt::Widget
     def initialize(parent = nil)

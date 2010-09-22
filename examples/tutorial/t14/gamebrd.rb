@@ -1,5 +1,5 @@
-require 'lcdrange.rb'
-require 'cannon.rb'
+require './lcdrange.rb'
+require './cannon.rb'
 
 class GameBoard < Qt::Widget
 

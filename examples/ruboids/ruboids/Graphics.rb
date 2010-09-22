@@ -5,7 +5,7 @@
 # http://www.ruby-lang.org/en/LICENSE.txt.
 #
 
-require 'Triangle'
+require './Triangle'
 
 class Graphics
 

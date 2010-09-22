@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'pieview.rb'
+require './pieview.rb'
 
 class MainWindow < Qt::MainWindow
 	

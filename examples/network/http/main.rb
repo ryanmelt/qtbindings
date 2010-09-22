@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'httpwindow.rb'
+require './httpwindow.rb'
 
 app = Qt::Application.new(ARGV)
 httpWin = HttpWindow.new

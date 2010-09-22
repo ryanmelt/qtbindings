@@ -2,7 +2,7 @@
 $VERBOSE = true; $:.unshift File.dirname($0)
 
 require 'Qt'
-require 'gamebrd.rb'
+require './gamebrd.rb'
 
 app = Qt::Application.new(ARGV)
 board = GameBoard.new

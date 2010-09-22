@@ -5,7 +5,7 @@
 # http://www.ruby-lang.org/en/LICENSE.txt.
 #
 
-require 'View'
+require './View'
 
 class BoidView < View
 

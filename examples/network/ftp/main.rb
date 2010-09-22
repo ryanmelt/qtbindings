@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'ftpwindow.rb'
+require './ftpwindow.rb'
 
 app = Qt::Application.new(ARGV)
 ftpWin = FtpWindow.new

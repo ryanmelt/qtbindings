@@ -5,9 +5,9 @@
 # http://www.ruby-lang.org/en/LICENSE.txt.
 #
 
-require 'Flock'
-require 'Boid'
-require 'Params'
+require './Flock'
+require './Boid'
+require './Params'
 
 class Flock
     attr_reader :members

@@ -23,9 +23,9 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'iconpreviewarea.rb'
-require 'iconsizespinbox.rb'
-require 'imagedelegate.rb'
+require './iconpreviewarea.rb'
+require './iconsizespinbox.rb'
+require './imagedelegate.rb'
 
 class MainWindow < Qt::MainWindow
 

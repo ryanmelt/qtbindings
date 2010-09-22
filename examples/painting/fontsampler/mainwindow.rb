@@ -23,8 +23,8 @@
 ** Translated to QtRuby by Richard Dale
 =end
     
-require 'ui_mainwindowbase.rb'
-require 'previewdialog.rb'
+require './ui_mainwindowbase.rb'
+require './previewdialog.rb'
 
 class MainWindow < Qt::MainWindow
     

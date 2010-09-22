@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'controllerwindow.rb'
+require './controllerwindow.rb'
 
 app = Qt::Application.new(ARGV)
 controller = ControllerWindow.new

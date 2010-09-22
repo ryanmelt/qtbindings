@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'button.rb'
+require './button.rb'
 
 class Calculator < Qt::Dialog
 

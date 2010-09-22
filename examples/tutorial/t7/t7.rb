@@ -2,7 +2,7 @@
 $VERBOSE = true; $:.unshift File.dirname($0)
 
 require 'Qt'
-require 'lcdrange.rb'
+require './lcdrange.rb'
 
 class MyWidget < Qt::Widget
 

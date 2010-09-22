@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'dommodel.rb'
+require './dommodel.rb'
 
 class MainWindow < Qt::MainWindow
     slots 'openFile()'

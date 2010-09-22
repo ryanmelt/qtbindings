@@ -24,7 +24,7 @@
 =end
     
 require 'Qt'
-require 'ping-common.rb'
+require './ping-common.rb'
    
 class Ping < Qt::Object
     slots 'start(const QString&, const QString&, const QString&)'

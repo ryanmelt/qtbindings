@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'tabdialog.rb'
+require './tabdialog.rb'
 
 app = Qt::Application.new(ARGV)
 

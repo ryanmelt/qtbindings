@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'configdialog.rb'
+require './configdialog.rb'
 
 app = Qt::Application.new(ARGV)
 dialog = ConfigDialog.new

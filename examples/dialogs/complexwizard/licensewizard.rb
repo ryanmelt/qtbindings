@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'complexwizard.rb'
+require './complexwizard.rb'
         
 class LicenseWizard < ComplexWizard
     attr_accessor :titlePage

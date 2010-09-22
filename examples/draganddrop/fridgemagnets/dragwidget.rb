@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'draglabel.rb'
+require './draglabel.rb'
 
 class DragWidget < Qt::Widget
 	

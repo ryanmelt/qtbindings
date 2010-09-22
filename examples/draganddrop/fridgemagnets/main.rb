@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'dragwidget.rb'
+require './dragwidget.rb'
 
 app = Qt::Application.new(ARGV)
 

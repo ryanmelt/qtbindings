@@ -24,7 +24,7 @@
 =end
 	
 	
-require 'circlewidget.rb'	
+require './circlewidget.rb'	
 	
 class Window < Qt::Widget
 	

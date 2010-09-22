@@ -24,7 +24,7 @@
 =end
 	
 	
-require 'renderarea.rb'
+require './renderarea.rb'
 
 class Window < Qt::Widget
 		

@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'treeitem.rb'
+require './treeitem.rb'
 
 class TreeModel < Qt::AbstractItemModel
 	

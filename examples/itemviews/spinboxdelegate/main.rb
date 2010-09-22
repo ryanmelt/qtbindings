@@ -24,7 +24,7 @@
 =end
 	
 require 'Qt'
-require 'spinboxdelegate.rb'
+require './spinboxdelegate.rb'
 
 app = Qt::Application.new(ARGV)
 	

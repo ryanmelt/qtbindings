@@ -7,11 +7,11 @@
 
 require 'Qt'
 require 'opengl'
-require 'World'
-require 'Cloud'
-require 'Flock'
-require 'Params'
-require 'Camera'
+require './World'
+require './Cloud'
+require './Flock'
+require './Params'
+require './Camera'
 
 include GL
 

@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'wigglywidget.rb'
+require './wigglywidget.rb'
 
 class Dialog < Qt::Dialog
     def initialize(parent = nil)

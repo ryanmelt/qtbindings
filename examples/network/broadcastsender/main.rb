@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'sender.rb'
+require './sender.rb'
 
 app = Qt::Application.new(ARGV)
 sender = Sender.new

@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'ui_calculatorform.rb'	
+require './ui_calculatorform.rb'	
 	
 class CalculatorForm < Qt::Widget
 	

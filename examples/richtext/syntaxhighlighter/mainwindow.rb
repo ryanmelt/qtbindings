@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'highlighter.rb'
+require './highlighter.rb'
 	
 class MainWindow < Qt::MainWindow
 	

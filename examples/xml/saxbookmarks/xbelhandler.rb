@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 		
-require 'xbelgenerator.rb'
+require './xbelgenerator.rb'
 
 class XbelHandler < Qt::XmlDefaultHandler
 	

@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 
-require 'slidersgroup.rb'
+require './slidersgroup.rb'
 
 class Window < Qt::Widget
     

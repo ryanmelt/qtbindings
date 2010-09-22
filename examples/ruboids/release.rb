@@ -18,14 +18,14 @@
 
 require 'net/ftp'
 require 'ftools'		# For makedirs and install
-require 'generateManifest'	# For--you guessed it--generating the Manifest
+require './generateManifest'	# For--you guessed it--generating the Manifest
 
 # Start looking for RUBOIDS classes in this directory.
 # This forces us to use the local copy of RUBOIDS, even if there is
 # a previously installed version out there somewhere.
 $LOAD_PATH[0, 0] = '.'
 
-require 'ruboids/info'		# For Version string
+require './ruboids/info'		# For Version string
 
 FILE_PERMISSION = 0644
 DIR_PERMISSION = 0755

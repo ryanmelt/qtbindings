@@ -7,10 +7,10 @@
 #
 
 require 'Qt'
-require 'World'
-require 'WorldWindow'
-require 'Canvas'
-require 'Params'
+require './World'
+require './WorldWindow'
+require './Canvas'
+require './Params'
 
 app = Qt::Application.new(ARGV)
 if (!Qt::GLFormat::hasOpenGL())

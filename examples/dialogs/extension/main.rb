@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'finddialog.rb'
+require './finddialog.rb'
 
 app = Qt::Application.new(ARGV)
 dialog = FindDialog.new

@@ -24,7 +24,7 @@
 =end
 
 require 'Qt'
-require 'mainwindow.rb'
+require './mainwindow.rb'
 
 $KCODE = 'u'
 

@@ -23,7 +23,7 @@
 ** Translated to QtRuby by Richard Dale
 =end
 	
-require 'detailsdialog.rb'
+require './detailsdialog.rb'
 
 class MainWindow < Qt::MainWindow
 	
