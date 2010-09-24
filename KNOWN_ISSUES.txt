@@ -8,6 +8,5 @@
 8. fontsample example fails - undefined method checkState for nil
 9. svgviewer example fails - undefined method rx= for Qt::Point
 10. passivepopup example fails - seg fault
-11. qtscribble example fails - method_missing undefined method drawPixmap
-12. textedit example fails - undefined method setTextFormat
-13. digitalclock example fails - unresolved constructor call DigitalClock
+11. textedit example fails - undefined method setTextFormat
+12. digitalclock example fails - unresolved constructor call DigitalClock
