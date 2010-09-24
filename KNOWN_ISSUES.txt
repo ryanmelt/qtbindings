@@ -11,6 +11,3 @@
 11. qtscribble example fails - method_missing undefined method drawPixmap
 12. textedit example fails - undefined method setTextFormat
 13. digitalclock example fails - unresolved constructor call DigitalClock
-14. icons example fails - images not shown
-15. movie example fails - movie not shown 
-16. sliders example error - No such slot SlidersGroup::setValue

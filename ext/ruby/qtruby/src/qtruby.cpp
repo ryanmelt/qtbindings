@@ -2252,9 +2252,10 @@ create_qt_class(VALUE /*self*/, VALUE package_value, VALUE module_value)
 	VALUE klass = module_value;
 	QString packageName(package);
 
+/*
     rb_define_singleton_method(module_value, "method_missing", (VALUE (*) (...)) module_method_missing, -1);
     rb_define_singleton_method(module_value, "const_missing", (VALUE (*) (...)) module_method_missing, -1);
-
+*/
 	foreach(QString s, packageName.mid(strlen(moduleName) + 2).split("::")) {
 		klass = rb_define_class_under(klass, (const char*) s.toLatin1(), qt_base_class);
 	}

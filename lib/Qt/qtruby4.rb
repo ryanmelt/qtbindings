@@ -1408,7 +1408,7 @@ module Qt
 
 	class MetaObject < Qt::Base
 		def method(*args)
-            if args.length == 1 && args[0].kind_of?(Symbol)
+			if args.length == 1 && args[0].kind_of?(Symbol)
 				super(*args)
 			else
 				method_missing(:method, *args)

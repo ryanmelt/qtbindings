@@ -71,7 +71,7 @@ class SlidersGroup < Qt::GroupBox
         @slider.value = value
     end
     
-    def minimum=(value)
+    def setMinimum(value)
         @slider.minimum = value
         @scrollBar.minimum = value
         @dial.minimum = value

@@ -9,9 +9,9 @@ class MyTextEditor < Qt::TextEdit
    signals 'saved()'
    slots 'insert_icon()', 'new()', 'open()', 'save_as()'
    def initialize(w = nil)
+      super(w)
       @images = {}
       @@next_image_id = 0
-      super(w)
       self.setTextFormat(Qt::RichText)
    end
    def insert_richtext(richtext)

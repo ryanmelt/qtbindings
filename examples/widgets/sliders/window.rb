@@ -39,11 +39,11 @@ class Window < Qt::Widget
         createControls(tr("Controls"))
     
         connect(@horizontalSliders, SIGNAL('valueChanged(int)'),
-                @verticalSliders, SLOT('setValue(int)'))
+                @verticalSliders, SLOT('value=(int)'))
         connect(@verticalSliders, SIGNAL('valueChanged(int)'),
                 @valueSpinBox, SLOT('setValue(int)'))
         connect(@valueSpinBox, SIGNAL('valueChanged(int)'),
-                @horizontalSliders, SLOT('setValue(int)'))
+                @horizontalSliders, SLOT('value=(int)'))
     
         layout = Qt::HBoxLayout.new do |l|
             l.addWidget(@controlsGroup)
