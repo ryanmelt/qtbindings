@@ -112,13 +112,13 @@ class RenderArea < Qt::Widget
 	def transformPainter(painter)
 		(0...@operations.length).each do |i|
 	        case @operations[i]
-	        when :Translate
+	        when Translate
 	            painter.translate(50, 50)
-	        when :Scale
+	        when Scale
 	            painter.scale(0.75, 0.75)
-	        when :Rotate
+	        when Rotate
 	            painter.rotate(60)
-	        when :NoTransformation
+	        when NoTransformation
 	        else
 	            
 	        end
