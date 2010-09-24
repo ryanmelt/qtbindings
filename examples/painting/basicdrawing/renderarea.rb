@@ -129,31 +129,31 @@ class RenderArea < Qt::Widget
 	            end
 	
 	            case @shape
-	            when Line:
+	            when :Line
 	                painter.drawLine(rect.bottomLeft(), rect.topRight())
-	            when Points:
+	            when :Points
 	                painter.drawPoints(points)
-	            when Polyline:
+	            when :Polyline
 	                painter.drawPolyline(points)
-	            when Polygon:
+	            when :Polygon
 	                painter.drawPolygon(points)
-	            when Rect:
+	            when :Rect
 	                painter.drawRect(rect)
-	            when RoundRect:
+	            when :RoundRect
 	                painter.drawRoundRect(rect)
-	            when Ellipse:
+	            when :Ellipse
 	                painter.drawEllipse(rect)
-	            when Arc:
+	            when :Arc
 	                painter.drawArc(rect, startAngle, arcLength)
-	            when Chord:
+	            when :Chord
 	                painter.drawChord(rect, startAngle, arcLength)
-	            when Pie:
+	            when :Pie
 	                painter.drawPie(rect, startAngle, arcLength)
-	            when Path:
+	            when :Path
 	                painter.drawPath(path)
-	            when Text:
+	            when :Text
 	                painter.drawText(rect, Qt::AlignCenter, tr("Qt by\nTrolltech"))
-	            when Pixmap:
+	            when :Pixmap
 	                painter.drawPixmap(10, 10, @pixmap)
 	            end
 	            painter.restore()

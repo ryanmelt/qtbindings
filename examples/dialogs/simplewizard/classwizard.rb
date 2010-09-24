@@ -36,13 +36,13 @@ class ClassWizard < SimpleWizard
     
     def createPage(index)
         case index
-        when 0:
+        when 0
             @firstPage = FirstPage.new(self)
             return @firstPage
-        when 1:
+        when 1
             @secondPage = SecondPage.new(self)
             return @secondPage
-        when 2:
+        when 2
             @thirdPage = ThirdPage.new(self)
             return @thirdPage
         end

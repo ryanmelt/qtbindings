@@ -153,17 +153,17 @@ class TetrixBoard < Qt::Frame
         end
     
         case event.key
-        when Qt::Key_Left:
+        when Qt::Key_Left
             tryMove(@curPiece, @curX - 1, @curY)
-        when Qt::Key_Right:
+        when Qt::Key_Right
             tryMove(@curPiece, @curX + 1, @curY)
-        when Qt::Key_Down:
+        when Qt::Key_Down
             tryMove(@curPiece.rotatedRight, @curX, @curY)
-        when Qt::Key_Up:
+        when Qt::Key_Up
             tryMove(@curPiece.rotatedLeft, @curX, @curY)
-        when Qt::Key_Space:
+        when Qt::Key_Space
             dropDown()
-        when Qt::Key_D:
+        when Qt::Key_D
             oneLineDown()
         else
             super(event)

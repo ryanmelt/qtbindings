@@ -139,7 +139,7 @@ class Window < Qt::Widget
     
     def slotEchoChanged(index)
         case index
-        when 0:
+        when 0
             @echoLineEdit.echoMode = Qt::LineEdit::Normal
         when 1
             @echoLineEdit.echoMode = Qt::LineEdit::Password
@@ -150,7 +150,7 @@ class Window < Qt::Widget
     
     def slotValidatorChanged(index)
         case index
-        when 0:
+        when 0
             @validatorLineEdit.validator = nil
         when 1
             @validatorLineEdit.validator = Qt::IntValidator.new(@validatorLineEdit)

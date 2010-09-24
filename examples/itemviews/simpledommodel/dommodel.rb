@@ -52,16 +52,16 @@ class DomModel < Qt::AbstractItemModel
         attributeMap = node.attributes
     
         case index.column
-        when 0:
+        when 0
             return Qt::Variant.new(node.nodeName)
-        when 1:
+        when 1
             for i in 0...attributeMap.length
                 attribute = attributeMap.item(i)
                 attributes << attribute.nodeName() + '="' + 
                                 attribute.nodeValue() + '"'
             end
             return Qt::Variant.new(attributes.join(" "))
-        when 2:
+        when 2
             if node.nodeValue.nil?
                 return Qt::Variant.new
             else
@@ -83,11 +83,11 @@ class DomModel < Qt::AbstractItemModel
     def headerData(section, orientation, role = Qt::DisplayRole)
         if orientation == Qt::Horizontal && role == Qt::DisplayRole
             case section
-            when 0:
+            when 0
                 return Qt::Variant.new(tr("Name"))
-            when 1:
+            when 1
                 return Qt::Variant.new(tr("Attributes"))
-            when 2:
+            when 2
                 return Qt::Variant.new(tr("Value"))
             else
                 return Qt::Variant.new
