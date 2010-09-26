@@ -1,12 +1,11 @@
-1. chart example fails - undefined method state=
-2. spinboxdelegate example fails - undefined method setData
-3. broadcastsender example fails - undefined method writeDatagram
-4. fortuneserver example fails - undefined method seek
-5. ftp example fails - undefined method icon=
-6. http example fails - undefined method empty? for nil
-7. textures example fails - Cannot handle Gluint
-8. fontsample example fails - undefined method checkState for nil
-9. svgviewer example fails - undefined method rx= for Qt::Point
-10. passivepopup example fails - seg fault
-11. textedit example fails - undefined method setTextFormat
-12. digitalclock example fails - unresolved constructor call DigitalClock
+1. chart example fails - can't handle QFlags as return type
+2. broadcastsender example fails - undefined method writeDatagram
+3. fortuneserver example fails - undefined method seek
+4. ftp example fails - undefined method icon=
+5. http example fails - undefined method empty? for nil
+6. textures example fails - Cannot handle Gluint
+7. fontsample example fails - undefined method checkState for nil
+8. svgviewer example fails - undefined method rx= for Qt::Point
+9. passivepopup example fails - seg fault
+10. textedit example fails - undefined method setTextFormat
+11. digitalclock example fails - unresolved constructor call DigitalClock

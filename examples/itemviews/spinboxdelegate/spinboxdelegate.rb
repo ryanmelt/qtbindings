@@ -52,8 +52,8 @@ class SpinBoxDelegate < Qt::ItemDelegate
 	    @spinBox = editor
 	    @spinBox.interpretText
 	    value = @spinBox.value
-	
-	    model.setData(index, value)
+
+	    model.setData(index, Qt::Variant.new(value))
 	end
 	
 	def updateEditorGeometry(editor, option, index)
