@@ -186,7 +186,7 @@ class CannonField < Qt::Widget
         painter.drawRect( shotRect() )
     end
     
-	def paintTarget( painter )
+    def paintTarget( painter )
         painter.brush = Qt::Brush.new(Qt::red)
         painter.pen = Qt::Color.new(Qt::black)
         painter.drawRect( targetRect() )
