@@ -2533,14 +2533,13 @@ module Qt
     end
 
     def Internal.checkarg(argtype, typename)
-      puts "      #{typename} (#{argtype})" if debug_level >= DebugLevel::High
       const_point = typename =~ /^const\s+/ ? -1 : 0
       if argtype == 'i'
         if typename =~ /^int&?$|^signed int&?$|^signed$|^qint32&?$/
           return 6 + const_point
         elsif typename =~ /^quint32&?$/
           return 4 + const_point         
-        elsif typename =~ /^(?:short|ushort|unsigned short int|unsigned short|uchar||unsigned char|uint|long|ulong|unsigned long int|unsigned|float|double|WId|HBITMAP__\*|HDC__\*|HFONT__\*|HICON__\*|HINSTANCE__\*|HPALETTE__\*|HRGN__\*|HWND__\*|Q_PID|^quint16&?$|^qint16&?$)$/
+        elsif typename =~ /^(?:short|ushort|unsigned short int|unsigned short|uchar|char|unsigned char|uint|long|ulong|unsigned long int|unsigned|float|double|WId|HBITMAP__\*|HDC__\*|HFONT__\*|HICON__\*|HINSTANCE__\*|HPALETTE__\*|HRGN__\*|HWND__\*|Q_PID|^quint16&?$|^qint16&?$)$/
           return 4 + const_point
         elsif typename =~ /^(quint|qint|qulong|qlong|qreal)/
           return 4 + const_point
@@ -2741,11 +2740,9 @@ module Qt
 
       # Debugging output for method lookup
       if debug_level >= DebugLevel::High
-        puts "classname    == #{classname}"
-        puts ":: method == #{method}"
+        puts "Searching for #{classname}##{method}"
         puts "Munged method names:"
-        methods.each {|meth| puts "  #{meth}"}
-        puts "-> methodIds == #{methodIds.inspect}"
+        methods.each {|meth| puts "        #{meth}"}
         puts "candidate list:"
         prototypes = dumpCandidates(methodIds).split("\n")
         line_len = (prototypes.collect { |p| p.length }).max
@@ -2764,24 +2761,24 @@ module Qt
           current_match = (isConstMethod(id) ? 1 : 0)
           (0...args.length).each do
             |i|
-            current_match += checkarg(get_value_type(args[i]), get_arg_type_name(id, i))
+            typename = get_arg_type_name(id, i)
+            argtype = get_value_type(args[i])
+            score = checkarg(argtype, typename)
+            current_match += score
+            puts "        #{typename} (#{argtype}) score: #{score}" if debug_level >= DebugLevel::High
           end
           
           # Note that if current_match > best_match, then chosen must be nil
           if current_match > best_match
             best_match = current_match
             chosen = id
-          # Multiple matches are an error; the equality test below _cannot_ be commented out.
-          # If ambiguous matches occur the problem must be fixed be adjusting the relative
-          # ranking of the arg types involved in checkarg().
+          # Ties are bad - but it is better to chose something than to fail
           elsif current_match == best_match && id.smoke == chosen.smoke
-            puts "multiple methods matching, this is an error" if debug_level >= DebugLevel::Minimal
-            chosen = nil
+            puts " ****** warning: multiple methods with the same score of #{current_match}: #{chosen.index} and #{id.index}" if debug_level >= DebugLevel::Minimal
+            chosen = id
           end
-          puts "match => #{id.index} score: #{current_match} chosen: #{chosen}" if debug_level >= DebugLevel::High
+          puts "        match => smoke: #{id.smoke} index: #{id.index} score: #{current_match} chosen: #{chosen ? chosen.index : nil}" if debug_level >= DebugLevel::High
         end
-          
-        puts "Resolved to id: #{chosen.index}" if !chosen.nil? && debug_level >= DebugLevel::High
       end
 
       # Additional debugging output
