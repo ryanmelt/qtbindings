@@ -1008,7 +1008,7 @@ qstringFromRString(VALUE rstring) {
 	encoding = rb_funcall(encoding, rb_intern("to_s"), 0);
 	const char * enc_s = RSTRING_PTR(encoding);
 
-	if (qstrcmp(enc_s, "UTF8") == 0) {
+	if (qstrcmp(enc_s, "UTF-8") == 0) {
 		return new QString(QString::fromUtf8(StringValuePtr(rstring), RSTRING_LEN(rstring)));
 	} else if (qstrcmp(enc_s, "EUC-JP") == 0) {
 		codec = QTextCodec::codecForName("eucJP");

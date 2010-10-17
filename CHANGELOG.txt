@@ -1,5 +1,6 @@
 qtbindings Changelog:
 -----------------
+v4.6.3.0
 2010/07/27 - Apply Ryan Melton's patches to build on Windows
 2010/07/27 - Apply Ryan Melton's patch to fix ExtraSelection
 2010/07/28 - Sync with kde-bindings trunk rev 1156258
@@ -7,6 +8,12 @@ qtbindings Changelog:
 2010/07/28 - Apply Paolo Capriotti's patch for deferred objects
 2010/07/28 - Apply Paolo Capriotti's patch for marking QGraphicsEffect
 2010/07/28 - Sync with kde-bindings trunk rev 1156329
+
+v4.6.3.1
 2010/09/21 - Update examples to work with Ruby 1.9.2
 2010/09/21 - Fix 4 examples
 2010/09/21 - Sync with kde-bindings trunk rev 1178034
+
+v4.6.3.2
+2010/10/14 - Handle ambiguous results with method lookup
+2010/10/15 - Fix bug with UTF-8 support
