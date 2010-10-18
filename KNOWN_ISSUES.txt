@@ -7,5 +7,3 @@
 7. fontsample example fails - undefined method checkState for nil
 8. svgviewer example fails - undefined method rx= for Qt::Point
 9. passivepopup example fails - seg fault
-10. textedit example fails - undefined method setTextFormat
-11. digitalclock example fails - unresolved constructor call DigitalClock
