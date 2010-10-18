@@ -182,7 +182,7 @@ void TypeCompiler::visitParameterDeclaration(ParameterDeclarationAST* node)
     TypeCompiler tc(m_session, m_visitor);
     tc.run(node->type_specifier, node->declarator);
     NameCompiler name_cc(m_session, m_visitor);
-    if (tc.type().isFunctionPointer())
+    if (tc.type().isFunctionPointer() && node->declarator && node->declarator->sub_declarator)
         name_cc.run(node->declarator->sub_declarator->id);
     else if (node->declarator)
         name_cc.run(node->declarator->id);

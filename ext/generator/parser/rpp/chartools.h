@@ -72,11 +72,18 @@ inline bool isNumber(unsigned int c) {
   return isCharacter(c) && QChar(characterFromIndex(c)).isNumber();
 }
 
+inline bool isNewline(unsigned int c) {
+  return isCharacter(c) && characterFromIndex(c) == '\n';
+}
+
 ///Opposite of convertFromByteArray
 CPPPARSER_EXPORT QByteArray stringFromContents(const PreprocessedContents& contents, int offset = 0, int count = 0);
 
 ///Opposite of convertFromByteArray
 CPPPARSER_EXPORT QByteArray stringFromContents(const uint* contents, int count);
+
+///Return the line at the given line number from the contents
+CPPPARSER_EXPORT QByteArray lineFromContents(const uint* contents, int lineNumber);
 
 ///Returns a string that has a gap inserted between the tokens(for debugging)
 CPPPARSER_EXPORT QByteArray stringFromContentsWithGaps(const PreprocessedContents& contents, int offset = 0, int count = 0);

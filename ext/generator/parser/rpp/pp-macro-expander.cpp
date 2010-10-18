@@ -268,10 +268,10 @@ void pp_macro_expander::operator()(Stream& input, Stream& output)
         output << '\"';
 
         while (!is.atEnd()) {
-          if (input == '"') {
+          if (is == '"') {
             output << '\\' << is;
 
-          } else if (input == '\n') {
+          } else if (is == '\n') {
             output << '"' << is << '"';
 
           } else {
@@ -338,7 +338,7 @@ void pp_macro_expander::operator()(Stream& input, Stream& output)
             
             skip_blanks(input, devnull());
             //Omit paste tokens behind empty used actuals, else we will merge with the previous text
-            if(input == '#' && (++input) == '#') {
+            if(!input.atEnd() && input == '#' && !(++input).atEnd() && input == '#') {
               ++input;
               //We have skipped a paste token
             }else{

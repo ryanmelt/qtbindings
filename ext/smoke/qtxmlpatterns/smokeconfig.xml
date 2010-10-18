@@ -33,7 +33,7 @@
         <signature>.*QXmlNodeModelIndex::documentUri.*</signature>
         <signature>.*QXmlNodeModelIndex::root.*</signature>
         <signature>.*QXmlNodeModelIndex::name.*</signature>
-        <signature>.*QXmlNodeModelIndex::is.*</signature>
+        <signature>.*QXmlNodeModelIndex::is\(.*</signature>
         <signature>.*QXmlNodeModelIndex::stringValue.*</signature>
         <signature>.*QXmlNodeModelIndex::namespaceForPrefix.*</signature>         
         <signature>.*QXmlName::QXmlName.*short.*</signature>

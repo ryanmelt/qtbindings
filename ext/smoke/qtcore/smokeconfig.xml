@@ -14,6 +14,8 @@
         <signature>.*::d_ptr.*</signature>
         <signature>.*::q_ptr.*</signature>
         <signature>.*QUuid::data.*</signature>
+        <signature>.*QBitArray::data_ptr.*</signature>
+        <signature>.*QByteArray::data_ptr.*</signature>
         <signature>.*\(.*Private.*\).*</signature>
         <signature>.*QLocale::p</signature>
         <signature>.*QLocale::v</signature>

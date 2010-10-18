@@ -99,6 +99,7 @@ static char const * const _S_token_names[] = {
   "signals",
   "signed",
   "sizeof",
+  "size_t",
   "slots",
   "static",
   "static_cast",
@@ -204,6 +205,7 @@ static char const * const _S_token_texts[] = {
   "signals",
   "signed",
   "sizeof",
+  "size_t",
   "slots",
   "static",
   "static_cast",
@@ -328,6 +330,7 @@ static char _S_printable[][2] = {
   { char(125), '\0' },
   { char(126), '\0' },
   { char(127), '\0' },
+  { char(128), '\0' },
 };
 
 char const *token_name(int token)

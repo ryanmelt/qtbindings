@@ -205,6 +205,7 @@ KDevVarLengthArray<KDevVarLengthArray<QPair<uint, TOKEN_KIND>, 10 >, index_size 
   ADD_TOKEN(virtual);
   ADD_TOKEN(void);
   ADD_TOKEN(volatile);
+  ADD_TOKEN(size_t);
   ADD_TOKEN(wchar_t);
   ADD_TOKEN(while);
   ADD_TOKEN(xor);

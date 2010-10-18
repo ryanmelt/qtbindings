@@ -36,6 +36,26 @@ QByteArray stringFromContents(const PreprocessedContents& contents, int offset, 
   return ret;
 }
 
+#include <stdio.h>
+
+QByteArray lineFromContents(const uint* contents, int lineNumber) {
+  int a1 = 0;
+  int lineCount = 0;
+  while (lineCount < lineNumber) {
+    if (isNewline(contents[a1])) {
+        lineCount++;
+    }
+    a1++;
+  }
+
+  int a2 = a1;
+  while (!isNewline(contents[a2])) {
+    a2++;
+  }
+
+  return stringFromContents(contents + a1, a2 - a1);
+}
+
 QByteArray stringFromContents(const uint* contents, int count) {
   QByteArray ret;
   for(int a = 0; a < count; ++a) {

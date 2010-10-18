@@ -107,6 +107,7 @@ enum TOKEN_KIND
     Token_signals,
     Token_signed,
     Token_sizeof,
+    Token_size_t,
     Token_slots,
     Token_static,
     Token_static_cast,

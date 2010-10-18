@@ -21,6 +21,7 @@ macro_optional_add_bindings(QT_QTSCRIPT_FOUND "QtScript" qtscript)
 macro_optional_add_bindings(QT_QTUITOOLS_FOUND "QtUiTools" qtuitools)
 macro_optional_add_bindings(QT_QTTEST_FOUND "QtTest" qttest)
 macro_optional_add_bindings(QT_QTMULTIMEDIA_FOUND "QtMultimedia" qtmultimedia)
+macro_optional_add_bindings(QT_QTHELP_FOUND "QtHelp" qthelp)
 
 # for qtguess.pl
 if (APPLE)

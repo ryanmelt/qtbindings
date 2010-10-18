@@ -213,13 +213,20 @@ int generate()
     Options::qtMode = ParserOptions::qtMode;
 
     Options::voidpTypes << "long long" << "long long int" << "unsigned long long" << "unsigned long long int";
+    Options::scalarTypes << "long long" << "long long int" << "unsigned long long" << "unsigned long long int";
     
     // Fill the type map. It maps some long integral types to shorter forms as used in SMOKE.
     Util::typeMap["long int"] = "long";
     Util::typeMap["short int"] = "short";
     Util::typeMap["long double"] = "double";
     Util::typeMap["wchar_t"] = "int";   // correct?
-    
+
+    if (sizeof(unsigned int) == sizeof(size_t)) {
+        Util::typeMap["size_t"] = "uint";
+    } else if (sizeof(unsigned long) == sizeof(size_t)) {
+        Util::typeMap["size_t"] = "ulong";
+    }
+
     qDebug() << "Generating SMOKE sources...";
     
     SmokeDataFile smokeData;

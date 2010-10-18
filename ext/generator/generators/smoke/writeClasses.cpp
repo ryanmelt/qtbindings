@@ -469,7 +469,7 @@ void SmokeClassFiles::writeClass(QTextStream& out, const Class* klass, const QSt
     }
     
     // destructor
-    // if the class can't be instanciated, a callback when it's deleted is unnecessary
+    // if the class can't be instanstiated, a callback when it's deleted is unnecessary
     if (Util::canClassBeInstanciated(klass)) {
         out << "    ~" << smokeClassName << "() ";
         if (destructor && destructor->hasExceptionSpec()) {
