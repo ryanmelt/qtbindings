@@ -34,7 +34,7 @@ class MainWindow < Qt::MainWindow
             'on_printAction_triggered()',
             'on_printPreviewAction_triggered()',
             'on_unmarkAction_triggered()',
-            'printPage(int, QPainter &, QPrinter &)',
+            'printPage(int, QPainter*, QPrinter*)',
             'showFont(QTreeWidgetItem *)',
             'updateStyles(QTreeWidgetItem *, int)'
     
@@ -268,8 +268,8 @@ class MainWindow < Qt::MainWindow
     
         preview = PreviewDialog.new(printer, self)
         connect(preview,
-            SIGNAL('pageRequested(int, QPainter &, QPrinter &)'),
-            self, SLOT('printPage(int, QPainter &, QPrinter &)'),
+            SIGNAL('pageRequested(int, QPainter*, QPrinter*)'),
+            self, SLOT('printPage(int, QPainter*, QPrinter*)'),
             Qt::DirectConnection)
     
         preview.setNumberOfPages = @pageMap.length
@@ -304,6 +304,7 @@ class MainWindow < Qt::MainWindow
     end
     
     def printPage(index, painter, printer)
+        pageMap = currentPageMap()
         family = pageMap.keys()[index]
         items = pageMap[family]
     
@@ -356,7 +357,7 @@ class MainWindow < Qt::MainWindow
                 rect = fontMetrics.boundingRect("%s %s" % [font.family(), style])
                 y += rect.height()
                 painter.font = font
-                painter.drawText(Qt::PointF.neew(x, y),
+                painter.drawText(Qt::PointF.new(x, y),
                                  "%s %s" % [family, style])
                 y += interLineHeight
             end

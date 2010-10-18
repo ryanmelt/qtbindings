@@ -31,7 +31,7 @@ class PreviewDialog < Qt::Dialog
     SmallPreviewLength = 200
     LargePreviewLength = 400
     
-    signals 'pageRequested(int, QPainter &, QPrinter &)'
+    signals 'pageRequested(int, QPainter*, QPrinter*)'
     
     slots   'accept()',
             'addPage()',
@@ -235,7 +235,8 @@ class PreviewDialog < Qt::Dialog
     end
     
     def on_paperSizeCombo_activated(index)
-        @printer.pageSize = @ui.paperSizeCombo.itemData(index.to_i)
+        Qt.debug_level = 100
+        @printer.paperSize = @ui.paperSizeCombo.itemData(index.to_i).value
     
         for index in 0..@ui.pageList.topLevelItemCount
             paintItem(@ui.pageList.topLevelItem(index), index)
