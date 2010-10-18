@@ -49,7 +49,7 @@ class PreviewDialog < Qt::Dialog
     
         @currentPage = 0
         @pageCount = 0
-        @ui.pageList.setIconSize(Qt::Size(SmallPreviewLength, SmallPreviewLength))
+        @ui.pageList.setIconSize(Qt::Size.new(SmallPreviewLength, SmallPreviewLength))
         @ui.pageList.header().hide()
         @previewLabel = PreviewLabel.new
         @printer = Qt::Printer.new
@@ -60,40 +60,40 @@ class PreviewDialog < Qt::Dialog
     end
     
     def setupComboBoxes()
-        @ui.paperSizeCombo.addItem(tr("A0 (841 x 1189 mm)"), Qt::Printer::A0)
-        @ui.paperSizeCombo.addItem(tr("A1 (594 x 841 mm)"), Qt::Printer::A1)
-        @ui.paperSizeCombo.addItem(tr("A2 (420 x 594 mm)"), Qt::Printer::A2)
-        @ui.paperSizeCombo.addItem(tr("A3 (297 x 420 mm)"), Qt::Printer::A3)
-        @ui.paperSizeCombo.addItem(tr("A4 (210 x 297 mm, 8.26 x 11.7 inches)"), Qt::Printer::A4)
-        @ui.paperSizeCombo.addItem(tr("A5 (148 x 210 mm)"), Qt::Printer::A5)
-        @ui.paperSizeCombo.addItem(tr("A6 (105 x 148 mm)"), Qt::Printer::A6)
-        @ui.paperSizeCombo.addItem(tr("A7 (74 x 105 mm)"), Qt::Printer::A7)
-        @ui.paperSizeCombo.addItem(tr("A8 (52 x 74 mm)"), Qt::Printer::A8)
-        @ui.paperSizeCombo.addItem(tr("A9 (37 x 52 mm)"), Qt::Printer::A9)
-        @ui.paperSizeCombo.addItem(tr("B0 (1000 x 1414 mm)"), Qt::Printer::B0)
-        @ui.paperSizeCombo.addItem(tr("B1 (707 x 1000 mm)"), Qt::Printer::B1)
-        @ui.paperSizeCombo.addItem(tr("B2 (500 x 707 mm)"), Qt::Printer::B2)
-        @ui.paperSizeCombo.addItem(tr("B3 (353 x 500 mm)"), Qt::Printer::B3)
-        @ui.paperSizeCombo.addItem(tr("B4 (250 x 353 mm)"), Qt::Printer::B4)
-        @ui.paperSizeCombo.addItem(tr("B5 (176 x 250 mm, 6.93 x 9.84 inches)"), Qt::Printer::B5)
-        @ui.paperSizeCombo.addItem(tr("B6 (125 x 176 mm)"), Qt::Printer::B6)
-        @ui.paperSizeCombo.addItem(tr("B7 (88 x 125 mm)"), Qt::Printer::B7)
-        @ui.paperSizeCombo.addItem(tr("B8 (62 x 88 mm)"), Qt::Printer::B8)
-        @ui.paperSizeCombo.addItem(tr("B9 (44 x 62 mm)"), Qt::Printer::B9)
-        @ui.paperSizeCombo.addItem(tr("B10 (31 x 44 mm)"), Qt::Printer::B10)
-        @ui.paperSizeCombo.addItem(tr("C5E (163 x 229 mm)"), Qt::Printer::C5E)
-        @ui.paperSizeCombo.addItem(tr("DLE (110 x 220 mm)"), Qt::Printer::DLE)
-        @ui.paperSizeCombo.addItem(tr("Executive (7.5 x 10 inches, 191 x 254 mm)"), Qt::Printer::Executive)
-        @ui.paperSizeCombo.addItem(tr("Folio (210 x 330 mm)"), Qt::Printer::Folio)
-        @ui.paperSizeCombo.addItem(tr("Ledger (432 x 279 mm)"), Qt::Printer::Ledger)
-        @ui.paperSizeCombo.addItem(tr("Legal (8.5 x 14 inches, 216 x 356 mm)"), Qt::Printer::Legal)
-        @ui.paperSizeCombo.addItem(tr("Letter (8.5 x 11 inches, 216 x 279 mm)"), Qt::Printer::Letter)
-        @ui.paperSizeCombo.addItem(tr("Tabloid (279 x 432 mm)"), Qt::Printer::Tabloid)
-        @ui.paperSizeCombo.addItem(tr("US Common #10 Envelope (105 x 241 mm)"), Qt::Printer::Comm10E)
-        @ui.paperSizeCombo.currentIndex = @ui.paperSizeCombo.findData(Qt::Printer::A4)
+        @ui.paperSizeCombo.addItem(tr("A0 (841 x 1189 mm)"), Qt::Variant.new(Qt::Printer::A0))
+        @ui.paperSizeCombo.addItem(tr("A1 (594 x 841 mm)"), Qt::Variant.new(Qt::Printer::A1))
+        @ui.paperSizeCombo.addItem(tr("A2 (420 x 594 mm)"), Qt::Variant.new(Qt::Printer::A2))
+        @ui.paperSizeCombo.addItem(tr("A3 (297 x 420 mm)"), Qt::Variant.new(Qt::Printer::A3))
+        @ui.paperSizeCombo.addItem(tr("A4 (210 x 297 mm, 8.26 x 11.7 inches)"), Qt::Variant.new(Qt::Printer::A4))
+        @ui.paperSizeCombo.addItem(tr("A5 (148 x 210 mm)"), Qt::Variant.new(Qt::Printer::A5))
+        @ui.paperSizeCombo.addItem(tr("A6 (105 x 148 mm)"), Qt::Variant.new(Qt::Printer::A6))
+        @ui.paperSizeCombo.addItem(tr("A7 (74 x 105 mm)"), Qt::Variant.new(Qt::Printer::A7))
+        @ui.paperSizeCombo.addItem(tr("A8 (52 x 74 mm)"), Qt::Variant.new(Qt::Printer::A8))
+        @ui.paperSizeCombo.addItem(tr("A9 (37 x 52 mm)"), Qt::Variant.new(Qt::Printer::A9))
+        @ui.paperSizeCombo.addItem(tr("B0 (1000 x 1414 mm)"), Qt::Variant.new(Qt::Printer::B0))
+        @ui.paperSizeCombo.addItem(tr("B1 (707 x 1000 mm)"), Qt::Variant.new(Qt::Printer::B1))
+        @ui.paperSizeCombo.addItem(tr("B2 (500 x 707 mm)"), Qt::Variant.new(Qt::Printer::B2))
+        @ui.paperSizeCombo.addItem(tr("B3 (353 x 500 mm)"), Qt::Variant.new(Qt::Printer::B3))
+        @ui.paperSizeCombo.addItem(tr("B4 (250 x 353 mm)"), Qt::Variant.new(Qt::Printer::B4))
+        @ui.paperSizeCombo.addItem(tr("B5 (176 x 250 mm, 6.93 x 9.84 inches)"), Qt::Variant.new(Qt::Printer::B5))
+        @ui.paperSizeCombo.addItem(tr("B6 (125 x 176 mm)"), Qt::Variant.new(Qt::Printer::B6))
+        @ui.paperSizeCombo.addItem(tr("B7 (88 x 125 mm)"), Qt::Variant.new(Qt::Printer::B7))
+        @ui.paperSizeCombo.addItem(tr("B8 (62 x 88 mm)"), Qt::Variant.new(Qt::Printer::B8))
+        @ui.paperSizeCombo.addItem(tr("B9 (44 x 62 mm)"), Qt::Variant.new(Qt::Printer::B9))
+        @ui.paperSizeCombo.addItem(tr("B10 (31 x 44 mm)"), Qt::Variant.new(Qt::Printer::B10))
+        @ui.paperSizeCombo.addItem(tr("C5E (163 x 229 mm)"), Qt::Variant.new(Qt::Printer::C5E))
+        @ui.paperSizeCombo.addItem(tr("DLE (110 x 220 mm)"), Qt::Variant.new(Qt::Printer::DLE))
+        @ui.paperSizeCombo.addItem(tr("Executive (7.5 x 10 inches, 191 x 254 mm)"), Qt::Variant.new(Qt::Printer::Executive))
+        @ui.paperSizeCombo.addItem(tr("Folio (210 x 330 mm)"), Qt::Variant.new(Qt::Printer::Folio))
+        @ui.paperSizeCombo.addItem(tr("Ledger (432 x 279 mm)"), Qt::Variant.new(Qt::Printer::Ledger))
+        @ui.paperSizeCombo.addItem(tr("Legal (8.5 x 14 inches, 216 x 356 mm)"), Qt::Variant.new(Qt::Printer::Legal))
+        @ui.paperSizeCombo.addItem(tr("Letter (8.5 x 11 inches, 216 x 279 mm)"), Qt::Variant.new(Qt::Printer::Letter))
+        @ui.paperSizeCombo.addItem(tr("Tabloid (279 x 432 mm)"), Qt::Variant.new(Qt::Printer::Tabloid))
+        @ui.paperSizeCombo.addItem(tr("US Common #10 Envelope (105 x 241 mm)"), Qt::Variant.new(Qt::Printer::Comm10E))
+        @ui.paperSizeCombo.currentIndex = @ui.paperSizeCombo.findData(Qt::Variant.new(Qt::Printer::A4))
     
-        @ui.paperOrientationCombo.addItem(tr("Portrait"), Qt::Printer::Portrait)
-        @ui.paperOrientationCombo.addItem(tr("Landscape"), Qt::Printer::Landscape)
+        @ui.paperOrientationCombo.addItem(tr("Portrait"), Qt::Variant.new(Qt::Printer::Portrait))
+        @ui.paperOrientationCombo.addItem(tr("Landscape"), Qt::Variant.new(Qt::Printer::Landscape))
     end
     
     def addPage()
@@ -131,8 +131,8 @@ class PreviewDialog < Qt::Dialog
                                   @printer.paperRect().height()].max
         width = pixmap.width() * @printer.paperRect().width() / longestSide
         height = pixmap.height() * @printer.paperRect().height() / longestSide
-    
-        pixmap.fill(qRgb(224,224,224))
+   
+        pixmap.fill(Qt::Color.new(qRgb(224,224,224)))
         painter = Qt::Painter.new
         painter.begin(pixmap)
         painter.renderHint = Qt::Painter::Antialiasing

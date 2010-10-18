@@ -88,7 +88,7 @@ class MainWindow < Qt::MainWindow
     def on_clearAction_triggered()
         currentItem = @ui.fontTree.currentItem()
         @ui.fontTree.selectedItems.each do |item|
-            fontTree.setItemSelected(item, false)
+            @ui.fontTree.setItemSelected(item, false)
         end
         @ui.fontTree.setItemSelected(currentItem, true)
     end
@@ -169,7 +169,7 @@ class MainWindow < Qt::MainWindow
             elsif state == Qt::Unchecked &&
                        parent.checkState(0) == Qt::Checked
                 marked = false
-                for row in 0..parent.childCount
+                for row in 0..(parent.childCount - 1)
                     if parent.child(row).checkState(0) == Qt::Checked
                         marked = true
                         break
@@ -183,7 +183,7 @@ class MainWindow < Qt::MainWindow
         else
             row
             number = 0
-            for row in 0..item.childCount
+            for row in 0..(item.childCount - 1)
                 if item.child(row).checkState(0) == Qt::Checked
                     number += 1
                 end
@@ -192,13 +192,13 @@ class MainWindow < Qt::MainWindow
             # Mark/unmark all child items when marking/unmarking top-level
             # items.
             if state == Qt::Checked && number == 0
-                for row in 0..item.childCount
+                for row in 0..(item.childCount - 1)
                     if item.child(row).checkState(0) == Qt::Unchecked
                         item.child(row).setCheckState(0, Qt::Checked)
                     end
                 end
             elsif state == Qt::Unchecked && number > 0
-                for row in 0..item.childCount
+                for row in 0..(item.childCount - 1)
                     if item.child(row).checkState(0) == Qt::Checked
                         item.child(row).setCheckState(0, Qt::Unchecked)
                     end
@@ -272,14 +272,14 @@ class MainWindow < Qt::MainWindow
             self, SLOT('printPage(int, QPainter &, QPrinter &)'),
             Qt::DirectConnection)
     
-        preview.numberOfPages = @pageMap.length
+        preview.setNumberOfPages = @pageMap.length
         preview.exec()
     end
     
     def currentPageMap()
         pageMap = {}
     
-        for row in 0..@ui.fontTree.topLevelItemCount
+        for row in 0..(@ui.fontTree.topLevelItemCount - 1)
             familyItem = @ui.fontTree.topLevelItem(row)
     
             if familyItem.checkState(0) == Qt::Checked
@@ -287,10 +287,10 @@ class MainWindow < Qt::MainWindow
                 pageMap[family] = []
             end
             
-            for childRow in 0..familyItem.childCount
+            for childRow in 0..(familyItem.childCount - 1)
                 styleItem = familyItem.child(childRow)
                 if styleItem.checkState(0) == Qt::Checked
-                    pageMap[family].append(styleItem)
+                    pageMap[family] << styleItem
                 end
             end
         end

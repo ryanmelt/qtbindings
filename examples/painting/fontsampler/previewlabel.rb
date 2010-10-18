@@ -25,7 +25,7 @@
 	
 class PreviewLabel < Qt::Widget
 	
-	def initialize(parent)
+	def initialize(parent = nil)
 	    super(parent)
 	end
 	
@@ -33,7 +33,7 @@ class PreviewLabel < Qt::Widget
 	    painter = Qt::Painter.new
 	    painter.begin(self)
 	    painter.fillRect(event.rect(), Qt::Color.new(224,224,224))
-	    painter.drawPixmap(0, 0, @pixmap)
+	    painter.drawPixmap(0, 0, @pixmap) if @pixmap
 	    painter.end()
 	end
 	
