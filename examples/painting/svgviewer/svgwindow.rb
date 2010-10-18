@@ -62,8 +62,8 @@ class SvgWindow < Qt::ScrollArea
 	
 	def mousePressEvent(event)
 	    @mousePressPos = event.pos
-	    @scrollBarValuesOnMousePress.rx = horizontalScrollBar.value
-	    @scrollBarValuesOnMousePress.ry = verticalScrollBar.value
+	    @scrollBarValuesOnMousePress.x = horizontalScrollBar.value
+	    @scrollBarValuesOnMousePress.y = verticalScrollBar.value
 	    event.accept
 	end
 	

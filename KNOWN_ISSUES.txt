@@ -5,5 +5,4 @@
 5. http example fails - undefined method empty? for nil
 6. textures example fails - Cannot handle Gluint
 7. fontsample example fails - undefined method checkState for nil
-8. svgviewer example fails - undefined method rx= for Qt::Point
-9. passivepopup example fails - seg fault
+8. passivepopup example fails - seg fault
