@@ -4,5 +4,5 @@
 4. ftp example fails - undefined method icon=
 5. http example fails - undefined method empty? for nil
 6. textures example fails - Cannot handle Gluint
-7. fontsample example fails - undefined method checkState for nil
+7. fontsampler example fails - undefined method checkState for nil
 8. passivepopup example fails - seg fault

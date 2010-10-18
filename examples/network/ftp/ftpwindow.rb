@@ -38,6 +38,7 @@ class FtpWindow < Qt::Dialog
         super(parent)
         @ftp = nil
         @isDirectory = {}
+        @currentPath = ""
         @ftpServerLabel = Qt::Label.new(tr("Ftp &server:"))
         @ftpServerLineEdit = Qt::LineEdit.new("ftp.trolltech.com")
         @ftpServerLabel.buddy = @ftpServerLineEdit
@@ -95,6 +96,9 @@ class FtpWindow < Qt::Dialog
     end
     
     def connectOrDisconnect()
+        @currentPath = ""
+        @isDirectory = {}
+
         if !@ftp.nil?
             @ftp.abort
             @ftp.deleteLater
@@ -134,7 +138,7 @@ class FtpWindow < Qt::Dialog
             return
         end
     
-        @file = Qt::File.new(fileName)
+        @file = Qt::File.new(@fileName)
         if !@file.open(Qt::IODevice::WriteOnly)
             Qt::MessageBox.information(self, tr("FTP"),
                                      tr("Unable to save the @file %s: %s." %
@@ -143,7 +147,7 @@ class FtpWindow < Qt::Dialog
             return
         end
     
-        @ftp.get(@fileList.currentItem.text, file)
+        @ftp.get(@fileList.currentItem.text, @file)
     
         @progressDialog.labelText = tr("Downloading %s..." % @fileName)
         @progressDialog.show()
@@ -199,7 +203,8 @@ class FtpWindow < Qt::Dialog
         item = Qt::ListWidgetItem.new
         item.text = urlInfo.name()
         pixmap = Qt::Pixmap.new(urlInfo.dir? ? "images/dir.png" : "images/file.png")
-        item.icon = pixmap
+
+        item.icon = Qt::Icon.new(pixmap)
     
         @isDirectory[urlInfo.name()] = urlInfo.isDir()
         @fileList.addItem(item)
