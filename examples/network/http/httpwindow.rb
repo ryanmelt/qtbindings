@@ -106,7 +106,7 @@ class HttpWindow < Qt::Dialog
 	    end
 	
 	    @http.setHost(url.host, url.port != -1 ? url.port : 80)
-	    if !url.userName.empty?
+	    if url.userName and !url.userName.empty?
 	        @http.user = url.userName(url.password)
 		end
 	
