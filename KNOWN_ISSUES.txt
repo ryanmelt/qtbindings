@@ -2,7 +2,6 @@
 2. broadcastsender example fails - undefined method writeDatagram
 3. fortuneserver example fails - undefined method seek
 4. ftp example fails - undefined method icon=
-5. http example fails - undefined method empty? for nil
-6. textures example fails - Cannot handle Gluint
-7. fontsampler example fails - undefined method checkState for nil
-8. passivepopup example fails - seg fault
+5. textures example fails - Cannot handle Gluint
+6. fontsampler example fails - undefined method checkState for nil
+7. passivepopup example fails - seg fault

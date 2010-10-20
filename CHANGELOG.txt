@@ -18,3 +18,4 @@ v4.6.3.2
 2010/10/14 - Handle ambiguous results with method lookup
 2010/10/15 - Fix bug with UTF-8 support
 2010/10/17 - Sync with kde-bindings trunk rev 1186952
+2010/10/19 - Fix Http example
