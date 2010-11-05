@@ -362,8 +362,11 @@ smokeruby_mark(void * p)
 		if (qstrcmp(className, "QModelIndex") == 0) {
 			QModelIndex * qmodelindex = (QModelIndex *) o->ptr;
 			void * ptr = qmodelindex->internalPointer();
-			if (ptr != 0 && ptr != (void *) Qnil) {
-				rb_gc_mark((VALUE) ptr);
+		        obj = getPointerObject(ptr);
+			if (obj != Qnil) {
+				if (do_debug & qtdb_gc) qWarning("Marking (%s*)%p -> %p", "QModelIndex", ptr, (void*)obj);
+                                 
+				rb_gc_mark(obj);
 			}
 
 			return;
@@ -2565,6 +2568,7 @@ Q_DECL_EXPORT TypeHandler Qt_handlers[] = {
     { "HPALETTE__*", marshall_voidP },
     { "HRGN__*", marshall_voidP },
     { "HWND__*", marshall_voidP },
+    { "QFlags&", marshall_it<int *> },
 #if QT_VERSION >= 0x40200
     { "QList<QGraphicsItem*>", marshall_QGraphicsItemList },
     { "QList<QGraphicsItem*>&", marshall_QGraphicsItemList },
@@ -2613,6 +2617,12 @@ Marshall::HandlerFn getMarshallFn(const SmokeType &type) {
 	if (h == 0 && type.isConst() && strlen(type.name()) > strlen("const ")) {
 		h = type_handlers[type.name() + strlen("const ")];
 	}
+
+        char last_char = type.name()[strlen(type.name()) - 1];
+        if (h == 0 && strncmp(type.name(), "QFlags", 6) == 0 && last_char == '&')
+        {
+          h = type_handlers["QFlags&"];
+        }
 	
 	if (h != 0) {
 		return h->fn;

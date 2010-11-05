@@ -261,7 +261,7 @@ class PieView < Qt::AbstractItemView
         selections = selectionModel()
         option = viewOptions()
         state = option.state
-    
+ 
         background = option.palette.base()
         foreground = Qt::Pen.new(option.palette.color(Qt::Palette::Foreground))
         textPen = Qt::Pen.new(option.palette.color(Qt::Palette::Text))

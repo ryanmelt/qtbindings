@@ -1,7 +1,6 @@
-1. chart example fails - can't handle QFlags as return type
-2. broadcastsender example fails - undefined method writeDatagram
-3. fortuneserver example fails - undefined method seek
-4. ftp example fails - undefined method icon=
-5. textures example fails - Cannot handle Gluint
-6. fontsampler example fails - undefined method checkState for nil
-7. passivepopup example fails - seg fault
+1. broadcastsender example fails - undefined method writeDatagram
+2. fortuneserver example fails - undefined method seek
+3. ftp example fails - undefined method icon=
+4. textures example fails - Cannot handle Gluint
+5. fontsampler example fails - undefined method checkState for nil
+6. passivepopup example fails - seg fault
