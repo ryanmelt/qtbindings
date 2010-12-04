@@ -201,16 +201,52 @@ rpp::Stream* Preprocessor::sourceNeeded(QString& fileName, rpp::Preprocessor::In
     }
     if (path.isEmpty()) {
         foreach (QDir dir, m_includeDirs) {
+#if 0
+            if (dir.absolutePath().endsWith(".framework"))
+            {
+                dir.setPath(dir.absolutePath() + "/Headers");
+            }
+#endif
+            // qWarning("Searching in %s", qPrintable(dir.absolutePath()));
             info.setFile(dir, fileName);
             if (info.isFile()) {
                 path = info.absoluteFilePath();
+                // qWarning("Found #include<%s>", qPrintable(fileName));
                 break;
             }
         }
     }
-    
+ 
+#if defined(Q_OS_DARWIN)
+    /* Try searching for frameworks in default locations */
+    if (path.isEmpty()) {
+        QStringList splitString = fileName.split("/");
+        if (splitString.size() >= 2) {
+            QString frameworkName = splitString.takeFirst();
+            QString remainingFileName = splitString.join("/");
+            QDir dir1 = QDir(("/System/Library/Frameworks/" + frameworkName) + ".framework/Headers");
+            QDir dir2 = QDir(("/Library/Frameworks/" + frameworkName) + ".framework/Headers");
+            info.setFile(dir1, remainingFileName);
+            if (info.isFile()) {
+                path = info.absoluteFilePath();
+                // qWarning("Found #include<%s>", qPrintable(fileName));
+            }
+            else {
+                info.setFile(dir2, remainingFileName);
+                if (info.isFile()) {
+                    path = info.absoluteFilePath();
+                    // qWarning("Found #include<%s>", qPrintable(fileName));
+                }
+            }
+        }
+    }
+#endif
+   
     if (path.isEmpty())
+    {
+        qWarning("Couldn't find file for #include<%s>", qPrintable(fileName));
         return 0;
+    }
     
     QFile file(path);
     file.open(QFile::ReadOnly);
