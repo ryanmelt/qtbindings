@@ -241,7 +241,13 @@ rpp::Stream* Preprocessor::sourceNeeded(QString& fileName, rpp::Preprocessor::In
         }
     }
 #endif
-   
+
+    if (fileName == "stdio.h")
+    {
+        qWarning("Not parsing stdio.h because it is not handled correctly by smokegen on FreeBSD based systems");
+        return 0;
+    }
+ 
     if (path.isEmpty())
     {
         qWarning("Couldn't find file for #include<%s>", qPrintable(fileName));

@@ -27,6 +27,7 @@
         <signature>.*qmlRegisterTypeNotAvailable.*</signature>
         <!-- windows internal helper functions -->
         <signature>.*qFrom.*Endian_helper.*</signature>
+        <signature>.*qt_mac_set_cursor.*</signature>
    </exclude>
     <functions>
         <!-- include functions starting with 'q' -->
