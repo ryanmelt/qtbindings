@@ -785,6 +785,7 @@ IF (QT4_QMAKE_FOUND)
   FIND_PATH(QT_QT_INCLUDE_DIR qglobal.h
     PATHS
     ${QT_HEADERS_DIR}/Qt
+    ${QT_HEADERS_DIR}/QtCore
     ${QT_LIBRARY_DIR}/QtCore.framework/Headers
     NO_DEFAULT_PATH
     )
