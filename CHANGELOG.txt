@@ -19,3 +19,8 @@ v4.6.3.2
 2010/10/15 - Fix bug with UTF-8 support
 2010/10/17 - Sync with kde-bindings trunk rev 1186952
 2010/10/19 - Fix Http example
+2010/11/04 - Fix chart example and all methods returning QFlags&
+2010/12/03 - Add framework support on Mac OSX which also fixes the OpenGl example
+2010/12/05 - Make smokegen not parse stdio.h as a workaround for FreeBSD based systems
+2010/12/05 - Minor changes to support Qt 4.7 on various platforms including Ubuntu 10.10
+
