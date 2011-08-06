@@ -27,3 +27,7 @@ v4.6.3.2
 v4.6.3.3
 2011/08/05 - Handle issues building against Ruby 1.9.2 and running on Windows with 1.9.2
 2011/08/05 - Handle incompatibility with Rails regarding constants method
+
+v4.6.3.4
+2011/08/06 - Accidently checked in ruby_check_stack instead of ruby_stack_check
+
