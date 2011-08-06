@@ -3,6 +3,7 @@
 #undef write
 #undef connect
 #undef accept
+#undef truncate
 
 #include <QHash>
 #include <QList>
