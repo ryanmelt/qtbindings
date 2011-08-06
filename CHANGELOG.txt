@@ -24,3 +24,6 @@ v4.6.3.2
 2010/12/05 - Make smokegen not parse stdio.h as a workaround for FreeBSD based systems
 2010/12/05 - Minor changes to support Qt 4.7 on various platforms including Ubuntu 10.10
 
+v4.6.3.3
+2011/08/05 - Handle issues building against Ruby 1.9.2 and running on Windows with 1.9.2
+2011/08/05 - Handle incompatibility with Rails regarding constants method
