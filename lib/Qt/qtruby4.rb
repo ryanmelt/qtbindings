@@ -3161,8 +3161,14 @@ class Module
   private :_constants, :_instance_methods
   private :_protected_instance_methods, :_public_instance_methods
 
-  def constants
-    qt_methods(_constants, 0x10, true)
+  if RUBY_VERSION < '1.9'
+    def constants
+      qt_methods(_constants, 0x10, true)
+    end
+  else
+    def constants(_arg = true)
+      qt_methods(_constants, 0x10, true)
+    end
   end
 
   def instance_methods(inc_super=true)
