@@ -10,19 +10,13 @@ windows = true if platform == 'mswin32' or platform == 'mingw32'
 macosx  = true if platform =~ /darwin/
 
 ruby_version = '1.9'
-ruby_version = '1.8' if RUBY_VERSION.split('.')[1].to_i == 8
 
-def find_qt_sdk
-  begin
-    entries = Dir.entries("C:\\Qt")
-  rescue
-    raise "Could not find Qt SDK in C:\\Qt"
+if windows
+  qt_sdk_path = "C:\\QtSDK\\Desktop\\Qt\\4.8.1\\mingw"
+  unless Dir.exists?(qt_sdk_path)
+    puts "ERROR! QT SDK doesn't exist at #{qt_sdk_path}"
   end
-  entries.sort!
-  "C:\\Qt\\" + entries[-1]
 end
-
-qt_sdk_path = find_qt_sdk() if windows
 
 File.open('Makefile', 'w') do |file|
   if windows
@@ -34,16 +28,18 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-mkdir bin\\1.9"
     file.puts "\t-mkdir bin\\plugins"
     file.puts "\t-mkdir bin\\plugins\\accessible"
+    file.puts "\t-mkdir bin\\plugins\\bearer"
     file.puts "\t-mkdir bin\\plugins\\codecs"
     file.puts "\t-mkdir bin\\plugins\\designer"
     file.puts "\t-mkdir bin\\plugins\\graphicssystems"
     file.puts "\t-mkdir bin\\plugins\\iconengines"
     file.puts "\t-mkdir bin\\plugins\\imageformats"
     file.puts "\t-mkdir bin\\plugins\\phonon_backend"
+    file.puts "\t-mkdir bin\\plugins\\qmltooling"
     file.puts "\t-mkdir bin\\plugins\\sqldrivers"
     file.puts "\t-mkdir lib\\1.8"
     file.puts "\t-mkdir lib\\1.9"
-    file.puts ""    
+    file.puts ""
     file.puts "clean: makedirs"
     file.puts "\t-cd ext\\build && rmdir /S /Q CMakeFiles"
     file.puts "\t-cd ext\\build && rmdir /S /Q generator"
@@ -51,18 +47,20 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd ext\\build && rmdir /S /Q ruby"
     file.puts "\t-cd ext\\build && del /F /Q *"
     file.puts ""
-    file.puts "distclean: clean" 
+    file.puts "distclean: clean"
     file.puts "\t-cd bin && del /F /Q *.dll"
     file.puts "\t-cd bin && del /F /Q *.so"
     file.puts "\t-cd bin && del /F /Q *.exe"
     file.puts "\t-cd bin\\plugins && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\accessible && del /F /Q *"
+    file.puts "\t-cd bin\\plugins\\bearer && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\codecs && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\designer && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\graphicssystems && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\iconengines && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\imageformats && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\phonon_backend && del /F /Q *"
+    file.puts "\t-cd bin\\plugins\\qmltooling && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\sqldrivers && del /F /Q *"
     file.puts "\t-cd bin\\1.8 && del /F /Q *"
     file.puts "\t-cd bin\\1.9 && del /F /Q *"
@@ -73,7 +71,7 @@ File.open('Makefile', 'w') do |file|
     file.puts ""
     file.puts "build: makedirs"
     file.puts "\tset CC=mingw32-gcc.exe"
-    file.puts "\tset CXX=mingw32-g++.exe"  
+    file.puts "\tset CXX=mingw32-g++.exe"
     file.puts "\t-cd ext\\build && \\"
     file.puts "cmake \\"
     file.puts "-G \"MinGW Makefiles\" \\"
@@ -133,18 +131,22 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-copy ext\\build\\ruby\\qtruby\\tools\\rbuic\\rbuic4.exe bin\\#{ruby_version}"
     file.puts ""
     file.puts "installqt: makedirs"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\bin\\*.dll bin"
+    file.puts "\tcopy #{qt_sdk_path}\\bin\\*.dll bin"
     file.puts "\tdel /F /Q bin\\*d4.dll"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\accessible\\*.dll bin\\plugins\\accessible"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\codecs\\*.dll bin\\plugins\\codecs"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\designer\\*.dll bin\\plugins\\designer"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\graphicssystems\\*.dll bin\\plugins\\graphicssystems"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\iconengines\\*.dll bin\\plugins\\iconengines"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\imageformats\\*.dll bin\\plugins\\imageformats"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\phonon_backend\\*.dll bin\\plugins\\phonon_backend"
-    file.puts "\tcopy #{qt_sdk_path}\\qt\\plugins\\sqldrivers\\*.dll bin\\plugins\\sqldrivers"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\accessible\\*.dll bin\\plugins\\accessible"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\bearer\\*.dll bin\\plugins\\bearer"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\codecs\\*.dll bin\\plugins\\codecs"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\designer\\*.dll bin\\plugins\\designer"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\graphicssystems\\*.dll bin\\plugins\\graphicssystems"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\iconengines\\*.dll bin\\plugins\\iconengines"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\imageformats\\*.dll bin\\plugins\\imageformats"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\phonon_backend\\*.dll bin\\plugins\\phonon_backend"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\qmltooling\\*.dll bin\\plugins\\qmltooling"
+    file.puts "\tcopy #{qt_sdk_path}\\plugins\\sqldrivers\\*.dll bin\\plugins\\sqldrivers"
     file.puts "\tdel /F /Q bin\\plugins\\accessible\\*d.dll"
     file.puts "\tdel /F /Q bin\\plugins\\accessible\\*d4.dll"
+    file.puts "\tdel /F /Q bin\\plugins\\bearer\\*d.dll"
+    file.puts "\tdel /F /Q bin\\plugins\\bearer\\*d4.dll"
     file.puts "\tdel /F /Q bin\\plugins\\codecs\\*d.dll"
     file.puts "\tdel /F /Q bin\\plugins\\codecs\\*d4.dll"
     file.puts "\tdel /F /Q bin\\plugins\\designer\\*d.dll"
@@ -157,6 +159,8 @@ File.open('Makefile', 'w') do |file|
     file.puts "\tdel /F /Q bin\\plugins\\imageformats\\*d4.dll"
     file.puts "\tdel /F /Q bin\\plugins\\phonon_backend\\*d.dll"
     file.puts "\tdel /F /Q bin\\plugins\\phonon_backend\\*d4.dll"
+    file.puts "\tdel /F /Q bin\\plugins\\qmltooling\\*d.dll"
+    file.puts "\tdel /F /Q bin\\plugins\\qmltooling\\*d4.dll"
     file.puts "\tdel /F /Q bin\\plugins\\sqldrivers\\*d.dll"
     file.puts "\tdel /F /Q bin\\plugins\\sqldrivers\\*d4.dll"
   else
@@ -168,15 +172,17 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-mkdir bin/1.9"
     file.puts "\t-mkdir bin/plugins"
     file.puts "\t-mkdir bin/plugins/accessible"
+    file.puts "\t-mkdir bin/plugins/bearer"
     file.puts "\t-mkdir bin/plugins/codecs"
     file.puts "\t-mkdir bin/plugins/designer"
     file.puts "\t-mkdir bin/plugins/graphicssystems"
     file.puts "\t-mkdir bin/plugins/iconengines"
     file.puts "\t-mkdir bin/plugins/imageformats"
     file.puts "\t-mkdir bin/plugins/phonon_backend"
+    file.puts "\t-mkdir bin/plugins/qmltooling"
     file.puts "\t-mkdir bin/plugins/sqldrivers"
     file.puts "\t-mkdir lib/1.8"
-    file.puts "\t-mkdir lib/1.9"    
+    file.puts "\t-mkdir lib/1.9"
     file.puts ""
     file.puts "clean: makedirs"
     file.puts "\t-cd ext/build; rm -rf CMakeFiles"
@@ -191,17 +197,19 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd bin && rm *.exe"
     file.puts "\t-cd bin/plugins && rm *"
     file.puts "\t-cd bin/plugins/accessible && rm *"
+    file.puts "\t-cd bin/plugins/bearer && rm *"
     file.puts "\t-cd bin/plugins/codecs && rm *"
     file.puts "\t-cd bin/plugins/designer && rm *"
     file.puts "\t-cd bin/plugins/graphicssystems && rm *"
     file.puts "\t-cd bin/plugins/iconengines && rm *"
     file.puts "\t-cd bin/plugins/imageformats && rm *"
     file.puts "\t-cd bin/plugins/phonon_backend && rm *"
+    file.puts "\t-cd bin/plugins/qmltooling && rm *"
     file.puts "\t-cd bin/plugins/sqldrivers && rm *"
     file.puts "\t-cd bin/1.8 && rm *"
     file.puts "\t-cd bin/1.9 && rm *"
     file.puts "\t-cd lib/1.8 && rm *"
-    file.puts "\t-cd lib/1.9 && rm *"    
+    file.puts "\t-cd lib/1.9 && rm *"
     file.puts "\t-rm Makefile"
     file.puts "\t-rm qtbindings-*.gem"
     file.puts ""
@@ -211,7 +219,7 @@ File.open('Makefile', 'w') do |file|
     file.puts "-G \"Unix Makefiles\" \\"
     if ARGV[0] == '-d'
       file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
-    end   
+    end
     file.puts "-Wno-dev \\"
     file.puts "-DENABLE_SMOKE=on \\"
     file.puts "-DENABLE_QTCORE_SMOKE=on \\"
@@ -235,7 +243,7 @@ File.open('Makefile', 'w') do |file|
     file.puts "-DENABLE_QTTEST=on \\"
     file.puts ".."
     file.puts "\tcd ext/build; make"
-    file.puts ""    
+    file.puts ""
     file.puts "install: makedirs"
     if macosx
       file.puts "\t-cp ext/build/smoke/smokeapi/smokeapi bin/#{ruby_version}"
