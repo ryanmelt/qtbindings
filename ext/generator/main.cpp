@@ -37,6 +37,8 @@
 #include "generatorpreprocessor.h"
 #include "generatorvisitor.h"
 #include "options.h"
+#include "config.h"
+
 
 typedef int (*GenerateFn)();
 
@@ -71,6 +73,8 @@ int main(int argc, char **argv)
     bool addHeaders = false;
     bool hasCommandLineGenerator = false;
     QStringList classes;
+
+    ParserOptions::notToBeResolved << "FILE";
 
     for (int i = 1; i < args.count(); i++) {
         if ((args[i] == "-I" || args[i] == "-d" || args[i] == "-dm" ||
@@ -165,7 +169,7 @@ int main(int argc, char **argv)
     lib.load();
     if (!lib.isLoaded()) {
         lib.unload();
-        lib.setFileName(app.applicationDirPath() + "/../lib/smokegen/generator_" + generator);
+        lib.setFileName(app.applicationDirPath() + "/../lib" + LIB_SUFFIX + "/smokegen/generator_" + generator);
         lib.load();
     }
     if (!lib.isLoaded()) {

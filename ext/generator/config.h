@@ -1,5 +1,7 @@
+#ifndef SMOKEGEN_CONFIG_H_7990E7PK
+#define SMOKEGEN_CONFIG_H_7990E7PK
 /*
-    Copyright (C) 2009 Arno Rehn <arno@arnorehn.de>
+   Copyright (C) 2011 Michael Jansen <kde@michael-jansen.biz>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,31 +18,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GENERATOR_OPTIONS_H
-#define GENERATOR_OPTIONS_H
 
-#include "generator_export.h"
+// The library suffix used when compiling smoke
+#define LIB_SUFFIX "@LIB_SUFFIX@"
 
-class QDir;
-class QFileInfo;
-template<typename T>
-class QSet;
-template<typename T>
-class QList;
-class QRegExp;
-class QStringList;
-
-class Typedef;
-
-struct GENERATOR_EXPORT ParserOptions
-{
-    static QFileInfo definesList;
-    static QList<QFileInfo> headerList;
-    static QList<QDir> includeDirs;
-    static bool resolveTypedefs;
-    static QList<QString> notToBeResolved;
-    static bool qtMode;
-    static QStringList dropMacros;
-};
-
-#endif
+#endif // #define SMOKEGEN_CONFIG_H_7990E7PK

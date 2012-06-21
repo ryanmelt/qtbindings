@@ -22,6 +22,8 @@
 #define CHARTOOLS
 #include <QChar>
 
+#include <cstdlib>
+
 #include "../cppparser_export.h"
 
 template<class T>
@@ -83,7 +85,7 @@ CPPPARSER_EXPORT QByteArray stringFromContents(const PreprocessedContents& conte
 CPPPARSER_EXPORT QByteArray stringFromContents(const uint* contents, int count);
 
 ///Return the line at the given line number from the contents
-CPPPARSER_EXPORT QByteArray lineFromContents(const uint* contents, int lineNumber);
+CPPPARSER_EXPORT QByteArray lineFromContents(std::size_t size, const uint* contents, int lineNumber);
 
 ///Returns a string that has a gap inserted between the tokens(for debugging)
 CPPPARSER_EXPORT QByteArray stringFromContentsWithGaps(const PreprocessedContents& contents, int offset = 0, int count = 0);

@@ -1,3 +1,4 @@
 1. All opengl examples fail because opengl can not be loaded (LoadError)
-2. All qdbus examples fail when trying to open the connection (NoMethodError)
-3. The qRgb macro doesn't appear to work correctly
+2. The qRgb macro doesn't appear to work correctly
+
+NOTE: The QDBus examples don't work on Windows because QtDBus is Unix only.

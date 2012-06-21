@@ -191,8 +191,13 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
                 }
                 addOverloads(m);
                 (*usedTypes) << m.type();
-                foreach (const Parameter& param, m.parameters())
+                foreach (const Parameter& param, m.parameters()) {
                     (*usedTypes) << param.type();
+
+                    if (m.isSlot() || m.isSignal() || m.isQPropertyAccessor()) {
+                        (*usedTypes) << Util::normalizeType(param.type());
+                    }
+                }
             }
             foreach (const Field& f, klass.fields()) {
                 if (f.access() == Access_private)
@@ -490,6 +495,20 @@ QString Util::mungedName(const Method& meth) {
     return ret;
 }
 
+Type* Util::normalizeType(const Type* type) {
+    Type normalizedType = *type;
+    if (normalizedType.isConst() && normalizedType.isRef()) {
+        normalizedType.setIsConst(false);
+        normalizedType.setIsRef(false);
+    }
+
+    if (normalizedType.pointerDepth() == 0) {
+        normalizedType.setIsConst(false);
+    }
+
+    return Type::registerType(normalizedType);
+}
+
 QString Util::stackItemField(const Type* type)
 {
     if (type->getTypedef()) {
@@ -590,7 +609,7 @@ void Util::addAccessorMethods(const Field& field, QSet<Type*> *usedTypes)
 {
     Class* klass = field.getClass();
     Type* type = field.type();
-    if (type->getClass() && type->pointerDepth() == 0) {
+    if (type->getClass() && type->pointerDepth() == 0 && !(ParserOptions::qtMode && type->getClass()->name() == "QFlags")) {
         Type newType = *type;
         newType.setIsRef(true);
         type = Type::registerType(newType);

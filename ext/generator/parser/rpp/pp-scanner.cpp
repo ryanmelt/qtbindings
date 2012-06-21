@@ -247,8 +247,9 @@ void pp_skip_char_literal::operator()(Stream& input, Stream& output)
           state = END;
         else if (input == '\\')
           state = QUOTE;
-        break;
+
         ++inner_count;
+        break;
       case QUOTE:
         state = IN_STRING;
         break;

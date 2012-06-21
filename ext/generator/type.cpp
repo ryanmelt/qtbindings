@@ -17,6 +17,7 @@
 */
 
 #include "type.h"
+#include "options.h"
 
 QHash<QString, Class> classes;
 QHash<QString, Typedef> typedefs;
@@ -104,11 +105,12 @@ Type* Type::registerType(const Type& type)
 Type Typedef::resolve() const {
     bool isRef = false, isConst = false, isVolatile = false;
     QList<bool> pointerDepth;
-    const Type* t = this->type();
-    for (int i = 0; i < t->pointerDepth(); i++) {
-        pointerDepth.append(t->isConstPointer(i));
-    }
-    while (t->getTypedef()) {
+
+    // not pretty, but safe. 'this' (without const) will never be returned or modified from here on.
+    const Type tmp(const_cast<Typedef*>(this));
+    const Type* t = &tmp;
+
+    while (t->getTypedef() && !ParserOptions::notToBeResolved.contains(t->getTypedef()->name())) {
         if (!isRef) isRef = t->isRef();
         if (!isConst) isConst = t->isConst();
         if (!isVolatile) isVolatile = t->isVolatile();
@@ -118,10 +120,17 @@ Type Typedef::resolve() const {
         }
     }
     Type ret = *t;
+
+    // not fully resolved -> erase the typedef pointer and only set a name
+    if (ret.getTypedef()) {
+        ret.setName(ret.getTypedef()->name());
+        ret.setTypedef(0);
+    }
+
     if (isRef) ret.setIsRef(true);
     if (isConst) ret.setIsConst(true);
     if (isVolatile) ret.setIsVolatile(true);
-    
+
     ret.setPointerDepth(pointerDepth.count());
     for (int i = 0; i < pointerDepth.count(); i++) {
         ret.setIsConstPointer(i, pointerDepth[i]);

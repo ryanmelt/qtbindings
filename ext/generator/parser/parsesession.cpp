@@ -19,6 +19,7 @@
 #include "parsesession.h"
 
 #include "rpp/pp-location.h"
+#include "rpp/pp-environment.h"
 #include "lexer.h"
 #include "memorypool.h"
 #include "problem.h"

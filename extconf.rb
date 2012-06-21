@@ -12,9 +12,12 @@ macosx  = true if platform =~ /darwin/
 ruby_version = '1.9'
 
 if windows
+  # README! - Modify this path if you have QT installed somewhere else
+  # or if you have a different version of QT you want to link to.
   qt_sdk_path = "C:\\QtSDK\\Desktop\\Qt\\4.8.1\\mingw"
   unless Dir.exists?(qt_sdk_path)
     puts "ERROR! QT SDK doesn't exist at #{qt_sdk_path}"
+    exit # Not much we can do if the QT SDK doesn't exist
   end
 end
 

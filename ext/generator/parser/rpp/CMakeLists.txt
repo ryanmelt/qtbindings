@@ -22,6 +22,12 @@ set(kdevcpprpp_LIB_SRCS
 #       to the plugin target
 kde4_add_library(kdev4cpprpp SHARED ${kdevcpprpp_LIB_SRCS})
 target_link_libraries(kdev4cpprpp ${KDE4_KDECORE_LIBS} ${KDEVPLATFORM_LANGUAGE_LIBRARY} ${KDE4_KTEXTEDITOR_LIBS} )
+
+if (WIN32)
+	# Realign the stack, for compatibility with an older ABI.
+	set_target_properties (kdev4cpprpp PROPERTIES COMPILE_FLAGS -mstackrealign)
+endif (WIN32)
+
 install(TARGETS kdev4cpprpp ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 ########### install files ###############

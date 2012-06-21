@@ -28,5 +28,6 @@ QFileInfo ParserOptions::definesList;
 QList<QFileInfo>ParserOptions:: headerList;
 QList<QDir> ParserOptions::includeDirs;
 bool ParserOptions::resolveTypedefs = false;
+QList<QString> ParserOptions::notToBeResolved;
 bool ParserOptions::qtMode = false;
 QStringList ParserOptions::dropMacros;

@@ -72,31 +72,34 @@ end
 
 task :install => [:extconf] do
   system("#{MAKE} install")
-end
-
-task :installqt => [:extconf] do
   system("#{MAKE} installqt")
 end
 
-task :gem => [:distclean] do
+task :gem do
   warn_version()
   set_version()
   system("gem build qtbindings.gemspec")
   clear_version()
 end
 
-task :gemnative do # => [:clean] do
+task :gemnative do
   warn_version()
   set_version()
   system("gem build qtbindingsnative.gemspec")
   clear_version()
 end
 
-task :gemwindows => [:buildwindows, :installqt, :gemnative]
-
-task :buildwindows do
-  Rake::Task[:extconf].execute
+task :gemwindows do
+  Rake::Task[:distclean].execute
   Rake::Task[:all].execute
   Rake::Task[:install].execute
+  Rake::Task[:gemnative].execute
+end
+
+task :gemnix do
+  Rake::Task[:distclean].execute
+  Rake::Task[:all].execute
+  Rake::Task[:install].execute
+  Rake::Task[:gem].execute
 end
 
