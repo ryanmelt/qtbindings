@@ -1,5 +1,3 @@
-1. broadcastsender example fails - undefined method writeDatagram
-2. fortuneserver example fails - undefined method seek
-3. ftp example fails - undefined method icon=
-4. fontsampler example fails - undefined method checkState for nil
-5. passivepopup example fails - seg fault
+1. All opengl examples fail because opengl can not be loaded (LoadError)
+2. All qdbus examples fail when trying to open the connection (NoMethodError)
+3. The qRgb macro doesn't appear to work correctly
