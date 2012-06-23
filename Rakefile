@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'rake'
 
 windows = false
@@ -90,14 +89,18 @@ task :gemnative do
 end
 
 task :gemwindows do
+  Rake::Task[:extconf].execute
   Rake::Task[:distclean].execute
+  Rake::Task[:extconf].execute
   Rake::Task[:all].execute
   Rake::Task[:install].execute
   Rake::Task[:gemnative].execute
 end
 
 task :gemnix do
+  Rake::Task[:extconf].execute
   Rake::Task[:distclean].execute
+  Rake::Task[:extconf].execute
   Rake::Task[:all].execute
   Rake::Task[:install].execute
   Rake::Task[:gem].execute

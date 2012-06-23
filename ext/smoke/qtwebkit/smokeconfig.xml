@@ -33,6 +33,7 @@
         <class>QWebPage::ErrorPageExtensionReturn</class>
         <class>QWebPage::ExtensionOption</class>
         <class>QWebPage::ExtensionReturn</class>
+        <class>QWebPage::ViewportAttributes</class>
         <class>QWebPluginFactory</class>
         <class>QWebPluginFactory::ExtensionOption</class>
         <class>QWebPluginFactory::ExtensionReturn</class>

@@ -7,27 +7,11 @@
     <scalarTypes>
         <!-- QString is a class, but represented as a scalar (#) in munged names -->
         <typeName>QString</typeName>
-        <typeName>HBITMAP__</typeName>
-        <typeName>HDC__</typeName>
-        <typeName>HFONT__</typeName>
-        <typeName>HICON__</typeName>
-        <typeName>HINSTANCE__</typeName>
-        <typeName>HPALETTE__</typeName>
-        <typeName>HRGN__</typeName>
-        <typeName>HWND__</typeName>          
     </scalarTypes>
     <voidpTypes>
         <!-- both are classes, but they are represented as Smoke::t_voidp -->
         <typeName>QStringList</typeName>
         <typeName>QString</typeName>
-        <typeName>HBITMAP__</typeName>
-        <typeName>HDC__</typeName>
-        <typeName>HFONT__</typeName>
-        <typeName>HICON__</typeName>
-        <typeName>HINSTANCE__</typeName>
-        <typeName>HPALETTE__</typeName>
-        <typeName>HRGN__</typeName>
-        <typeName>HWND__</typeName>  
     </voidpTypes>
     <exclude>
         <!-- we don't want private stuff in smoke.. -->
@@ -46,8 +30,9 @@
         <signature>.*qFrom.*Endian_helper.*</signature>
         <signature>.*QPixmapData.*</signature>
         <signature>.*qt_x11_getX11InfoForWindow.*</signature>
+        <!-- OS X internal stuff -->
         <signature>.*qt_mac_set_cursor.*</signature>
-        <signature>.*QMenu::macMenu.*</signature>
+        <signature>.*QMenu::macMenu\(.*</signature>
    </exclude>
     <functions>
         <!-- include functions starting with 'q' -->
@@ -72,9 +57,13 @@
         <class>QAbstractTextDocumentLayout::Selection</class>
         <class>QAbstractUndoItem</class>
         <class>QAccessible2</class>
+        <class>QAccessible2::TableModelChange</class>
         <class>QAccessible2Interface</class>
         <class>QAccessibleActionInterface</class>
         <class>QAccessibleApplication</class>
+        <class>QAccessibleBridge</class>
+        <!-- <class>QAccessibleBridgeFactoryInterface</class>
+        <class>QAccessibleBridgePlugin</class> -->
         <class>QAccessible</class>
         <class>QAccessibleEditableTextInterface</class>
         <class>QAccessibleEvent</class>
@@ -87,6 +76,8 @@
         <class>QAccessiblePlugin</class>
         <class>QAccessibleSimpleEditableTextInterface</class>
         <class>QAccessibleTableInterface</class>
+        <class>QAccessibleTable2Interface</class>
+        <class>QAccessibleTable2CellInterface</class>
         <class>QAccessibleTextInterface</class>
         <class>QAccessibleValueInterface</class>
         <class>QAccessibleWidget</class>
@@ -137,7 +128,6 @@
         <class>QDragResponseEvent</class>
         <class>QDropEvent</class>
         <class>QErrorMessage</class>
-        <class>QFactoryInterface</class>
         <class>QFileDialogArgs</class>
         <class>QFileDialog</class>
         <class>QFileDialog::Options</class>
@@ -160,6 +150,7 @@
         <class>QGesture</class>
         <class>QGestureEvent</class>
         <class>QGestureRecognizer</class>
+        <class>QGlyphRun</class>
         <class>QGradient</class>
         <class>QGraphicsAnchor</class>
         <class>QGraphicsAnchorLayout</class>
@@ -278,6 +269,7 @@
         <class>QPaintEngine</class>
         <class>QPaintEngineState</class>
         <class>QPainter</class>
+        <class>QPainter::PixmapFragment</class>
         <class>QPainterPath</class>
         <class>QPainterPath::Element</class>
         <class>QPainterPathStroker</class>
@@ -312,6 +304,7 @@
         <class>QQuaternion</class>
         <class>QRadialGradient</class>
         <class>QRadioButton</class>
+        <class>QRawFont</class>
         <class>QRegExpValidator</class>
         <class>QRegion</class>
         <class>QResizeEvent</class>
@@ -341,6 +334,7 @@
         <class>QStackedWidget</class>
         <class>QStandardItem</class>
         <class>QStandardItemModel</class>
+        <class>QStaticText</class>
         <class>QStatusBar</class>
         <class>QStatusTipEvent</class>
         <class>QStringListModel</class>

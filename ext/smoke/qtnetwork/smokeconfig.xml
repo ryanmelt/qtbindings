@@ -43,6 +43,8 @@
         <class>QHostInfo</class>
         <class>QHttp</class>
         <class>QHttpHeader</class>
+        <class>QHttpMultiPart</class>
+        <class>QHttpPart</class>
         <class>QHttpRequestHeader</class>
         <class>QHttpResponseHeader</class>
         <class>QIPv6Address</class>

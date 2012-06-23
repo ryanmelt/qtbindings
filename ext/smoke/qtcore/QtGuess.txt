@@ -1,7 +1,9 @@
+# needs QTDEFINES_FILE set to work correctly.
+
 if(NOT QT_DEFINES_FOUND)
 #Threshold for tests
 set(QT_NO_DEBUG 16)
-set(QT_NO_ACCESSIBILITY 0)
+set(QT_NO_ACCESSIBILITY 16)
 set(QT_NO_ACTION 5)
 set(QT_NO_BUTTONGROUP 12)
 set(QT_NO_CHECKBOX 10)
@@ -95,6 +97,7 @@ QT_NO_XML)
 
 # macro is defined in qt-copy/src/qbase.pri but couldn't be found by qtguess, so I append it manually
 list(APPEND qtdefines "QT_NO_CAST_TO_ASCII")
+list(APPEND qtdefines "QT_NO_CAST_FROM_ASCII")
 list(APPEND qtdefines "QT_GUI_LIB")
 
 # check for MSVC compiler
@@ -111,7 +114,7 @@ endforeach(test_entry ${define_tests})
 file(STRINGS "${QT_QTCORE_INCLUDE_DIR}/qglobal.h" qglobal_h NEWLINE_CONSUME)
 file(STRINGS "${QT_QTCORE_INCLUDE_DIR}/qconfig.h" qconfig_h NEWLINE_CONSUME)
 file(STRINGS "${QT_QTCORE_INCLUDE_DIR}/qfeatures.h" qfeatures_h NEWLINE_CONSUME)
-set(qtheaders "${qglobal_h}\n${qconfig_h}\n${qfeatures_h}")
+set(qtheaders "${qglobal_h}\n${qconfig_h}\n${qfeatures}")
 string(REGEX REPLACE "\n" ";" qtheaders "${qtheaders}")
 
 file(REMOVE_RECURSE ${CMAKE_CURRENT_BINARY_DIR}/qtdefines.cpp ${CMAKE_CURRENT_BINARY_DIR}/qtdefines)
@@ -133,11 +136,14 @@ if(${qtdefines_run} EQUAL 0)
   list(REMOVE_ITEM qtdefines_output "QT_DEBUG")
   # message(STATUS "Got defines from Qt headers ${qtdefines_output}")
   list(APPEND qtdefines ${qtdefines_output})
-  list(REMOVE_ITEM test_targets ${qtdefines_output})
+  if (qtdefines_output)
+    list(REMOVE_ITEM test_targets ${qtdefines_output})
+  endif (qtdefines_output)
 endif(${qtdefines_run} EQUAL 0)
 
 message(STATUS "Checking how Qt was built...")
 message(STATUS "Threshold is set to ${qt_test_threshold}")
+
 include (HandleImportedTargetsInCMakeRequiredLibraries)
 set(CMAKE_REQUIRED_INCLUDES ${CMAKE_SYSTEM_INCLUDE_PATH} ${QT_INCLUDE_DIR})
 set(CMAKE_REQUIRED_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTOPENGL_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTSVG_LIBRARY})
@@ -145,19 +151,12 @@ HANDLE_IMPORTED_TARGETS_IN_CMAKE_REQUIRED_LIBRARIES(_CMAKE_REQUIRED_LIBRARIES)
 
 foreach(test_target ${test_targets})
   file(REMOVE_RECURSE ${CMAKE_CURRENT_BINARY_DIR}/test-${test_target})
-  if(QT_QTDBUS_FOUND)
-    try_compile(test_result "${CMAKE_CURRENT_BINARY_DIR}/test-${test_target}"
-      ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
-      COMPILE_DEFINITIONS -DTEST_${test_target}
-      CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_SYSTEM_INCLUDE_PATH};${QT_INCLUDE_DIR}"
-      "-DLINK_LIBRARIES:STRING=${QT_QTCORE_LIBRARY};${QT_QTDBUS_LIBRARY};${QT_QTGUI_LIBRARY};${QT_QTNETWORK_LIBRARY};${QT_QTOPENGL_LIBRARY};${QT_QTXML_LIBRARY};${QT_QTSVG_LIBRARY}")    
-  else(QT_QTDBUS_FOUND)
-    try_compile(test_result "${CMAKE_CURRENT_BINARY_DIR}/test-${test_target}"
-      ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
-      COMPILE_DEFINITIONS -DTEST_${test_target}
-      CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_SYSTEM_INCLUDE_PATH};${QT_INCLUDE_DIR}"
-      "-DLINK_LIBRARIES:STRING=${QT_QTCORE_LIBRARY};${QT_QTGUI_LIBRARY};${QT_QTNETWORK_LIBRARY};${QT_QTOPENGL_LIBRARY};${QT_QTXML_LIBRARY};${QT_QTSVG_LIBRARY}")    
-  endif(QT_QTDBUS_FOUND)
+  
+  try_compile(test_result "${CMAKE_CURRENT_BINARY_DIR}/test-${test_target}"
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
+    COMPILE_DEFINITIONS -DTEST_${test_target}
+    CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_REQUIRED_INCLUDES}"
+    "-DLINK_LIBRARIES:STRING=${_CMAKE_REQUIRED_LIBRARIES}")
   if(test_result)
     message(STATUS "${test_target} *Undefined*")
   else(test_result)
@@ -165,6 +164,11 @@ foreach(test_target ${test_targets})
     list(APPEND qtdefines ${test_target})
   endif(test_result)
 endforeach(test_target ${test_targets})
+
+set(WITH_QT3_SUPPORT OFF CACHE BOOL "Include Qt3 Support members in QtCore and QtGui smoke modules")
+if(WITH_QT3_SUPPORT)
+    list(APPEND qtdefines "QT3_SUPPORT")
+endif(WITH_QT3_SUPPORT)
 
 # string(REGEX REPLACE ";" "\n" qtdefines ${qtdefines})
 # file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/../qtdefines-ng ${qtdefines})
