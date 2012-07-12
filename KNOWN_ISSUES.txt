@@ -1,4 +1,18 @@
-1. All opengl examples fail because opengl can not be loaded (LoadError)
+1. To run the OpenGL examples install opengl (doesn't work on Ubuntu)
+   gem install opengl --pre
 2. The qRgb macro doesn't appear to work correctly
+3. The following examples fail on Windows:
+   draganddrop/dropsite -> Dropping a file crashes it
+   opengl/textures -> Segfault
+   itemview/dirview -> Hangs
+   mainwindows/mdi -> Crashes when trying to open a file
+   network/broadcastsender -> Crashes on writeDatagram
+4. The following examples fail on Ubuntu:
+   draganddrop/dropsite -> Dropping a file crashes it
+   opengl/* -> opengl doesn't install
+   mainwindows/mdi -> Crahses when trying to open a file
+   network/broadcastsender -> Crashes on writeDatagram
+5. The following examples fail on Mac OS X:
+   ???
 
 NOTE: The QDBus examples don't work on Windows because QtDBus is Unix only.

@@ -53,6 +53,7 @@ task :extconf do
   system('ruby extconf.rb')
 end
 
+# All calls 'make clean' and 'make build'
 task :all => [:extconf] do
   system("#{MAKE} all")
 end
@@ -65,16 +66,15 @@ task :distclean => [:extconf] do
   system("#{MAKE} distclean")
 end
 
-task :build => [:extconf] do
+task :make_build => [:extconf] do
   system("#{MAKE} build")
 end
 
 task :install => [:extconf] do
   system("#{MAKE} install")
-  system("#{MAKE} installqt")
 end
 
-task :gem do
+task :gem => [:distclean] do
   warn_version()
   set_version()
   system("gem build qtbindings.gemspec")
@@ -84,25 +84,14 @@ end
 task :gemnative do
   warn_version()
   set_version()
+  system("#{MAKE} installqt")
   system("gem build qtbindingsnative.gemspec")
   clear_version()
 end
 
-task :gemwindows do
-  Rake::Task[:extconf].execute
-  Rake::Task[:distclean].execute
+task :build do
   Rake::Task[:extconf].execute
   Rake::Task[:all].execute
   Rake::Task[:install].execute
-  Rake::Task[:gemnative].execute
-end
-
-task :gemnix do
-  Rake::Task[:extconf].execute
-  Rake::Task[:distclean].execute
-  Rake::Task[:extconf].execute
-  Rake::Task[:all].execute
-  Rake::Task[:install].execute
-  Rake::Task[:gem].execute
 end
 

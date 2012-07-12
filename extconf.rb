@@ -10,12 +10,15 @@ windows = true if platform == 'mswin32' or platform == 'mingw32'
 macosx  = true if platform =~ /darwin/
 
 ruby_version = '1.9'
+ruby_version = '1.8' if RUBY_VERSION.split('.')[1].to_i == 8
 
 if windows
   # README! - Modify this path if you have QT installed somewhere else
   # or if you have a different version of QT you want to link to.
   qt_sdk_path = "C:\\QtSDK\\Desktop\\Qt\\4.8.1\\mingw"
-  unless Dir.exists?(qt_sdk_path)
+  begin
+    File::Stat.new(qt_sdk_path)
+  rescue
     puts "ERROR! QT SDK doesn't exist at #{qt_sdk_path}"
     exit # Not much we can do if the QT SDK doesn't exist
   end
