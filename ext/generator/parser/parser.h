@@ -29,17 +29,7 @@
 #include <QtCore/QQueue>
 #include <QtCore/QSet>
 #include <QtCore/QString>
-#ifdef Q_CC_MSVC
-#include <hash_map>
-using namespace stdext;
-#elif defined(Q_CC_GNU)
-#include <ext/hash_map>
-using namespace __gnu_cxx;
-#else
-#include <map>
-// template typedefs aren't supported by C++ - resort to a #define for now.
-#define hash_map std::map
-#endif
+#include <QtCore/QHash>
 
 class TokenStream;
 class Control;
@@ -265,7 +255,7 @@ private:
   Comment m_currentComment;
   CommentStore m_commentStore;
  
-  hash_map<size_t, TokenMarkers> m_tokenMarkers;
+  QHash<size_t, TokenMarkers> m_tokenMarkers;
   int _M_problem_count;
   int _M_max_problem_count;
   ParseSession* session;

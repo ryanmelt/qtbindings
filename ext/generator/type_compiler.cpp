@@ -191,6 +191,8 @@ void TypeCompiler::visitParameterDeclaration(ParameterDeclarationAST* node)
 
 void TypeCompiler::visitPtrOperator(PtrOperatorAST* node)
 {
+    if ( ! m_session->token_stream ) return;
+    if ( ! token_text(m_session->token_stream->kind(node->op)) ) return;
     if (token_text(m_session->token_stream->kind(node->op))[0] == '*') {
         QPair<bool, bool> cv = m_visitor->parseCv(node->cv);
         pointerDepth.append(cv.first);

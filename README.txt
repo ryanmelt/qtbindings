@@ -17,31 +17,55 @@ Goals
 
 Tested Environments
 --------------------
-Mac OSX 10.6.4 (Snow Leopard)
-XCode 3.2.3
-Macports 1.9.1
-qt4-mac 4.6.3
-Cmake 2.8.2
+Mac OSX 10.6.8 (Snow Leopard)
+XCode 3.2.6
+Brew - QT 4.8.2
+Cmake 2.8.6
 
 Windows XP SP3
-QT SDK 4.6.3
-Cmake 2.8.2
-Ruby 1.8.7p299 installed from rubyinstaller.org
+QT SDK 4.8.1
+Cmake 2.8.8
+Ruby 1.8.7p358 and 1.9.3p0 installed from rubyinstaller.org
 
-Ubuntu Linux 10.4
-QT SDK 4.6.3
-Cmake 2.8.2
+Note: Ruby 1.9.3 patch levels 125 and 194 on Windows have a bug in the I/O
+system which prevent the usage of the pos method. That is why I'm using 1.9.3p0.
+
+Ubuntu Linux 11.10
+QT SDK 4.8.1
+Cmake 2.8.5
 
 Compiling
 ---------
 Compiling qtbindings requires the following prerequisites:
-1. cmake 2.6.3+ installed and in your path
-2. QT 4.6.x installed and in your path
+1. cmake 2.8.x installed and in your path
+2. QT 4.8.x installed and in your path
 3. Ruby installed and in your path
 4. gcc 4.x
 
 Additionally: all of the operating system prequisites for compiling, 
 window system development, opengl, etc must be installed.
+
+Rakefile
+--------
+Perform the following steps to build the gem on Unix or Mac:
+1. rake gem
+
+Perform the following steps to build the gem on Windows:
+1. Ensure you are running Ruby 1.8.7
+     ruby -v #=> ruby 1.8.7
+2. rake distclean
+3. rake build
+4. Switch to Ruby 1.9.3
+     ruby -v #=> ruby 1.9.3
+5. rake build
+6. rake gemnative
+
+Note: The gem is built twice to create the FAT binary which will work 
+on both Ruby 1.8 and 1.9. The Windows utility called pik is useful for
+switching between Ruby versions.
+
+After building the gem, verify the examples work by running:
+1. rake examples
 
 Operating Systems Notes:
 
@@ -57,10 +81,8 @@ sudo aptitude install build-essential bison openssl libreadline5
 Mac OSX Snow Leopard
 -----------------------
 1. XCode
-2. qt4-mac installed from macports - NOTE: For some reason smokegen does 
-   not work with the SDK or Cocoa libraries directly from qt.nokia.com - 
-   Uninstall these if necessary using: 
-   sudo python /Developer/Tools/uninstall_qt.py
+2. Brew (http://mxcl.github.com/homebrew/)
+   Install qt with 'brew install qt'
 
 Windows - Note: Only necessary for debugging (binary gem available)
 --------
@@ -74,7 +96,7 @@ installed or the compile will fail.
 gem install qtbindings
 
 This should always work flawlessly on Windows because everything is nicely 
-packaged into a binary gem. However, the gem is very large ~49MB, so please
+packaged into a binary gem. However, the gem is very large ~90MB, so please
 be patient while gem downloads the file. 
 
 To get help:

@@ -127,7 +127,9 @@ struct Util
 
     static QChar munge(const Type *type);
     static QString mungedName(const Method&);
-    
+
+    static Type* normalizeType(const Type* type);
+
     static QString stackItemField(const Type* type);
     static QString assignmentString(const Type* type, const QString& var);
     static QList<const Method*> collectVirtualMethods(const Class* klass);

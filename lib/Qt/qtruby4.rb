@@ -114,7 +114,7 @@ module Qt
       return Qt::*(self, a)
     end
     def /(a)
-      return Qt::/(self, a)
+      return Qt::/(self, a) #/
     end
     def %(a)
       return Qt::%(self, a)
@@ -136,7 +136,7 @@ module Qt
     end
 
 #    Module has '<', '<=', '>' and '>=' operator instance methods, so pretend they
-#    don't exist by calling method_missing() explicitely
+#    don't exist by calling method_missing() explicitly
     def <(a)
       begin
         Qt::method_missing(:<, self, a)
@@ -170,7 +170,7 @@ module Qt
     end
 
 #    Object has a '==' operator instance method, so pretend it
-#    don't exist by calling method_missing() explicitely
+#    don't exist by calling method_missing() explicitly
     def ==(a)
       return false if a.nil?
       begin
@@ -2640,7 +2640,7 @@ module Qt
       end
     end
     
-        # If a block was passed to the constructor, then
+    # If a block was passed to the constructor, then
     # run that now. Either run the context of the new instance
     # if no args were passed to the block. Or otherwise,
     # run the block in the context of the arg.

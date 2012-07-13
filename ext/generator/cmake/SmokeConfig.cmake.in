@@ -1,0 +1,109 @@
+# Find smoke libraries.
+#
+# Use:
+#
+# find_package(Smoke [REQUIRED] COMPONENTS QtCore QtGui <other components>)
+#
+# Defines:
+#
+# SMOKE_INCLUDE_DIR                 Directory in which smoke.h is located
+# SMOKE_CMAKE_MODULE_DIR            Directory with additional cmake files used by kdebindings
+# SMOKE_GEN_BIN                     The path of the smokegen executable
+# SMOKE_GEN_SHARED                  Directory in which commonly used smokegen files reside
+# SMOKE_API_BIN                     The path of the smokeapi executable
+# SMOKE_GENERATOR_SMOKE_LIB         Path of generator_smoke library
+# SMOKE_GENERATOR_DUMP_LIB          Path of generator_dump library
+# SMOKE_<component>_INCLUDE_DIR     Directory in which to find smoke/<component>_smoke.h
+# SMOKE_<component>_LIBRARY         Library for the smoke lib
+#
+# Copyright (c) 2010, Arno Rehn <arno@arnorehn.de>
+#           (c) 2010, Ian Monroe <ian@monroe.nu>
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+
+#####################
+# utility functions #
+#####################
+
+function (_print type message)
+    if (NOT Smoke_FIND_QUIETLY)
+        message (${type} "${message}")
+    endif (NOT Smoke_FIND_QUIETLY)
+endfunction (_print type message)
+
+
+##############################
+# find individual smoke libs #
+##############################Smoke_FIND_REQUIRED
+
+macro (find_smoke_component name)
+    string(TOUPPER ${name} uppercase)
+    string(TOLOWER ${name} lowercase)
+
+    if (NOT SMOKE_${uppercase}_FOUND)
+        set (SMOKE_${uppercase}_FOUND FALSE CACHE INTERNAL "")
+
+        find_path(SMOKE_${uppercase}_INCLUDE_DIR 
+            ${lowercase}_smoke.h 
+            PATH ${SMOKE_INCLUDE_DIR}
+            NO_DEFAULT_PATH
+            )
+        if(WIN32)
+		    # DLLs are in the bin directory.
+            find_library(SMOKE_${uppercase}_LIBRARY
+                smoke${lowercase}
+                PATHS "@CMAKE_INSTALL_PREFIX@/bin"
+                NO_DEFAULT_PATH)
+        else(WIN32)
+            find_library(SMOKE_${uppercase}_LIBRARY
+                smoke${lowercase}
+                PATHS "@SMOKE_LIBRARY_PREFIX@"
+                NO_DEFAULT_PATH)
+        endif(WIN32)
+
+        if (NOT SMOKE_${uppercase}_INCLUDE_DIR OR NOT SMOKE_${uppercase}_LIBRARY)
+            if (Smoke_FIND_REQUIRED)
+                _print(FATAL_ERROR "Could not find Smoke${name}")
+            else (Smoke_FIND_REQUIRED)
+                _print(STATUS "Could not find Smoke${name}")
+            endif (Smoke_FIND_REQUIRED)
+        else (NOT SMOKE_${uppercase}_INCLUDE_DIR OR NOT SMOKE_${uppercase}_LIBRARY)
+            set (SMOKE_${uppercase}_FOUND TRUE CACHE INTERNAL "")
+            _print(STATUS "Found Smoke${name}: ${SMOKE_${uppercase}_LIBRARY}")
+        endif (NOT SMOKE_${uppercase}_INCLUDE_DIR OR NOT SMOKE_${uppercase}_LIBRARY)
+
+        mark_as_advanced(SMOKE_${uppercase}_INCLUDE_DIR SMOKE_${uppercase}_LIBRARY SMOKE_${uppercase}_FOUND)
+    endif (NOT SMOKE_${uppercase}_FOUND)
+endmacro (find_smoke_component)
+
+################
+# find smoke.h #
+################
+set(SMOKE_INCLUDE_DIR "@SMOKE_INCLUDE_DIR@")
+set(SMOKE_CMAKE_MODULE_DIR "@SMOKE_CMAKE_MODULE_DIR@")
+set(SMOKE_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
+set(SMOKE_GENERATOR_SMOKE_LIB "@SMOKE_GENERATOR_SMOKE_LIB@")
+set(SMOKE_GENERATOR_DUMP_LIB "@SMOKE_GENERATOR_DUMP_LIB@")
+set(SMOKE_GEN_BIN "@SMOKE_GEN_BIN@")
+set(SMOKE_GEN_SHARED "@SMOKE_GEN_SHARED@")
+set(SMOKE_API_BIN "@SMOKE_API_BIN@")
+
+find_library(SMOKE_BASE_LIBRARY smokebase 
+              PATHS "@SMOKE_LIBRARY_PREFIX@"
+              NO_DEFAULT_PATH)
+
+if (NOT SMOKE_BASE_LIBRARY)
+    if (Smoke_FIND_REQUIRED)
+        _print(FATAL_ERROR "Could not find SMOKE")
+    else (Smoke_FIND_REQUIRED)
+        _print(STATUS "Could not find SMOKE")
+    endif (Smoke_FIND_REQUIRED)
+endif (NOT SMOKE_BASE_LIBRARY)
+
+mark_as_advanced(SMOKE_INCLUDE_DIR SMOKE_BASE_LIBRARY)
+
+if (Smoke_FIND_COMPONENTS)
+    foreach (component ${Smoke_FIND_COMPONENTS})
+        find_smoke_component(${component})
+    endforeach(component)
+endif (Smoke_FIND_COMPONENTS)

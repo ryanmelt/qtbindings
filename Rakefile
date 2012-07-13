@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'rake'
 
 windows = false
@@ -17,20 +16,35 @@ end
 
 def set_version
   if ENV['VERSION']
-    File.open('lib/qtbindings_version.rb', 'w') do |file| 
+    File.open('lib/qtbindings_version.rb', 'w') do |file|
       file.write("QTBINDINGS_VERSION = '#{ENV['VERSION']}'\n")
       file.write("QTBINDINGS_RELEASE_DATE = '#{Time.now}'\n")
     end
-  end  
+  end
 end
 
 def clear_version
   if ENV['VERSION']
-    File.open('lib/qtbindings_version.rb', 'w') do |file| 
+    File.open('lib/qtbindings_version.rb', 'w') do |file|
       file.write("QTBINDINGS_VERSION = '0.0.0.0'\n")
       file.write("QTBINDINGS_RELEASE_DATE = ''\n")
     end
-  end    
+  end
+end
+
+task :build_examples do
+  # Go into the examples directory and look for all the makefiles and build them
+  Dir['examples/**/makefile'].each do |file|
+    if windows
+      system("cd #{File.dirname(file).gsub('/', '\\')} && #{MAKE}")
+    else
+      system("cd #{File.dirname(file)} && #{MAKE}")
+    end
+  end
+end
+
+task :examples => [:build_examples] do
+  system('cd examples && ruby run_all.rb')
 end
 
 task :default => [:all]
@@ -39,28 +53,25 @@ task :extconf do
   system('ruby extconf.rb')
 end
 
-task :all => [:extconf] do  
+# All calls 'make clean' and 'make build'
+task :all => [:extconf] do
   system("#{MAKE} all")
 end
 
-task :clean => [:extconf] do  
+task :clean => [:extconf] do
   system("#{MAKE} clean")
 end
 
-task :distclean => [:extconf] do  
+task :distclean => [:extconf] do
   system("#{MAKE} distclean")
 end
 
-task :build => [:extconf] do  
+task :make_build => [:extconf] do
   system("#{MAKE} build")
 end
 
-task :install => [:extconf] do  
+task :install => [:extconf] do
   system("#{MAKE} install")
-end
-
-task :installqt => [:extconf] do  
-  system("#{MAKE} installqt")
 end
 
 task :gem => [:distclean] do
@@ -70,27 +81,17 @@ task :gem => [:distclean] do
   clear_version()
 end
 
-task :gemnative => [:clean] do
+task :gemnative do
   warn_version()
   set_version()
+  system("#{MAKE} installqt")
   system("gem build qtbindingsnative.gemspec")
   clear_version()
 end
 
-task :gemwindows => [:installqt, :gemnative]
-
-task :ryanbuildwindows do
-  if RUBY_VERSION.split('.')[1].to_i == 9
-    system("move C:\\Ruby C:\\Ruby191 && move C:\\Ruby187 C:\\Ruby")
-  end
+task :build do
   Rake::Task[:extconf].execute
   Rake::Task[:all].execute
   Rake::Task[:install].execute
-  system("move C:\\Ruby C:\\Ruby187 && move C:\\Ruby191 C:\\Ruby")
-  Rake::Task[:extconf].execute
-  Rake::Task[:all].execute
-  Rake::Task[:install].execute
-  system("move C:\\Ruby C:\\Ruby191 && move C:\\Ruby187 C:\\Ruby")
 end
 
-task :ryangemwindows => [:ryanbuildwindows, :gemwindows]
