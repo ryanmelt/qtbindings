@@ -75,6 +75,7 @@
         <class>QDataStream</class>
         <class>QDate</class>
         <class>QDateTime</class>
+        <class>QDebug</class>
         <class>QDir</class>
         <class>QDirIterator</class>
         <class>QDynamicPropertyChangeEvent</class>

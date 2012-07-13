@@ -38,4 +38,13 @@ add_definitions(-D__CPPPARSER_BUILDING)
 add_library(cppparser SHARED ${cppparser_LIB_SRCS})
 target_link_libraries(cppparser ${QT_QTCORE_LIBRARY})
 
-install(TARGETS cppparser DESTINATION ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX} )
+install(TARGETS cppparser LIBRARY DESTINATION ${LIB_INSTALL_DIR}
+    ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
+    RUNTIME DESTINATION bin)
+if (WIN32)
+	# Realign the stack, for compatibility with an older ABI.
+	set_target_properties (cppparser PROPERTIES COMPILE_FLAGS -mstackrealign)
+
+    # Get rid of the "lib" prefix on archives/DLLs in Windows.
+    set_target_properties(cppparser PROPERTIES PREFIX "" IMPORT_PREFIX "")
+endif (WIN32)

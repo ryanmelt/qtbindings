@@ -1,5 +1,19 @@
-1. broadcastsender example fails - undefined method writeDatagram
-2. fortuneserver example fails - undefined method seek
-3. ftp example fails - undefined method icon=
-4. fontsampler example fails - undefined method checkState for nil
-5. passivepopup example fails - seg fault
+1. To run the OpenGL examples install opengl (doesn't work on Ubuntu)
+   gem install opengl --pre
+2. The qRgb macro doesn't appear to work correctly
+3. The following examples fail on Windows:
+   opengl/textures -> Segfault
+   itemview/dirview -> Hangs
+   network/broadcastsender -> writeDatagram(const char* data, ...) fails
+   network/broadcastreceiver -> readDatagram(char* data, ...) fails
+4. The following examples fail on Ubuntu:
+   opengl/* -> opengl doesn't install
+   network/broadcastsender -> writeDatagram(const char* data, ...) fails
+   network/broadcastreceiver -> readDatagram(char* data, ...) fails
+5. The following examples fail on Mac OS X:
+   desktop/screenshot -> QPixmap::scaled: Pixmap is a null pixmap
+   opengl/textures -> glwidget.rb:137
+   network/broadcastsender -> writeDatagram(const char* data, ...) fails
+   network/broadcastreceiver -> readDatagram(char* data, ...) fails
+
+NOTE: The QDBus examples don't work on Windows because QtDBus is Unix only.

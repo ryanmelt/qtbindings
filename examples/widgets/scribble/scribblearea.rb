@@ -37,13 +37,13 @@ class ScribbleArea < Qt::Widget
 		@image = Qt::Image.new
 		@lastPoint = Qt::Point.new
 	end
-	
+
 	def openImage(fileName)
 		loadedImage = Qt::Image.new
 		if !loadedImage.load(fileName)
 			return false
 		end
-	
+
 		newSize = loadedImage.size().expandedTo(size())
 		resizeImage(loadedImage, newSize)
 		@image = loadedImage
@@ -51,11 +51,11 @@ class ScribbleArea < Qt::Widget
 		update()
 		return true
 	end
-	
+
 	def saveImage(fileName,  fileFormat)
 		visibleImage = @image
 		resizeImage(visibleImage, size())
-	
+
 		if visibleImage.save(fileName, fileFormat.to_s)
 			@modified = false
 			return true
@@ -63,7 +63,7 @@ class ScribbleArea < Qt::Widget
 			return false
 		end
 	end
-	
+
 	def modified?
 		return @modified
 	end
@@ -75,47 +75,47 @@ class ScribbleArea < Qt::Widget
 	def penColor=(newColor)
 		@myPenColor = newColor
 	end
-	
+
 	def penWidth
 		return @myPenWidth
 	end
-	
+
 	def penWidth=(newWidth)
 		@myPenWidth = newWidth
 	end
-	
+
 	def clearImage()
-		@image.fill(qRgb(255, 255, 255))
+		@image.fill(Qt::Color.new(255,255,255)) #qRgb(255, 255, 255))
 		@modified = true
 		update()
 	end
-	
+
 	def mousePressEvent(event)
 		if event.button() == Qt::LeftButton
 			@lastPoint = event.pos()
 			@scribbling = true
 		end
 	end
-	
+
 	def mouseMoveEvent(event)
 		if (Qt::LeftButton & event.buttons() != 0) && @scribbling
 			drawLineTo(event.pos())
 		end
 	end
-	
+
 	def mouseReleaseEvent(event)
 		if event.button() == Qt::LeftButton && @scribbling
 			drawLineTo(event.pos())
 			@scribbling = false
 		end
 	end
-	
+
 	def paintEvent(event)
 		painter = Qt::Painter.new(self)
 		painter.drawImage(Qt::Point.new(0, 0), @image)
 		painter.end
 	end
-	
+
 	def resizeEvent(event)
 		if width() > @image.width() || height() > @image.height()
 			newWidth = [width() + 128, @image.width()].max
@@ -125,27 +125,27 @@ class ScribbleArea < Qt::Widget
 		end
 		super(event)
 	end
-	
+
 	def drawLineTo(endPoint)
 		painter = Qt::Painter.new(@image)
 		painter.pen = Qt::Pen.new(Qt::Brush.new(@myPenColor), @myPenWidth, Qt::SolidLine, Qt::RoundCap,
 							Qt::RoundJoin)
 		painter.drawLine(@lastPoint, endPoint)
 		@modified = true
-	
+
 		rad = @myPenWidth / 2
 		update(Qt::Rect.new(@lastPoint, endPoint).normalized().adjusted(-rad, -rad, +rad, +rad))
 		@lastPoint = endPoint
 		painter.end
 	end
-	
+
 	def resizeImage(image, newSize)
 		if image.size == newSize
 			return
 		end
-	
+
 		newImage = Qt::Image.new(newSize, Qt::Image::Format_RGB32)
-		newImage.fill(qRgb(255, 255, 255))
+		newImage.fill(Qt::Color.new(255,255,255)) #qRgb(255, 255, 255))
 		painter = Qt::Painter.new(newImage)
 		painter.drawImage(Qt::Point.new(0, 0), image)
 		@image = newImage

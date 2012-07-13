@@ -38,10 +38,10 @@ QByteArray stringFromContents(const PreprocessedContents& contents, int offset, 
 
 #include <stdio.h>
 
-QByteArray lineFromContents(const uint* contents, int lineNumber) {
+QByteArray lineFromContents(std::size_t size, const uint* contents, int lineNumber) {
   int a1 = 0;
   int lineCount = 0;
-  while (lineCount < lineNumber) {
+  while (a1 < size && lineCount < lineNumber) {
     if (isNewline(contents[a1])) {
         lineCount++;
     }
@@ -49,7 +49,7 @@ QByteArray lineFromContents(const uint* contents, int lineNumber) {
   }
 
   int a2 = a1;
-  while (!isNewline(contents[a2])) {
+  while (a2 < size && !isNewline(contents[a2])) {
     a2++;
   }
 

@@ -22,6 +22,8 @@
 #include <rpp/pp-environment.h>
 #include <rpp/pp-macro.h>
 
+#include <QCoreApplication>
+
 #include <QtDebug>
 
 QList<QString> parsedHeaders;
@@ -100,6 +102,32 @@ Preprocessor::Preprocessor(const QList<QDir>& includeDirs, const QStringList& de
     exportMacro->variadics = false;
     m_topBlock->setMacro(exportMacro);
 
+    // the following macros are gcc specialties
+    exportMacro = new rpp::pp_macro;
+    exportMacro->name = IndexedString("__extension__");
+    exportMacro->function_like = false;
+    exportMacro->variadics = false;
+    m_topBlock->setMacro(exportMacro);
+
+    exportMacro = new rpp::pp_macro;
+    exportMacro->name = IndexedString("__restrict");
+    exportMacro->function_like = false;
+    exportMacro->variadics = false;
+    m_topBlock->setMacro(exportMacro);
+
+    exportMacro = new rpp::pp_macro;
+    exportMacro->name = IndexedString("__const");
+    exportMacro->definition.append(IndexedString("const"));
+    exportMacro->function_like = false;
+    exportMacro->variadics = false;
+    m_topBlock->setMacro(exportMacro);
+
+    exportMacro = new rpp::pp_macro;
+    exportMacro->name = IndexedString("__attribute__");
+    exportMacro->function_like = true;
+    exportMacro->variadics = false;
+    m_topBlock->setMacro(exportMacro);
+
     exportMacro = new rpp::pp_macro;
     exportMacro->name = IndexedString("__SMOKEGEN_RUN__");
     exportMacro->definition.append(IndexedString('1'));
@@ -175,9 +203,13 @@ PreprocessedContents Preprocessor::preprocess()
 
 rpp::Stream* Preprocessor::sourceNeeded(QString& fileName, rpp::Preprocessor::IncludeType type, int sourceLine, bool skipCurrentPath)
 {
+#ifdef Q_WS_MAC
+    static QRegExp frameworkExpr("([^/]+)/(.*)");
+#endif
+
     if (m_fileStack.top().fileName() == fileName && type == rpp::Preprocessor::IncludeGlobal) {
 #ifdef DEBUG
-        qDebug("prevented possible endless loop because of #include<%s>", qPrintable(fileName));
+        qDebug("prevented possible endless loop because of #include <%s>", qPrintable(fileName));
 #endif
         return 0;
     }
@@ -191,8 +223,12 @@ rpp::Stream* Preprocessor::sourceNeeded(QString& fileName, rpp::Preprocessor::In
     
     QString path;
     QFileInfo info(fileName);
-    
-    if (info.isAbsolute()) {
+
+    // smokegen chokes on gcc's string.h, so use our simplified version here
+    if (type == rpp::Preprocessor::IncludeGlobal && fileName == "string.h") {
+        static QString customStringHPath = qApp->applicationDirPath() + "/../share/smokegen/string.h";
+        path = customStringHPath;
+    } else if (info.isAbsolute()) {
         path = fileName;
     } else if (type == rpp::Preprocessor::IncludeLocal) {
         info.setFile(m_fileStack.last().dir(), fileName);
@@ -200,57 +236,40 @@ rpp::Stream* Preprocessor::sourceNeeded(QString& fileName, rpp::Preprocessor::In
             path = info.absoluteFilePath();
     }
     if (path.isEmpty()) {
-        foreach (QDir dir, m_includeDirs) {
-#if 0
-            if (dir.absolutePath().endsWith(".framework"))
-            {
-                dir.setPath(dir.absolutePath() + "/Headers");
-            }
+#ifdef Q_WS_MAC
+        QString framework;
+        QString header;
+        if (frameworkExpr.exactMatch(fileName)) {
+            framework = frameworkExpr.cap(1);
+            header = frameworkExpr.cap(2);
+        }
 #endif
-            // qWarning("Searching in %s", qPrintable(dir.absolutePath()));
+
+        Q_FOREACH (const QDir& dir, m_includeDirs) {
             info.setFile(dir, fileName);
             if (info.isFile()) {
                 path = info.absoluteFilePath();
-                // qWarning("Found #include<%s>", qPrintable(fileName));
                 break;
             }
-        }
-    }
- 
-#if defined(Q_OS_DARWIN)
-    /* Try searching for frameworks in default locations */
-    if (path.isEmpty()) {
-        QStringList splitString = fileName.split("/");
-        if (splitString.size() >= 2) {
-            QString frameworkName = splitString.takeFirst();
-            QString remainingFileName = splitString.join("/");
-            QDir dir1 = QDir(("/System/Library/Frameworks/" + frameworkName) + ".framework/Headers");
-            QDir dir2 = QDir(("/Library/Frameworks/" + frameworkName) + ".framework/Headers");
-            info.setFile(dir1, remainingFileName);
-            if (info.isFile()) {
-                path = info.absoluteFilePath();
-                // qWarning("Found #include<%s>", qPrintable(fileName));
-            }
-            else {
-                info.setFile(dir2, remainingFileName);
+
+#ifdef Q_WS_MAC
+            QDir parentDir = dir;
+            parentDir.cdUp();
+            if (parentDir.dirName() == framework + ".framework" && dir.dirName() == "Headers") {
+                info.setFile(dir, header);
                 if (info.isFile()) {
                     path = info.absoluteFilePath();
-                    // qWarning("Found #include<%s>", qPrintable(fileName));
+                    break;
                 }
             }
+#endif
         }
     }
+    
+    if (path.isEmpty()) {
+#ifdef DEBUG
+        qDebug("PP: File not found: %s", qPrintable(fileName));
 #endif
-
-    if (fileName == "stdio.h")
-    {
-        qWarning("Not parsing stdio.h because it is not handled correctly by smokegen on FreeBSD based systems");
-        return 0;
-    }
- 
-    if (path.isEmpty())
-    {
-        qWarning("Couldn't find file for #include<%s>", qPrintable(fileName));
         return 0;
     }
     

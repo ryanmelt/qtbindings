@@ -56,6 +56,8 @@
         <class>QDBusPendingCallWatcher</class>
         <class>QDBusServer</class>
         <class>QDBusServiceWatcher</class>
+        <class>QDBusUnixFileDescriptor</class>
+        <class>QDBusVirtualObject</class>
 
         <!-- namespaces -->
         <class>QDBus</class>

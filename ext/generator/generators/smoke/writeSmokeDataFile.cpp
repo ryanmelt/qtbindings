@@ -59,6 +59,9 @@ SmokeDataFile::SmokeDataFile()
             usedTypes << meth->type();
             foreach (const Parameter& param, meth->parameters()) {
                 usedTypes << param.type();
+                if (meth->isSlot() || meth->isSignal() || meth->isQPropertyAccessor()) {
+                    usedTypes << Util::normalizeType(param.type());
+                }
             }
             declaredVirtualMethods[meth->getClass()] << meth;
         }
@@ -173,6 +176,9 @@ void SmokeDataFile::write()
     QFile smokedata(Options::outputDir.filePath("smokedata.cpp"));
     smokedata.open(QFile::ReadWrite | QFile::Truncate);
     QTextStream out(&smokedata);
+    QFile argNames(Options::outputDir.filePath(QString("%1.argnames.txt").arg(Options::module)));
+    argNames.open(QFile::ReadWrite | QFile::Truncate);
+    QTextStream outArgNames(&argNames);
     foreach (const QFileInfo& file, Options::headerList)
         out << "#include <" << file.fileName() << ">\n";
     out << "\n#include <smoke.h>\n";
@@ -419,13 +425,31 @@ void SmokeDataFile::write()
             }
             QVector<int> indices(meth.parameters().count());
             QStringList comment;
+            if (meth.parameters().size() > 0) {
+                outArgNames << klass->name() << "," << meth.name();
+            }
             for (int i = 0; i < indices.size(); i++) {
                 Type* t = meth.parameters()[i].type();
                 if (!typeIndex.contains(t)) {
                     qFatal("missing type: %s in method %s (while building munged names map)", qPrintable(t->toString()), qPrintable(meth.toString(false, true)));
                 }
-                indices[i] = typeIndex[t];
+                outArgNames << ",";
+                outArgNames << (indices[i] = typeIndex[t]);
                 comment << t->toString();
+            }
+            if (meth.parameters().size() > 0) {
+                outArgNames << ";";
+                for (int i = 0; i < meth.parameters().size(); i++) {
+                    QString paramName = meth.parameters()[i].name();
+                    if (paramName == "") {
+                        paramName = "arg" + QString::number(i + 1);
+                    }
+                    outArgNames << paramName;
+                    if (i < meth.parameters().size() - 1) {
+                        outArgNames << ",";
+                    }
+                }
+                outArgNames << "\n";
             }
             int idx = 0;
             if ((idx = parameterList.value(indices, -1)) == -1) {
@@ -726,4 +750,5 @@ void SmokeDataFile::write()
     out << "}\n";
 
     smokedata.close();
+    argNames.close();
 }

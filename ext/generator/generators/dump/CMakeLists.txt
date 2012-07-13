@@ -7,4 +7,9 @@ add_library(generator_dump MODULE ${generator_dump_SRC})
 target_link_libraries(generator_dump ${QT_QTCORE_LIBRARY} smokegen)
 set_target_properties(generator_dump PROPERTIES PREFIX "")
 
+if (WIN32)
+	# Realign the stack, for compatibility with an older ABI.
+	set_target_properties (generator_dump PROPERTIES COMPILE_FLAGS -mstackrealign)
+endif (WIN32)
+
 install(TARGETS generator_dump LIBRARY DESTINATION ${LIB_INSTALL_DIR}/smokegen)
