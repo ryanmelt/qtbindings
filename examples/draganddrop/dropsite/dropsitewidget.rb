@@ -39,7 +39,7 @@ class DropArea < Qt::Label
 	    setAlignment(Qt::AlignCenter)
 	    setAcceptDrops(true)
 	    setAutoFillBackground(true)
-        clear()
+      clear()
 	end
 	
 	def dragEnterEvent(event)
@@ -50,28 +50,29 @@ class DropArea < Qt::Label
 #	    emit changed(event.mimeData())
 	end
 	
-    def dragMoveEvent(event)
-	    event.acceptProposedAction()
-    end
+  def dragMoveEvent(event)
+      event.acceptProposedAction()
+  end
 
 	def dropEvent(event)
 	    mimeData = event.mimeData()
-        if mimeData.hasText
+      if mimeData.hasText
             setText(mimeData.text())
             setTextFormat(Qt::PlainText)
 	    end
 
-
 	    formats = mimeData.formats()
 	    formats.each do |format|
-	        if format.startsWith("image/")
-	            pixmap = createPixmap(mimeData.data(format), format)
+	        if format.start_with?("image/")
+	            pixmap = Qt::Pixmap.new
+	            pixmap.loadFromData(mimeData.data(format), format)
 	            if !pixmap.nil?
 	                setPixmap(pixmap)
 	                break
 	            end
 	        end
-	        text = createPlainText(mimeData.data(format), format)
+	        #text = createPlainText(mimeData.data(format), format)
+	        text = mimeData.data(format).to_s
 	        if !text.empty?
 	            setText(text)
 	            break

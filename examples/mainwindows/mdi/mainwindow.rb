@@ -84,7 +84,7 @@ class MainWindow < Qt::MainWindow
         if !fileName.nil?
             existing = findMdiChild(fileName)
             if !existing.nil?
-                @mdiArea.activeSubWindow = existing
+                @mdiArea.setActiveSubWindow(existing)
                 return
             end
     
@@ -352,10 +352,10 @@ class MainWindow < Qt::MainWindow
     def findMdiChild(fileName)
         canonicalFilePath = Qt::FileInfo.new(fileName).canonicalFilePath()
 
-        @mdiArea.windowList().each do |window|
-            mdiChild = window
+        @mdiArea.subWindowList().each do |window|
+            mdiChild = window.widget
             if mdiChild.currentFile() == canonicalFilePath
-                return mdiChild
+                return window
             end
         end
         return nil

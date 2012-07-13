@@ -2,17 +2,18 @@
    gem install opengl --pre
 2. The qRgb macro doesn't appear to work correctly
 3. The following examples fail on Windows:
-   draganddrop/dropsite -> Dropping a file crashes it
    opengl/textures -> Segfault
    itemview/dirview -> Hangs
-   mainwindows/mdi -> Crashes when trying to open a file
-   network/broadcastsender -> Crashes on writeDatagram
+   network/broadcastsender -> writeDatagram(const char* data, ...) fails
+   network/broadcastreceiver -> readDatagram(char* data, ...) fails
 4. The following examples fail on Ubuntu:
-   draganddrop/dropsite -> Dropping a file crashes it
    opengl/* -> opengl doesn't install
-   mainwindows/mdi -> Crahses when trying to open a file
-   network/broadcastsender -> Crashes on writeDatagram
+   network/broadcastsender -> writeDatagram(const char* data, ...) fails
+   network/broadcastreceiver -> readDatagram(char* data, ...) fails
 5. The following examples fail on Mac OS X:
-   ???
+   desktop/screenshot -> QPixmap::scaled: Pixmap is a null pixmap
+   opengl/textures -> glwidget.rb:137
+   network/broadcastsender -> writeDatagram(const char* data, ...) fails
+   network/broadcastreceiver -> readDatagram(char* data, ...) fails
 
 NOTE: The QDBus examples don't work on Windows because QtDBus is Unix only.
