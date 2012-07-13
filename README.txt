@@ -17,11 +17,10 @@ Goals
 
 Tested Environments
 --------------------
-Mac OSX 10.6.4 (Snow Leopard)
-XCode 3.2.3
-Macports 1.9.1
-qt4-mac 4.6.3
-Cmake 2.8.2
+Mac OSX 10.6.8 (Snow Leopard)
+XCode 3.2.6
+Brew - QT 4.8.2
+Cmake 2.8.6
 
 Windows XP SP3
 QT SDK 4.8.1
@@ -82,10 +81,8 @@ sudo aptitude install build-essential bison openssl libreadline5
 Mac OSX Snow Leopard
 -----------------------
 1. XCode
-2. qt4-mac installed from macports - NOTE: For some reason smokegen does 
-   not work with the SDK or Cocoa libraries directly from qt.nokia.com - 
-   Uninstall these if necessary using: 
-   sudo python /Developer/Tools/uninstall_qt.py
+2. Brew (http://mxcl.github.com/homebrew/)
+   Install qt with 'brew install qt'
 
 Windows - Note: Only necessary for debugging (binary gem available)
 --------
