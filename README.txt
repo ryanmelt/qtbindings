@@ -48,7 +48,8 @@ window system development, opengl, etc must be installed.
 Rakefile
 --------
 Perform the following steps to build the gem on Unix or Mac:
-1. rake gem
+1. rake VERSION=4.8.x.y gem
+     Where the x is the subversion of QT and y is the patch level of qtbindings
 
 Perform the following steps to build the gem on Windows:
 1. Ensure you are running Ruby 1.8.7
@@ -58,7 +59,8 @@ Perform the following steps to build the gem on Windows:
 4. Switch to Ruby 1.9.3
      ruby -v #=> ruby 1.9.3
 5. rake build
-6. rake gemnative
+6. rake VERSION=4.8.x.y gemnative
+     Where the x is the subversion of QT and y is the patch level of qtbindings
 
 Note: The gem is built twice to create the FAT binary which will work 
 on both Ruby 1.8 and 1.9. The Windows utility called pik is useful for
