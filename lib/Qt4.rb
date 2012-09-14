@@ -1,5 +1,5 @@
 windows = false
-processor, platform, *rest = RUBY_PLATFORM.split("-")
+platform = RUBY_PLATFORM.split("-")[1]
 windows = true if platform == 'mswin32' or platform == 'mingw32'
 
 module Qt
