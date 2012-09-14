@@ -29,6 +29,7 @@ Ruby 1.8.7p358 and 1.9.3p0 installed from rubyinstaller.org
 
 Note: Ruby 1.9.3 patch levels 125 and 194 on Windows have a bug in the I/O
 system which prevent the usage of the pos method. That is why I'm using 1.9.3p0.
+  See http://bugs.ruby-lang.org/issues/6179 and http://bugs.ruby-lang.org/issues/6401 
 
 Ubuntu Linux 11.10
 QT SDK 4.8.1
