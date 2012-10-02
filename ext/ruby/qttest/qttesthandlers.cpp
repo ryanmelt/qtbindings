@@ -21,6 +21,7 @@
 #undef connect
 #undef accept
 #undef truncate
+#undef rename
 
 #include <qtruby.h>
 #include <smokeruby.h>

@@ -15,7 +15,7 @@ ruby_version = '1.8' if RUBY_VERSION.split('.')[1].to_i == 8
 if windows
   # README! - Modify this path if you have QT installed somewhere else
   # or if you have a different version of QT you want to link to.
-  qt_sdk_path = "C:\\QtSDK\\Desktop\\Qt\\4.8.1\\mingw"
+  qt_sdk_path = "C:\\Qt\\4.8.3"
   begin
     File::Stat.new(qt_sdk_path)
   rescue
