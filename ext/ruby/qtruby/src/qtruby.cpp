@@ -1391,11 +1391,14 @@ qt_signal(int argc, VALUE * argv, VALUE self)
 		return Qfalse;
 	}
 
-#if RUBY_VERSION >= 0x10900
+#if RUBY_VERSION >= 0x20000
+	QLatin1String signalname(rb_id2name(rb_frame_this_func()));
+#elif RUBY_VERSION >= 0x10900
 	QLatin1String signalname(rb_id2name(rb_frame_callee()));
 #else
 	QLatin1String signalname(rb_id2name(rb_frame_last_func()));
 #endif
+
 	VALUE metaObject_value = rb_funcall(qt_internal_module, rb_intern("getMetaObject"), 2, Qnil, self);
 
 	smokeruby_object *ometa = value_obj_info(metaObject_value);
