@@ -41,7 +41,7 @@ class Screenshot < Qt::Widget
 	    createOptionsGroupBox()
 	    createButtonsLayout()
 	
-	    self.layout = Qt::VBoxLayout.new do |m|
+	  self.layout = Qt::VBoxLayout.new do |m|
 			m.addWidget(@screenshotLabel)
 			m.addWidget(@optionsGroupBox)
 			m.addLayout(@buttonsLayout)
@@ -81,20 +81,21 @@ class Screenshot < Qt::Widget
 	                               tr("%s Files (*.%s);;All Files (*)" % [format.upcase, format]))
 	    if !fileName.nil?
 	        @originalPixmap.save(fileName, format)
-        end
+      end
 	end
 	
 	def shootScreen()
 	    if @delaySpinBox.value() != 0
 	        $qApp.beep
-        end
-	    @originalPixmap = Qt::Pixmap.grabWindow(Qt::Application.desktop.winId)
+      end
+      Qt::Application.processEvents()
+  	  @originalPixmap = Qt::Pixmap.grabWindow(Qt::Application.desktop.winId)
 	    updateScreenshotLabel()
 	
 	    @newScreenshotButton.disabled = false
 	    if @hideThisWindowCheckBox.checked?
 	        show()
-        end
+      end
 	end
 	
 	def updateCheckBox()
@@ -102,7 +103,7 @@ class Screenshot < Qt::Widget
 	        @hideThisWindowCheckBox.disabled = true
 	    else
 	        @hideThisWindowCheckBox.disabled = false
-        end
+      end
 	end
 	
 	def createOptionsGroupBox()
@@ -111,14 +112,14 @@ class Screenshot < Qt::Widget
 	    @delaySpinBox = Qt::SpinBox.new do |s|
 	    	s.suffix = tr(" s")
 	    	s.maximum = 60
-		end
+	  	end
 	    connect(@delaySpinBox, SIGNAL('valueChanged(int)'), self, SLOT(:updateCheckBox))
 	
 	    @delaySpinBoxLabel = Qt::Label.new(tr("Screenshot Delay:"))
 	
 	    @hideThisWindowCheckBox = Qt::CheckBox.new(tr("Hide This Window"))
 	
-	    @optionsGroupBox.layout = Qt::GridLayout.new do |g|
+	  @optionsGroupBox.layout = Qt::GridLayout.new do |g|
 			g.addWidget(@delaySpinBoxLabel, 0, 0)
 			g.addWidget(@delaySpinBox, 0, 1)
 			g.addWidget(@hideThisWindowCheckBox, 1, 0, 1, 2)
@@ -134,7 +135,7 @@ class Screenshot < Qt::Widget
 	
 	    @quitScreenshotButton = createButton(tr("Quit"), self, SLOT(:close))
 	
-	    @buttonsLayout = Qt::HBoxLayout.new do |b|
+	  @buttonsLayout = Qt::HBoxLayout.new do |b|
 			b.addStretch()
 			b.addWidget(@newScreenshotButton)
 			b.addWidget(@saveScreenshotButton)
