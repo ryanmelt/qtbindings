@@ -810,6 +810,73 @@ qabstractitemmodel_createindex(int argc, VALUE * argv, VALUE self)
 	return rb_call_super(argc, argv);
 }
 
+#if QT_VERSION >= 0x040600
+// copy the role names defined on the model instance into a ruby hash and return it
+static VALUE
+qabstractitemmodel_rolenames(int argc, VALUE * argv, VALUE self)
+{
+	smokeruby_object *o = value_obj_info(self);
+	if( !o->ptr )
+	{
+		// not ok
+		rb_raise(rb_eArgError, "NULL given, expected subclass of QAbstractItemModel");
+	}
+
+	QAbstractItemModel* model = (QAbstractItemModel*) o->ptr;
+
+	// convert QHash<int,QByteArray> to a ruby hash
+	VALUE result = rb_hash_new();
+	QHash<int, QByteArray>::const_iterator i;
+	for( i = model->roleNames().constBegin(); i != model->roleNames().constEnd(); i++)
+	{
+		rb_hash_aset(result,
+			     INT2NUM(i.key()),
+			     rb_str_new2(i.value().data()));
+	}
+
+	return result;
+}
+
+// let C++ call a protected member function from outside
+// NOTE: a little hacky, but setRoleNames is deprecated in Qt 5.0, anyway...
+struct SetRoleNamesExposer : QAbstractItemModel {
+  using QAbstractItemModel::setRoleNames;
+};
+
+// set the role names on the given model instance from the given hash
+static VALUE
+qabstractitemmodel_setrolenames(int argc, VALUE * argv, VALUE self)
+{
+	if( argc != 1 || TYPE(argv[0]) != T_HASH )
+	{
+	  rb_raise(rb_eArgError, "Invalid arguments");
+	}
+
+	// convert the ruby hash to a QHash<int,QByteArray>
+	QHash<int,QByteArray> rnames;
+	VALUE tmp = rb_funcall(argv[0], rb_intern("to_a"), 0);
+	for( long i=0; i<RARRAY_LEN(tmp); i++)
+	{
+		VALUE key = rb_ary_entry(rb_ary_entry(tmp, i), 0);
+		VALUE val = rb_ary_entry(rb_ary_entry(tmp, i), 1);
+		rnames[NUM2INT(key)] = QByteArray(StringValuePtr(val));
+	}
+
+	smokeruby_object *o = value_obj_info(self);
+	if( !o->ptr )
+	{
+		// not ok
+		rb_raise(rb_eArgError, "NULL given, expected subclass of QAbstractItemModel");
+	}
+
+	QAbstractItemModel* model = (QAbstractItemModel*) o->ptr;
+	(model->*&SetRoleNamesExposer::setRoleNames)(rnames);  // just a little hacky, since
+							       // 'setRoleNames' is protected
+
+	return Qnil;
+}
+#endif
+
 static VALUE
 qmodelindex_internalpointer(VALUE self)
 {
@@ -2215,6 +2282,13 @@ create_qobject_class(VALUE /*self*/, VALUE package_value, VALUE module_value)
 		rb_define_method(qlistmodel_class, "remove_rows", (VALUE (*) (...)) qabstract_item_model_removerows, -1);
 		rb_define_method(qlistmodel_class, "removeColumns", (VALUE (*) (...)) qabstract_item_model_removecolumns, -1);
 		rb_define_method(qlistmodel_class, "remove_columns", (VALUE (*) (...)) qabstract_item_model_removecolumns, -1);
+#if QT_VERSION >= 0x040600
+		// make it work with qml
+		rb_define_method(qlistmodel_class, "roleNames", (VALUE (*) (...)) qabstractitemmodel_rolenames, -1);
+		rb_define_method(qlistmodel_class, "role_names", (VALUE (*) (...)) qabstractitemmodel_rolenames, -1);
+		rb_define_method(qlistmodel_class, "setRoleNames", (VALUE (*) (...)) qabstractitemmodel_setrolenames, -1);
+		rb_define_method(qlistmodel_class, "set_role_names", (VALUE (*) (...)) qabstractitemmodel_setrolenames, -1);
+#endif
 	}
 	else if (packageName == "Qt::AbstractItemModel") {
 		rb_define_method(klass, "createIndex", (VALUE (*) (...)) qabstractitemmodel_createindex, -1);
