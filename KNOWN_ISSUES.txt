@@ -2,7 +2,6 @@
    gem install opengl --pre
 2. The qRgb macro doesn't appear to work correctly
 3. The following examples fail on Windows:
-   opengl/textures -> Segfault
    itemview/dirview -> Hangs
    network/broadcastsender -> writeDatagram(const char* data, ...) fails
    network/broadcastreceiver -> readDatagram(char* data, ...) fails
@@ -12,7 +11,6 @@
    network/broadcastreceiver -> readDatagram(char* data, ...) fails
 5. The following examples fail on Mac OS X:
    desktop/screenshot -> QPixmap::scaled: Pixmap is a null pixmap
-   opengl/textures -> glwidget.rb:137
    network/broadcastsender -> writeDatagram(const char* data, ...) fails
    network/broadcastreceiver -> readDatagram(char* data, ...) fails
 

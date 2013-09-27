@@ -1024,6 +1024,11 @@ module Qt
     def format(*args)
       method_missing(:format, *args)
     end
+
+    def bindTexture(*args)
+      method_missing(:bindTexture, *args)
+    rescue
+    end
   end
 
   class GenericArgument < Qt::Base
@@ -2663,12 +2668,14 @@ module Qt
     # args    - arguments to method call
     # 
     def Internal.do_method_missing(package, method, klass, this, *args)
+      return nil unless klass # Give up if no klass passed
       # Determine class name
       if klass.class == Module
         # If a module use the module's name - typically Qt
         classname = klass.name
       else
         # Lookup Qt class name from Ruby class name
+        classname = nil
         classname = @@cpp_names[klass.name]
         if classname.nil?
           # Make sure we haven't backed all the way up to Object
@@ -3192,9 +3199,10 @@ class Module
     klass = self
     classid = Qt::Internal::ModuleIndex.new(0, 0)
     loop do
+      klass = klass.superclass unless klass.name
       classid = Qt::Internal::find_pclassid(klass.name)
       break if classid.index
-      
+
       klass = klass.superclass
       if klass.nil?
         return meths
