@@ -18,19 +18,15 @@ Goals
 Tested Environments
 --------------------
 Mac OSX 10.6.8 (Snow Leopard)
-XCode 3.2.6
-Brew - QT 4.8.2
-Cmake 2.8.6
+XCode 3.2.6 (gcc 4.2.1)
+Brew - QT 4.8.5
+Cmake 2.8.11.2
+Ruby 1.9.3p448
 
 Windows XP SP3
-QT Libraries 4.8.3
-Mingw 4.4
-Cmake 2.6.4
-Ruby 1.8.7p370 and 1.9.3p0 installed from rubyinstaller.org
-
-Note: Ruby 1.9.3 patch levels 125 and 194 on Windows have a bug in the I/O
-system which prevent the usage of the pos method. That is why I'm using 1.9.3p0.
-  See http://bugs.ruby-lang.org/issues/6179 and http://bugs.ruby-lang.org/issues/6401 
+QT SDK 4.8.1
+Cmake 2.8.8
+Ruby 1.8.7p358 and 1.9.3p448 installed from rubyinstaller.org
 
 Ubuntu Linux 11.10
 QT SDK 4.8.1
