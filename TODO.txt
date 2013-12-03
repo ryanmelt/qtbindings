@@ -1,3 +1,2 @@
 1. Get all of the examples to run on every platform
 2. Remove all compiler warnings
-3. Test against Qt 4.7

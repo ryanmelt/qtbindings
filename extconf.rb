@@ -6,16 +6,24 @@
 windows = false
 macosx  = false
 processor, platform, *rest = RUBY_PLATFORM.split("-")
-windows = true if platform == 'mswin32' or platform == 'mingw32'
+windows = true if platform =~ /mswin32/ or platform =~ /mingw32/
 macosx  = true if platform =~ /darwin/
 
-ruby_version = '1.9'
-ruby_version = '1.8' if RUBY_VERSION.split('.')[1].to_i == 8
+ruby_version_split = RUBY_VERSION.split('.')
+if ruby_version_split[0].to_i == 1
+  ruby_version = '1.9'
+  if ruby_version_split[1].to_i == 8
+    puts "Ruby 1.8.x is no longer supported. Install qtbindings 4.8.3.0. gem install qtbindings -v 4.8.3.0"
+    exit
+  end
+else
+  ruby_version = '2.0'
+end
 
 if windows
   # README! - Modify this path if you have QT installed somewhere else
   # or if you have a different version of QT you want to link to.
-  qt_sdk_path = "C:\\Qt\\4.8.3"
+  qt_sdk_path = "C:\\Qt\\4.8.5"
   begin
     File::Stat.new(qt_sdk_path)
   rescue
@@ -30,8 +38,8 @@ File.open('Makefile', 'w') do |file|
     file.puts ""
     file.puts "makedirs:"
     file.puts "\t-mkdir ext\\build"
-    file.puts "\t-mkdir bin\\1.8"
     file.puts "\t-mkdir bin\\1.9"
+    file.puts "\t-mkdir bin\\2.0"
     file.puts "\t-mkdir bin\\plugins"
     file.puts "\t-mkdir bin\\plugins\\accessible"
     file.puts "\t-mkdir bin\\plugins\\bearer"
@@ -43,8 +51,8 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-mkdir bin\\plugins\\phonon_backend"
     file.puts "\t-mkdir bin\\plugins\\qmltooling"
     file.puts "\t-mkdir bin\\plugins\\sqldrivers"
-    file.puts "\t-mkdir lib\\1.8"
     file.puts "\t-mkdir lib\\1.9"
+    file.puts "\t-mkdir lib\\2.0"
     file.puts ""
     file.puts "clean: makedirs"
     file.puts "\t-cd ext\\build && rmdir /S /Q CMakeFiles"
@@ -68,10 +76,10 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd bin\\plugins\\phonon_backend && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\qmltooling && del /F /Q *"
     file.puts "\t-cd bin\\plugins\\sqldrivers && del /F /Q *"
-    file.puts "\t-cd bin\\1.8 && del /F /Q *"
     file.puts "\t-cd bin\\1.9 && del /F /Q *"
-    file.puts "\t-cd lib\\1.8 && del /F /Q *"
+    file.puts "\t-cd bin\\2.0 && del /F /Q *"
     file.puts "\t-cd lib\\1.9 && del /F /Q *"
+    file.puts "\t-cd lib\\2.0 && del /F /Q *"
     file.puts "\t-del /F /Q Makefile"
     file.puts "\t-del /F /Q qtbindings-*.gem"
     file.puts ""
@@ -174,8 +182,8 @@ File.open('Makefile', 'w') do |file|
     file.puts ""
     file.puts "makedirs:"
     file.puts "\t-mkdir ext/build"
-    file.puts "\t-mkdir bin/1.8"
     file.puts "\t-mkdir bin/1.9"
+    file.puts "\t-mkdir bin/2.0"
     file.puts "\t-mkdir bin/plugins"
     file.puts "\t-mkdir bin/plugins/accessible"
     file.puts "\t-mkdir bin/plugins/bearer"
@@ -187,8 +195,8 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-mkdir bin/plugins/phonon_backend"
     file.puts "\t-mkdir bin/plugins/qmltooling"
     file.puts "\t-mkdir bin/plugins/sqldrivers"
-    file.puts "\t-mkdir lib/1.8"
     file.puts "\t-mkdir lib/1.9"
+    file.puts "\t-mkdir lib/2.0"
     file.puts ""
     file.puts "clean: makedirs"
     file.puts "\t-cd ext/build; rm -rf CMakeFiles"
@@ -212,10 +220,10 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-cd bin/plugins/phonon_backend && rm *"
     file.puts "\t-cd bin/plugins/qmltooling && rm *"
     file.puts "\t-cd bin/plugins/sqldrivers && rm *"
-    file.puts "\t-cd bin/1.8 && rm *"
     file.puts "\t-cd bin/1.9 && rm *"
-    file.puts "\t-cd lib/1.8 && rm *"
+    file.puts "\t-cd bin/2.0 && rm *"
     file.puts "\t-cd lib/1.9 && rm *"
+    file.puts "\t-cd lib/2.0 && rm *"
     file.puts "\t-rm Makefile"
     file.puts "\t-rm qtbindings-*.gem"
     file.puts ""

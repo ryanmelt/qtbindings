@@ -101,9 +101,9 @@ void
 mark_qobject_children(QObject * qobject)
 {
 	VALUE obj;
-	
+
 	const QList<QObject*> l = qobject->children();
-	
+
 	if (l.count() == 0) {
 		return;
 	}
@@ -117,7 +117,7 @@ mark_qobject_children(QObject * qobject)
 			if(do_debug & qtdb_gc) qWarning("Marking (%s*)%p -> %p", child->metaObject()->className(), child, (void*)obj);
 			rb_gc_mark(obj);
 		}
-		
+
 		mark_qobject_children(child);
 	}
 }
@@ -126,9 +126,9 @@ void
 mark_qgraphicsitem_children(QGraphicsItem * item)
 {
 	VALUE obj;
-	
+
 	const QList<QGraphicsItem*> l = item->childItems();
-	
+
 	if (l.count() == 0) {
 		return;
 	}
@@ -142,7 +142,7 @@ mark_qgraphicsitem_children(QGraphicsItem * item)
 			if(do_debug & qtdb_gc) qWarning("Marking (%s*)%p -> %p", "QGraphicsItem", child, (void*)obj);
 			rb_gc_mark(obj);
 		}
-		
+
 		mark_qgraphicsitem_children(child);
 	}
 }
@@ -160,7 +160,7 @@ mark_qtreewidgetitem_children(QTreeWidgetItem * item)
 			if(do_debug & qtdb_gc) qWarning("Marking (%s*)%p -> %p", "QTreeWidgetItem", child, (void*)obj);
 			rb_gc_mark(obj);
 		}
-		
+
 		mark_qtreewidgetitem_children(child);
 	}
 }
@@ -193,7 +193,7 @@ smokeruby_mark(void * p)
 	VALUE obj;
     smokeruby_object * o = (smokeruby_object *) p;
     const char *className = o->smoke->classes[o->classId].className;
-	
+
 	if (do_debug & qtdb_gc) qWarning("Checking for mark (%s*)%p", className, o->ptr);
 
     if (o->ptr && o->allocated) {
@@ -220,7 +220,7 @@ smokeruby_mark(void * p)
 
 		if (o->smoke->isDerivedFrom(className, "QListWidget")) {
 			QListWidget * listwidget = (QListWidget *) o->smoke->cast(o->ptr, o->classId, o->smoke->idClass("QListWidget", true).index);
-			
+
 			for (int i = 0; i < listwidget->count(); i++) {
 				QListWidgetItem * item = listwidget->item(i);
 				obj = getPointerObject(item);
@@ -231,7 +231,7 @@ smokeruby_mark(void * p)
 			}
 			return;
 		}
-	
+
 		if (o->smoke->isDerivedFrom(className, "QTableWidget")) {
 			QTableWidget * table = (QTableWidget *) o->smoke->cast(o->ptr, o->classId, o->smoke->idClass("QTableWidget", true).index);
 			QTableWidgetItem *item;
@@ -246,7 +246,7 @@ smokeruby_mark(void * p)
 					}
 				}
 			}
-			return;		
+			return;
 		}
 
 		if (o->smoke->isDerivedFrom(className, "QTreeWidget")) {
@@ -266,14 +266,24 @@ smokeruby_mark(void * p)
 
 		if (o->smoke->isDerivedFrom(className, "QLayout")) {
 			QLayout * qlayout = (QLayout *) o->smoke->cast(o->ptr, o->classId, o->smoke->idClass("QLayout", true).index);
+      obj = getPointerObject(qlayout);
 			for (int i = 0; i < qlayout->count(); ++i) {
 				QLayoutItem * item = qlayout->itemAt(i);
+        if (do_debug & qtdb_gc) qWarning("Checking QLayoutItem %p", item);
 				if (item != 0) {
 					obj = getPointerObject(item);
 					if (obj != Qnil) {
 						if (do_debug & qtdb_gc) qWarning("Marking (%s*)%p -> %p", "QLayoutItem", item, (void*)obj);
 						rb_gc_mark(obj);
 					}
+          QWidget * widget = item->widget();
+          if (widget != 0) {
+            obj = getPointerObject(widget);
+            if (obj != Qnil) {
+              if (do_debug & qtdb_gc) qWarning("Marking (%s*)%p -> %p", "QLayoutItem->widget", widget, (void*)obj);
+              rb_gc_mark(obj);
+            }
+          }
 				}
 			}
 			return;
@@ -336,7 +346,7 @@ smokeruby_mark(void * p)
 			if (QGraphicsEffect* effect = item->graphicsEffect()) {
 				obj = getPointerObject(effect);
 				if (obj != Qnil) {
-				  if (do_debug & qtdb_gc) 
+				  if (do_debug & qtdb_gc)
 					qWarning("Marking (%s*)%p -> %p", "QGraphicsEffect", effect, (void*)obj);
 					rb_gc_mark(obj);
 				}
@@ -355,7 +365,7 @@ smokeruby_mark(void * p)
 						rb_gc_mark(obj);
 					}
 				}
-			}			
+			}
 			return;
 		}
 
@@ -365,7 +375,7 @@ smokeruby_mark(void * p)
 		        obj = getPointerObject(ptr);
 			if (obj != Qnil) {
 				if (do_debug & qtdb_gc) qWarning("Marking (%s*)%p -> %p", "QModelIndex", ptr, (void*)obj);
-                                 
+
 				rb_gc_mark(obj);
 			}
 
@@ -379,17 +389,17 @@ smokeruby_free(void * p)
 {
     smokeruby_object *o = (smokeruby_object*)p;
     const char *className = o->smoke->classes[o->classId].className;
-	
+
 	if(do_debug & qtdb_gc) qWarning("Checking for delete (%s*)%p allocated: %s", className, o->ptr, o->allocated ? "true" : "false");
-    
+
 	if(application_terminated || !o->allocated || o->ptr == 0) {
 		free_smokeruby_object(o);
 		return;
 	}
-	
+
 	unmapPointer(o, o->classId, 0);
 	object_count --;
-	
+
 	if (o->smoke->isDerivedFrom(className, "QGraphicsLayoutItem")) {
 		QGraphicsLayoutItem * item = (QGraphicsLayoutItem *) o->smoke->cast(o->ptr, o->classId, o->smoke->idClass("QGraphicsLayoutItem", true).index);
 		if (item->graphicsItem() != 0 || item->parentLayoutItem() != 0) {
@@ -439,24 +449,24 @@ smokeruby_free(void * p)
 			return;
 		}
 	}
-			
+
 	if(do_debug & qtdb_gc) qWarning("Deleting (%s*)%p", className, o->ptr);
 
-	char *methodName = new char[strlen(className) + 2];
-	methodName[0] = '~';
-	strcpy(methodName + 1, className);
-	Smoke::ModuleIndex nameId = o->smoke->findMethodName(className, methodName);
-	Smoke::ModuleIndex classIdx(o->smoke, o->classId);
-	Smoke::ModuleIndex meth = o->smoke->findMethod(classIdx, nameId);
-	if(meth.index > 0) {
-		Smoke::Method &m = meth.smoke->methods[meth.smoke->methodMaps[meth.index].method];
-		Smoke::ClassFn fn = meth.smoke->classes[m.classId].classFn;
-		Smoke::StackItem i[1];
-		(*fn)(m.method, o->ptr, i);
-	}
-	delete[] methodName;
+	//~ char *methodName = new char[strlen(className) + 2];
+	//~ methodName[0] = '~';
+	//~ strcpy(methodName + 1, className);
+	//~ Smoke::ModuleIndex nameId = o->smoke->findMethodName(className, methodName);
+	//~ Smoke::ModuleIndex classIdx(o->smoke, o->classId);
+	//~ Smoke::ModuleIndex meth = o->smoke->findMethod(classIdx, nameId);
+	//~ if(meth.index > 0) {
+		//~ Smoke::Method &m = meth.smoke->methods[meth.smoke->methodMaps[meth.index].method];
+		//~ Smoke::ClassFn fn = meth.smoke->classes[m.classId].classFn;
+		//~ Smoke::StackItem i[1];
+		//~ (*fn)(m.method, o->ptr, i);
+	//~ }
+	//~ delete[] methodName;
 	free_smokeruby_object(o);
-	
+
     return;
 }
 
@@ -738,7 +748,7 @@ resolve_classname_qt(smokeruby_object * o)
    			SET_SMOKERUBY_OBJECT("QSpacerItem")
 		}
 	}
-	
+
 	return qtruby_modules[o->smoke].binding->className(o->classId);
 
 #undef SET_SMOKERUBY_OBJECT
@@ -830,11 +840,11 @@ static void marshall_it(Marshall *m)
 		case Marshall::FromVALUE:
 			marshall_from_ruby<T>(m);
 		break;
- 
+
 		case Marshall::ToVALUE:
 			marshall_to_ruby<T>( m );
 		break;
-				
+
 		default:
 			m->unsupported();
 		break;
@@ -853,15 +863,15 @@ marshall_basetype(Marshall *m)
 		case Smoke::t_char:
 			marshall_it<signed char>(m);
 		break;
-		
+
 		case Smoke::t_uchar:
 			marshall_it<unsigned char>(m);
 		break;
- 
+
 		case Smoke::t_short:
 			marshall_it<short>(m);
 		break;
-      
+
 		case Smoke::t_ushort:
 			marshall_it<unsigned short>(m);
 		break;
@@ -869,11 +879,11 @@ marshall_basetype(Marshall *m)
 		case Smoke::t_int:
 			marshall_it<int>(m);
 		break;
-		
+
 		case Smoke::t_uint:
 			marshall_it<unsigned int>(m);
 		break;
- 
+
 		case Smoke::t_long:
 			marshall_it<long>(m);
 		break;
@@ -881,7 +891,7 @@ marshall_basetype(Marshall *m)
 		case Smoke::t_ulong:
 			marshall_it<unsigned long>(m);
 		break;
- 
+
 		case Smoke::t_float:
 			marshall_it<float>(m);
 		break;
@@ -893,14 +903,14 @@ marshall_basetype(Marshall *m)
 		case Smoke::t_enum:
 			marshall_it<SmokeEnumWrapper>(m);
 		break;
-     
+
 		case Smoke::t_class:
 			marshall_it<SmokeClassWrapper>(m);
 		break;
 
 		default:
 			m->unsupported();
-		break;	
+		break;
 	}
 
 }
@@ -956,7 +966,7 @@ static QTextCodec *codec = 0;
 #if RUBY_VERSION < 0x10900
 static const char * KCODE = 0;
 
-static void 
+static void
 init_codec() {
 	VALUE temp = rb_gv_get("$KCODE");
 	KCODE = StringValuePtr(temp);
@@ -967,12 +977,12 @@ init_codec() {
 	}
 }
 
-QString* 
+QString*
 qstringFromRString(VALUE rstring) {
 	if (KCODE == 0) {
 		init_codec();
 	}
-	
+
 	if (qstrcmp(KCODE, "UTF8") == 0)
 		return new QString(QString::fromUtf8(StringValuePtr(rstring), RSTRING_LEN(rstring)));
 	else if (qstrcmp(KCODE, "EUC") == 0)
@@ -985,12 +995,12 @@ qstringFromRString(VALUE rstring) {
 	return new QString(QString::fromLocal8Bit(StringValuePtr(rstring), RSTRING_LEN(rstring)));
 }
 
-VALUE 
+VALUE
 rstringFromQString(QString * s) {
 	if (KCODE == 0) {
 		init_codec();
 	}
-	
+
 	if (qstrcmp(KCODE, "UTF8") == 0)
 		return rb_str_new2(s->toUtf8());
 	else if (qstrcmp(KCODE, "EUC") == 0)
@@ -1005,7 +1015,7 @@ rstringFromQString(QString * s) {
 
 #else
 
-QString* 
+QString*
 qstringFromRString(VALUE rstring) {
 	VALUE encoding = rb_funcall(rstring, rb_intern("encoding"), 0);
 	encoding = rb_funcall(encoding, rb_intern("to_s"), 0);
@@ -1026,7 +1036,7 @@ qstringFromRString(VALUE rstring) {
 	return new QString(QString::fromLocal8Bit(StringValuePtr(rstring), RSTRING_LEN(rstring)));
 }
 
-VALUE 
+VALUE
 rstringFromQString(QString * s) {
 	return rb_str_new2(s->toUtf8());
 }
@@ -1055,13 +1065,13 @@ static void marshall_QString(Marshall *m) {
 
 			m->item().s_voidp = s;
 			m->next();
-		
+
 			if (!m->type().isConst() && *(m->var()) != Qnil && s != 0 && !s->isNull()) {
 				rb_str_resize(*(m->var()), 0);
 				VALUE temp = rstringFromQString(s);
 				rb_str_cat2(*(m->var()), StringValuePtr(temp));
 			}
-	
+
 			if (s != 0 && m->cleanup()) {
 				delete s;
 			}
@@ -1085,7 +1095,7 @@ static void marshall_QString(Marshall *m) {
 			}
 		}
 		break;
- 
+
 		default:
 			m->unsupported();
 		break;
@@ -1162,7 +1172,7 @@ qchar_to_s(VALUE self)
 
 void marshall_QDBusVariant(Marshall *m) {
 	switch(m->action()) {
-	case Marshall::FromVALUE: 
+	case Marshall::FromVALUE:
 	{
 		VALUE v = *(m->var());
 		if (v == Qnil) {
@@ -1182,7 +1192,7 @@ void marshall_QDBusVariant(Marshall *m) {
 		break;
 	}
 
-	case Marshall::ToVALUE: 
+	case Marshall::ToVALUE:
 	{
 		if (m->item().s_voidp == 0) {
 			*(m->var()) = Qnil;
@@ -1196,7 +1206,7 @@ void marshall_QDBusVariant(Marshall *m) {
 		    break;
 		}
 		smokeruby_object * o = alloc_smokeruby_object(false, m->smoke(), m->smoke()->findClass("QVariant").index, p);
-		
+
 		obj = set_obj_info("Qt::DBusVariant", o);
 		if (do_debug & qtdb_calls) {
 			printf("allocating %s %p -> %p\n", "Qt::DBusVariant", o->ptr, (void*)obj);
@@ -1207,11 +1217,11 @@ void marshall_QDBusVariant(Marshall *m) {
 			// Keep a mapping of the pointer so that it is only wrapped once
 		    mapPointer(obj, o, o->classId, 0);
 		}
-		
+
 		*(m->var()) = obj;
 		break;
 	}
-	
+
 	default:
 		m->unsupported();
 		break;
@@ -1257,7 +1267,7 @@ static void marshall_charP_array(Marshall *m) {
 
 void marshall_QStringList(Marshall *m) {
 	switch(m->action()) {
-		case Marshall::FromVALUE: 
+		case Marshall::FromVALUE:
 		{
 			VALUE list = *(m->var());
 			if (TYPE(list) != T_ARRAY) {
@@ -1286,15 +1296,15 @@ void marshall_QStringList(Marshall *m) {
 				for(QStringList::Iterator it = stringlist->begin(); it != stringlist->end(); ++it)
 				rb_ary_push(list, rstringFromQString(&(*it)));
 			}
-			
+
 			if (m->cleanup()) {
 				delete stringlist;
 			}
-   
+
 			break;
 		}
 
-      case Marshall::ToVALUE: 
+      case Marshall::ToVALUE:
 	{
 		QStringList *stringlist = static_cast<QStringList *>(m->item().s_voidp);
 		if (!stringlist) {
@@ -1325,7 +1335,7 @@ void marshall_QStringList(Marshall *m) {
 
 void marshall_QByteArrayList(Marshall *m) {
     switch(m->action()) {
-      case Marshall::FromVALUE: 
+      case Marshall::FromVALUE:
 	{
 	    VALUE list = *(m->var());
 	    if (TYPE(list) != T_ARRAY) {
@@ -1360,7 +1370,7 @@ void marshall_QByteArrayList(Marshall *m) {
 	    }
 	    break;
       }
-      case Marshall::ToVALUE: 
+      case Marshall::ToVALUE:
 	{
 	    QList<QByteArray> *stringlist = static_cast<QList<QByteArray>*>(m->item().s_voidp);
 	    if(!stringlist) {
@@ -1422,13 +1432,13 @@ void marshall_QListCharStar(Marshall *m) {
 
 		VALUE av = rb_ary_new();
 
-		for (	QList<const char*>::iterator i = list->begin(); 
-				i != list->end(); 
-				++i ) 
+		for (	QList<const char*>::iterator i = list->begin();
+				i != list->end();
+				++i )
 		{
 		    rb_ary_push(av, rb_str_new2((const char *)*i));
 		}
-		
+
 		*(m->var()) = av;
 		m->next();
 	}
@@ -1465,10 +1475,10 @@ void marshall_QListInt(Marshall *m) {
 
 		if (!m->type().isConst()) {
 			rb_ary_clear(list);
-	
-			for (	QList<int>::iterator i = valuelist->begin(); 
-					i != valuelist->end(); 
-					++i ) 
+
+			for (	QList<int>::iterator i = valuelist->begin();
+					i != valuelist->end();
+					++i )
 			{
 				rb_ary_push(list, INT2NUM((int)*i));
 			}
@@ -1489,13 +1499,13 @@ void marshall_QListInt(Marshall *m) {
 
 	    VALUE av = rb_ary_new();
 
-		for (	QList<int>::iterator i = valuelist->begin(); 
-				i != valuelist->end(); 
-				++i ) 
+		for (	QList<int>::iterator i = valuelist->begin();
+				i != valuelist->end();
+				++i )
 		{
 		    rb_ary_push(av, INT2NUM((int)*i));
 		}
-		
+
 	    *(m->var()) = av;
 		m->next();
 
@@ -1537,10 +1547,10 @@ void marshall_QListUInt(Marshall *m) {
 
 		if (!m->type().isConst()) {
 			rb_ary_clear(list);
-	
-			for (	QList<uint>::iterator i = valuelist->begin(); 
-					i != valuelist->end(); 
-					++i ) 
+
+			for (	QList<uint>::iterator i = valuelist->begin();
+					i != valuelist->end();
+					++i )
 			{
 				rb_ary_push(list, UINT2NUM((int)*i));
 			}
@@ -1561,13 +1571,13 @@ void marshall_QListUInt(Marshall *m) {
 
 	    VALUE av = rb_ary_new();
 
-		for (	QList<uint>::iterator i = valuelist->begin(); 
-				i != valuelist->end(); 
-				++i ) 
+		for (	QList<uint>::iterator i = valuelist->begin();
+				i != valuelist->end();
+				++i )
 		{
 		    rb_ary_push(av, UINT2NUM((int)*i));
 		}
-		
+
 	    *(m->var()) = av;
 		m->next();
 
@@ -1608,10 +1618,10 @@ void marshall_QListqreal(Marshall *m) {
 
 		if (!m->type().isConst()) {
 			rb_ary_clear(list);
-	
-			for (	QList<qreal>::iterator i = valuelist->begin(); 
-					i != valuelist->end(); 
-					++i ) 
+
+			for (	QList<qreal>::iterator i = valuelist->begin();
+					i != valuelist->end();
+					++i )
 			{
 				rb_ary_push(list, rb_float_new((qreal)*i));
 			}
@@ -1632,13 +1642,13 @@ void marshall_QListqreal(Marshall *m) {
 
 	    VALUE av = rb_ary_new();
 
-		for (	QList<qreal>::iterator i = valuelist->begin(); 
-				i != valuelist->end(); 
-				++i ) 
+		for (	QList<qreal>::iterator i = valuelist->begin();
+				i != valuelist->end();
+				++i )
 		{
 		    rb_ary_push(av, rb_float_new((qreal)*i));
 		}
-		
+
 	    *(m->var()) = av;
 		m->next();
 
@@ -1677,10 +1687,10 @@ void marshall_QVectorqreal(Marshall *m) {
 
 		if (!m->type().isConst()) {
 			rb_ary_clear(list);
-	
-			for (	QVector<qreal>::iterator i = valuelist->begin(); 
-					i != valuelist->end(); 
-					++i ) 
+
+			for (	QVector<qreal>::iterator i = valuelist->begin();
+					i != valuelist->end();
+					++i )
 			{
 				rb_ary_push(list, rb_float_new((qreal)*i));
 			}
@@ -1701,13 +1711,13 @@ void marshall_QVectorqreal(Marshall *m) {
 
 	    VALUE av = rb_ary_new();
 
-		for (	QVector<qreal>::iterator i = valuelist->begin(); 
-				i != valuelist->end(); 
-				++i ) 
+		for (	QVector<qreal>::iterator i = valuelist->begin();
+				i != valuelist->end();
+				++i )
 		{
 		    rb_ary_push(av, rb_float_new((qreal)*i));
 		}
-		
+
 	    *(m->var()) = av;
 		m->next();
 
@@ -1746,10 +1756,10 @@ void marshall_QVectorint(Marshall *m) {
 
 		if (!m->type().isConst()) {
 			rb_ary_clear(list);
-	
-			for (	QVector<int>::iterator i = valuelist->begin(); 
-					i != valuelist->end(); 
-					++i ) 
+
+			for (	QVector<int>::iterator i = valuelist->begin();
+					i != valuelist->end();
+					++i )
 			{
 				rb_ary_push(list, INT2NUM((int)*i));
 			}
@@ -1770,13 +1780,13 @@ void marshall_QVectorint(Marshall *m) {
 
 	    VALUE av = rb_ary_new();
 
-		for (	QVector<int>::iterator i = valuelist->begin(); 
-				i != valuelist->end(); 
-				++i ) 
+		for (	QVector<int>::iterator i = valuelist->begin();
+				i != valuelist->end();
+				++i )
 		{
 		    rb_ary_push(av, INT2NUM((int)*i));
 		}
-		
+
 	    *(m->var()) = av;
 		m->next();
 
@@ -1822,9 +1832,9 @@ void marshall_QMapQStringQString(Marshall *m) {
 		m->item().s_voidp = 0;
 		break;
 	    }
-		
+
 		QMap<QString,QString> * map = new QMap<QString,QString>;
-		
+
 		// Convert the ruby hash to an array of key/value arrays
 		VALUE temp = rb_funcall(hash, rb_intern("to_a"), 0);
 
@@ -1833,10 +1843,10 @@ void marshall_QMapQStringQString(Marshall *m) {
 			VALUE value = rb_ary_entry(rb_ary_entry(temp, i), 1);
 			(*map)[QString(StringValuePtr(key))] = QString(StringValuePtr(value));
 		}
-	    
+
 		m->item().s_voidp = map;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -1848,17 +1858,17 @@ void marshall_QMapQStringQString(Marshall *m) {
 		*(m->var()) = Qnil;
 		break;
 	    }
-		
+
 	    VALUE hv = rb_hash_new();
-			
+
 		QMap<QString,QString>::Iterator it;
 		for (it = map->begin(); it != map->end(); ++it) {
 			rb_hash_aset(hv, rstringFromQString((QString*)&(it.key())), rstringFromQString((QString*) &(it.value())));
         }
-		
+
 		*(m->var()) = hv;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -1878,16 +1888,16 @@ void marshall_QMapQStringQVariant(Marshall *m) {
 			m->item().s_voidp = 0;
 			break;
 	    }
-		
+
 		QMap<QString,QVariant> * map = new QMap<QString,QVariant>;
-		
+
 		// Convert the ruby hash to an array of key/value arrays
 		VALUE temp = rb_funcall(hash, rb_intern("to_a"), 0);
 
 		for (long i = 0; i < RARRAY_LEN(temp); i++) {
 			VALUE key = rb_ary_entry(rb_ary_entry(temp, i), 0);
 			VALUE value = rb_ary_entry(rb_ary_entry(temp, i), 1);
-			
+
 			smokeruby_object *o = value_obj_info(value);
 			if (!o || !o->ptr || o->classId != o->smoke->findClass("QVariant").index) {
 				// If the value isn't a Qt::Variant, then try and construct
@@ -1898,13 +1908,13 @@ void marshall_QMapQStringQVariant(Marshall *m) {
 				}
 				o = value_obj_info(value);
 			}
-			
+
 			(*map)[QString(StringValuePtr(key))] = (QVariant)*(QVariant*)o->ptr;
 		}
-	    
+
 		m->item().s_voidp = map;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -1916,28 +1926,28 @@ void marshall_QMapQStringQVariant(Marshall *m) {
 		*(m->var()) = Qnil;
 		break;
 	    }
-		
+
 	    VALUE hv = rb_hash_new();
-			
+
 		QMap<QString,QVariant>::Iterator it;
 		for (it = map->begin(); it != map->end(); ++it) {
 			void *p = new QVariant(it.value());
 			VALUE obj = getPointerObject(p);
-				
+
 			if (obj == Qnil) {
-				smokeruby_object  * o = alloc_smokeruby_object(	true, 
-																m->smoke(), 
-																m->smoke()->idClass("QVariant").index, 
+				smokeruby_object  * o = alloc_smokeruby_object(	true,
+																m->smoke(),
+																m->smoke()->idClass("QVariant").index,
 																p );
 				obj = set_obj_info("Qt::Variant", o);
 			}
-			
+
 			rb_hash_aset(hv, rstringFromQString((QString*)&(it.key())), obj);
         }
-		
+
 		*(m->var()) = hv;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -1957,16 +1967,16 @@ void marshall_QMapIntQVariant(Marshall *m) {
 			m->item().s_voidp = 0;
 			break;
 	    }
-		
+
 		QMap<int,QVariant> * map = new QMap<int,QVariant>;
-		
+
 		// Convert the ruby hash to an array of key/value arrays
 		VALUE temp = rb_funcall(hash, rb_intern("to_a"), 0);
 
 		for (long i = 0; i < RARRAY_LEN(temp); i++) {
 			VALUE key = rb_ary_entry(rb_ary_entry(temp, i), 0);
 			VALUE value = rb_ary_entry(rb_ary_entry(temp, i), 1);
-			
+
 			smokeruby_object *o = value_obj_info(value);
 			if (!o || !o->ptr || o->classId != o->smoke->idClass("QVariant").index) {
 				// If the value isn't a Qt::Variant, then try and construct
@@ -1977,13 +1987,13 @@ void marshall_QMapIntQVariant(Marshall *m) {
 				}
 				o = value_obj_info(value);
 			}
-			
+
 			(*map)[NUM2INT(key)] = (QVariant)*(QVariant*)o->ptr;
 		}
-	    
+
 		m->item().s_voidp = map;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -1995,28 +2005,28 @@ void marshall_QMapIntQVariant(Marshall *m) {
 			*(m->var()) = Qnil;
 			break;
 	    }
-		
+
 	    VALUE hv = rb_hash_new();
-			
+
 		QMap<int,QVariant>::Iterator it;
 		for (it = map->begin(); it != map->end(); ++it) {
 			void *p = new QVariant(it.value());
 			VALUE obj = getPointerObject(p);
-				
+
 			if (obj == Qnil) {
-				smokeruby_object  * o = alloc_smokeruby_object(	true, 
-																m->smoke(), 
-																m->smoke()->idClass("QVariant").index, 
+				smokeruby_object  * o = alloc_smokeruby_object(	true,
+																m->smoke(),
+																m->smoke()->idClass("QVariant").index,
 																p );
 				obj = set_obj_info("Qt::Variant", o);
 			}
-			
+
 			rb_hash_aset(hv, INT2NUM(it.key()), obj);
         }
-		
+
 		*(m->var()) = hv;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -2036,28 +2046,28 @@ void marshall_QMapintQVariant(Marshall *m) {
 		m->item().s_voidp = 0;
 		break;
 	    }
-		
+
 		QMap<int,QVariant> * map = new QMap<int,QVariant>;
-		
+
 		// Convert the ruby hash to an array of key/value arrays
 		VALUE temp = rb_funcall(hash, rb_intern("to_a"), 0);
 
 		for (long i = 0; i < RARRAY_LEN(temp); i++) {
 			VALUE key = rb_ary_entry(rb_ary_entry(temp, i), 0);
 			VALUE value = rb_ary_entry(rb_ary_entry(temp, i), 1);
-			
+
 			smokeruby_object *o = value_obj_info(value);
 			if( !o || !o->ptr)
                    continue;
 			void * ptr = o->ptr;
 			ptr = o->smoke->cast(ptr, o->classId, o->smoke->idClass("QVariant").index);
-			
+
 			(*map)[NUM2INT(key)] = (QVariant)*(QVariant*)ptr;
 		}
-	    
+
 		m->item().s_voidp = map;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -2069,28 +2079,28 @@ void marshall_QMapintQVariant(Marshall *m) {
 		*(m->var()) = Qnil;
 		break;
 	    }
-		
+
 	    VALUE hv = rb_hash_new();
-			
+
 		QMap<int,QVariant>::Iterator it;
 		for (it = map->begin(); it != map->end(); ++it) {
 			void *p = new QVariant(it.value());
 			VALUE obj = getPointerObject(p);
-				
+
 			if (obj == Qnil) {
-				smokeruby_object  * o = alloc_smokeruby_object(	true, 
-																m->smoke(), 
-																m->smoke()->idClass("QVariant").index, 
+				smokeruby_object  * o = alloc_smokeruby_object(	true,
+																m->smoke(),
+																m->smoke()->idClass("QVariant").index,
 																p );
 				obj = set_obj_info("Qt::Variant", o);
 			}
-			
+
 			rb_hash_aset(hv, INT2NUM((int)(it.key())), obj);
         }
-		
+
 		*(m->var()) = hv;
 		m->next();
-		
+
 	    if(m->cleanup())
 		delete map;
 	}
@@ -2160,7 +2170,7 @@ void marshall_QRgb_array(Marshall *m) {
 
 void marshall_QPairQStringQStringList(Marshall *m) {
 	switch(m->action()) {
-	case Marshall::FromVALUE: 
+	case Marshall::FromVALUE:
 	{
 		VALUE list = *(m->var());
 		if (TYPE(list) != T_ARRAY) {
@@ -2184,15 +2194,15 @@ void marshall_QPairQStringQStringList(Marshall *m) {
 
 		m->item().s_voidp = pairlist;
 		m->next();
-			
+
 		if (m->cleanup()) {
 			delete pairlist;
 		}
-	   
+
 		break;
 	}
 
-	case Marshall::ToVALUE: 
+	case Marshall::ToVALUE:
 	{
 		QList<QPair<QString,QString> > *pairlist = static_cast<QList<QPair<QString,QString> > * >(m->item().s_voidp);
 		if (pairlist == 0) {
@@ -2242,7 +2252,7 @@ void marshall_QPairqrealQColor(Marshall *m) {
 		} else {
 			real = NUM2DBL(item1);
 		}
-		
+
 		VALUE item2 = rb_ary_entry(list, 1);
 
 		smokeruby_object *o = value_obj_info(item2);
@@ -2250,7 +2260,7 @@ void marshall_QPairqrealQColor(Marshall *m) {
 			m->item().s_voidp = 0;
 			break;
 		}
-		
+
 		QPair<qreal,QColor> * qpair = new QPair<qreal,QColor>(real, *((QColor *) o->ptr));
 		m->item().s_voidp = qpair;
 		m->next();
@@ -2262,7 +2272,7 @@ void marshall_QPairqrealQColor(Marshall *m) {
 	break;
 	case Marshall::ToVALUE:
 	{
-		QPair<qreal,QColor> * qpair = static_cast<QPair<qreal,QColor> * >(m->item().s_voidp); 
+		QPair<qreal,QColor> * qpair = static_cast<QPair<qreal,QColor> * >(m->item().s_voidp);
 		if (qpair == 0) {
 			*(m->var()) = Qnil;
 			break;
@@ -2273,9 +2283,9 @@ void marshall_QPairqrealQColor(Marshall *m) {
 		void *p = (void *) &(qpair->second);
 		VALUE rv2 = getPointerObject(p);
 		if (rv2 == Qnil) {
-			smokeruby_object  * o = alloc_smokeruby_object(	false, 
-															m->smoke(), 
-															m->smoke()->idClass("QColor").index, 
+			smokeruby_object  * o = alloc_smokeruby_object(	false,
+															m->smoke(),
+															m->smoke()->idClass("QColor").index,
 															p );
 			rv2 = set_obj_info("Qt::Color", o);
 		}
@@ -2313,7 +2323,7 @@ void marshall_QPairintint(Marshall *m) {
 		} else {
 			int0 = NUM2INT(item);
 		}
-		
+
 		item = rb_ary_entry(list, 1);
 
 		if (TYPE(item) != T_FIXNUM && TYPE(item) != T_BIGNUM) {
@@ -2321,7 +2331,7 @@ void marshall_QPairintint(Marshall *m) {
 		} else {
 			int1 = NUM2INT(item);
 		}
-		
+
 		QPair<int,int> * qpair = new QPair<int,int>(int0,int1);
 		m->item().s_voidp = qpair;
 		m->next();
@@ -2613,7 +2623,7 @@ Marshall::HandlerFn getMarshallFn(const SmokeType &type) {
 		return marshall_void;
 
 	TypeHandler *h = type_handlers[type.name()];
-	
+
 	if (h == 0 && type.isConst() && strlen(type.name()) > strlen("const ")) {
 		h = type_handlers[type.name() + strlen("const ")];
 	}
@@ -2623,7 +2633,7 @@ Marshall::HandlerFn getMarshallFn(const SmokeType &type) {
         {
           h = type_handlers["QFlags&"];
         }
-	
+
 	if (h != 0) {
 		return h->fn;
 	}

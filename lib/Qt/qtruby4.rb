@@ -18,11 +18,12 @@
 =end
 
 module Qt
+
   module DebugLevel
     Off, Minimal, High, Extensive = 0, 1, 2, 3
   end
 
-  module QtDebugChannel 
+  module QtDebugChannel
     QTDB_NONE = 0x00
     QTDB_AMBIGUOUS = 0x01
     QTDB_METHOD_MISSING = 0x02
@@ -42,7 +43,7 @@ module Qt
   def Qt.debug_level
     @@debug_level
   end
-  
+
   module Internal
     #
     # From the enum MethodFlags in qt-copy/src/tools/moc/generator.cpp
@@ -57,14 +58,14 @@ module Qt
     MethodCloned = 0x20
     MethodScriptable = 0x40
   end
-  
+
   class Base
     def self.signals(*signal_list)
       meta = Qt::Meta[self.name] || Qt::MetaInfo.new(self)
       meta.add_signals(signal_list, Internal::MethodSignal | Internal::AccessProtected)
       meta.changed = true
     end
-  
+
     def self.slots(*slot_list)
       meta = Qt::Meta[self.name] || Qt::MetaInfo.new(self)
       meta.add_slots(slot_list, Internal::MethodSlot | Internal::AccessPublic)
@@ -186,7 +187,7 @@ module Qt
       loop do
         classid = Qt::Internal::find_pclassid(klass.name)
         break if classid.index
-      
+
         klass = klass.superclass
         if klass.nil?
           return super
@@ -212,24 +213,24 @@ module Qt
       if !regular
         return singleton_methods
       end
-  
+
       qt_methods(super, 0x0)
     end
-  
+
     def protected_methods(all=true)
       # From smoke.h, Smoke::mf_protected 0x80
       qt_methods(super, 0x80)
     end
-  
+
     def public_methods(all=true)
       methods
     end
-  
+
     def singleton_methods(all=true)
       # From smoke.h, Smoke::mf_static 0x01
       qt_methods(super, 0x01)
     end
-  
+
     private
     def qt_methods(meths, flags)
       ids = []
@@ -243,60 +244,60 @@ module Qt
       return meths.uniq
     end
   end # Qt::Base
-  
+
   # Provides a mutable numeric class for passing to methods with
   # C++ 'int*' or 'int&' arg types
   class Integer
     attr_accessor :value
     def initialize(n=0) @value = n end
-    
-    def +(n) 
-      return Integer.new(@value + n.to_i) 
+
+    def +(n)
+      return Integer.new(@value + n.to_i)
     end
-    def -(n) 
+    def -(n)
       return Integer.new(@value - n.to_i)
     end
-    def *(n) 
+    def *(n)
       return Integer.new(@value * n.to_i)
     end
-    def /(n) 
+    def /(n)
       return Integer.new(@value / n.to_i)
     end
-    def %(n) 
+    def %(n)
       return Integer.new(@value % n.to_i)
     end
-    def **(n) 
+    def **(n)
       return Integer.new(@value ** n.to_i)
     end
-    
-    def |(n) 
+
+    def |(n)
       return Integer.new(@value | n.to_i)
     end
-    def &(n) 
+    def &(n)
       return Integer.new(@value & n.to_i)
     end
-    def ^(n) 
+    def ^(n)
       return Integer.new(@value ^ n.to_i)
     end
-    def <<(n) 
+    def <<(n)
       return Integer.new(@value << n.to_i)
     end
-    def >>(n) 
+    def >>(n)
       return Integer.new(@value >> n.to_i)
     end
-    def >(n) 
+    def >(n)
       return @value > n.to_i
     end
-    def >=(n) 
+    def >=(n)
       return @value >= n.to_i
     end
-    def <(n) 
+    def <(n)
       return @value < n.to_i
     end
-    def <=(n) 
+    def <=(n)
       return @value <= n.to_i
     end
-    
+
     def <=>(n)
       if @value < n.to_i
         return -1
@@ -306,86 +307,86 @@ module Qt
         return 0
       end
     end
-    
+
     def to_f() return @value.to_f end
     def to_i() return @value.to_i end
     def to_s() return @value.to_s end
-    
+
     def coerce(n)
       [n, @value]
     end
   end
-  
+
   # If a C++ enum was converted to an ordinary ruby Integer, the
   # name of the type is lost. The enum type name is needed for overloaded
   # method resolution when two methods differ only by an enum type.
   class Enum
     attr_accessor :type, :value
     def initialize(n, enum_type)
-      @value = n 
+      @value = n
       @type = enum_type
     end
-    
-    def +(n) 
+
+    def +(n)
       return @value + n.to_i
     end
-    def -(n) 
+    def -(n)
       return @value - n.to_i
     end
-    def *(n) 
+    def *(n)
       return @value * n.to_i
     end
-    def /(n) 
+    def /(n)
       return @value / n.to_i
     end
-    def %(n) 
+    def %(n)
       return @value % n.to_i
     end
-    def **(n) 
+    def **(n)
       return @value ** n.to_i
     end
-    
-    def |(n) 
+
+    def |(n)
       return Enum.new(@value | n.to_i, @type)
     end
-    def &(n) 
+    def &(n)
       return Enum.new(@value & n.to_i, @type)
     end
-    def ^(n) 
+    def ^(n)
       return Enum.new(@value ^ n.to_i, @type)
     end
-    def ~() 
+    def ~()
       return ~ @value
     end
-    def <(n) 
+    def <(n)
       return @value < n.to_i
     end
-    def <=(n) 
+    def <=(n)
       return @value <= n.to_i
     end
-    def >(n) 
+    def >(n)
       return @value > n.to_i
     end
-    def >=(n) 
+    def >=(n)
       return @value >= n.to_i
     end
-    def <<(n) 
+    def <<(n)
       return Enum.new(@value << n.to_i, @type)
     end
-    def >>(n) 
+    def >>(n)
       return Enum.new(@value >> n.to_i, @type)
     end
-    
+
     def ==(n) return @value == n.to_i end
     def to_i() return @value end
 
     def to_f() return @value.to_f end
     def to_s() return @value.to_s end
-    
+
     def coerce(n)
       [n, @value]
     end
-    
+
     def inspect
       to_s
     end
@@ -394,14 +395,14 @@ module Qt
       pp.text "#<%s:0x%8.8x @type=%s, @value=%d>" % [self.class.name, object_id, type, value]
     end
   end
-  
+
   # Provides a mutable boolean class for passing to methods with
   # C++ 'bool*' or 'bool&' arg types
   class Boolean
     attr_accessor :value
     def initialize(b=false) @value = b end
-    def nil? 
-      return !@value 
+    def nil?
+      return !@value
     end
   end
 
@@ -427,19 +428,19 @@ module Qt
     end
   end
 
-  class AccessibleEvent < Qt::Base 
+  class AccessibleEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class ActionEvent < Qt::Base 
+  class ActionEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class Action < Qt::Base 
+  class Action < Qt::Base
     def setShortcut(arg)
       if arg.kind_of?(String)
         return super(Qt::KeySequence.new(arg))
@@ -454,19 +455,29 @@ module Qt
   end
 
   class Application < Qt::Base
+    attr_reader :thread_fix
+
     def initialize(*args)
       if args.length == 1 && args[0].kind_of?(Array)
         super(args.length + 1, [$0] + args[0])
       else
         super(*args)
       end
-            $qApp = self
-    end 
+      $qApp = self
+      @thread_fix = RubyThreadFix.new
+    end
+
+    def disable_threading
+      @thread_fix.stop if @thread_fix
+      @thread_fix = nil
+    end
+
     # Delete the underlying C++ instance after exec returns
     # Otherwise, rb_gc_call_finalizer_at_exit() can delete
     # stuff that Qt::Application still needs for its cleanup.
     def exec
       method_missing(:exec)
+      disable_threading()
       self.dispose
       Qt::Internal.application_terminated = true
     end
@@ -487,7 +498,7 @@ module Qt
       method_missing(:id, *args)
     end
   end
-  
+
   class ByteArray < Qt::Base
     def initialize(*args)
       if args.size == 1 && args[0].kind_of?(String)
@@ -517,8 +528,8 @@ module Qt
       method_missing(:split, *args)
     end
   end
-  
-  class CheckBox < Qt::Base 
+
+  class CheckBox < Qt::Base
     def setShortcut(arg)
       if arg.kind_of?(String)
         return super(Qt::KeySequence.new(arg))
@@ -532,24 +543,24 @@ module Qt
     end
   end
 
-  class ChildEvent < Qt::Base 
+  class ChildEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class CloseEvent < Qt::Base 
+  class CloseEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
-  
+
   class Color < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " %s>" % name)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " %s>" % name)
@@ -559,14 +570,14 @@ module Qt
       method_missing(:name, *args)
     end
   end
-  
+
   class Connection < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " memberName=%s, memberType=%s, object=%s>" %
         [memberName.inspect, memberType == 1 ? "SLOT" : "SIGNAL", object.inspect] )
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n memberName=%s,\n memberType=%s,\n object=%s>" %
@@ -581,20 +592,29 @@ module Qt
   end
 
   class CoreApplication < Qt::Base
+    attr_reader :thread_fix
+
     def initialize(*args)
       if args.length == 1 && args[0].kind_of?(Array)
         super(args.length + 1, [$0] + args[0])
       else
         super(*args)
       end
-            $qApp = self
-    end 
+      $qApp = self
+      @thread_fix = RubyThreadFix.new
+    end
+
+    def disable_threading
+      @thread_fix.stop if @thread_fix
+      @thread_fix = nil
+    end
 
     # Delete the underlying C++ instance after exec returns
     # Otherwise, rb_gc_call_finalizer_at_exit() can delete
     # stuff that Qt::Application still needs for its cleanup.
     def exec
       method_missing(:exec)
+      disable_threading()
       self.dispose
       Qt::Internal.application_terminated = true
     end
@@ -607,25 +627,25 @@ module Qt
       method_missing(:exit, *args)
     end
   end
-  
+
   class Cursor < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " shape=%d>" % shape)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " shape=%d>" % shape)
     end
   end
 
-  class CustomEvent < Qt::Base 
+  class CustomEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
-  
+
   class Date < Qt::Base
     def initialize(*args)
       if args.size == 1 && args[0].class.name == "Date"
@@ -639,7 +659,7 @@ module Qt
       str = super
       str.sub(/>$/, " %s>" % toString)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " %s>" % toString)
@@ -649,14 +669,14 @@ module Qt
       ::Date.new! to_julian_day
     end
   end
-  
+
   class DateTime < Qt::Base
     def initialize(*args)
       if args.size == 1 && args[0].class.name == "DateTime"
-        return super(  Qt::Date.new(args[0].year, args[0].month, args[0].day), 
+        return super(  Qt::Date.new(args[0].year, args[0].month, args[0].day),
                 Qt::Time.new(args[0].hour, args[0].min, args[0].sec) )
       elsif args.size == 1 && args[0].class.name == "Time"
-        result = super(  Qt::Date.new(args[0].year, args[0].month, args[0].day), 
+        result = super(  Qt::Date.new(args[0].year, args[0].month, args[0].day),
                 Qt::Time.new(args[0].hour, args[0].min, args[0].sec, args[0].usec / 1000) )
         result.timeSpec = (args[0].utc? ? Qt::UTC : Qt::LocalTime)
         return result
@@ -679,7 +699,7 @@ module Qt
       str = super
       str.sub(/>$/, " %s>" % toString)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " %s>" % toString)
@@ -691,7 +711,7 @@ module Qt
       str = super
       str.sub(/>$/, " currentSignature='%s', atEnd=%s>" % [currentSignature, atEnd])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " currentSignature='%s, atEnd=%s'>" % [currentSignature, atEnd])
@@ -708,7 +728,7 @@ module Qt
     def serviceOwner(name)
         return Qt::DBusReply.new(internalConstCall(Qt::DBus::AutoDetect, "GetNameOwner", [Qt::Variant.new(name)]))
     end
-    
+
     def service_owner(name)
         return serviceOwner(name)
     end
@@ -762,13 +782,13 @@ module Qt
     end
   end
 
-  class DBusError < Qt::Base 
+  class DBusError < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class DBusInterface < Qt::Base 
+  class DBusInterface < Qt::Base
     def call(method_name, *args)
       if args.length == 0
         return super(method_name)
@@ -777,7 +797,7 @@ module Qt
         qdbusArgs = args.collect {|arg| qVariantFromValue(arg)}
         return super(method_name, opt, *qdbusArgs)
       else
-        # If the method is Qt::DBusInterface.call(), create an Array 
+        # If the method is Qt::DBusInterface.call(), create an Array
         # 'dbusArgs' of Qt::Variants from '*args'
         qdbusArgs = args.collect {|arg| qVariantFromValue(arg)}
         return super(method_name, *qdbusArgs)
@@ -799,7 +819,7 @@ module Qt
     end
   end
 
-  class DBusMessage < Qt::Base 
+  class DBusMessage < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -841,9 +861,9 @@ module Qt
         @data = reply.arguments[0]
         return
       end
-      
+
       # error
-      @error = Qt::DBusError.new(  Qt::DBusError::InvalidSignature, 
+      @error = Qt::DBusError.new(  Qt::DBusError::InvalidSignature,
                     "Unexpected reply signature" )
       @data = Qt::Variant.new      # clear it
     end
@@ -921,13 +941,13 @@ module Qt
     end
   end
 
-  class DragEnterEvent < Qt::Base 
+  class DragEnterEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class DragLeaveEvent < Qt::Base 
+  class DragLeaveEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -964,7 +984,7 @@ module Qt
     end
   end
 
-  class FileOpenEvent < Qt::Base 
+  class FileOpenEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -978,22 +998,22 @@ module Qt
     end
   end
 
-  class FocusEvent < Qt::Base 
+  class FocusEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
-  
+
   class Font < Qt::Base
     def inspect
       str = super
-      str.sub(/>$/, " family=%s, pointSize=%d, weight=%d, italic=%s, bold=%s, underline=%s, strikeOut=%s>" % 
+      str.sub(/>$/, " family=%s, pointSize=%d, weight=%d, italic=%s, bold=%s, underline=%s, strikeOut=%s>" %
       [family.inspect, pointSize, weight, italic, bold, underline, strikeOut])
     end
-    
+
     def pretty_print(pp)
       str = to_s
-      pp.text str.sub(/>$/, "\n family=%s,\n pointSize=%d,\n weight=%d,\n italic=%s,\n bold=%s,\n underline=%s,\n strikeOut=%s>" % 
+      pp.text str.sub(/>$/, "\n family=%s,\n pointSize=%d,\n weight=%d,\n italic=%s,\n bold=%s,\n underline=%s,\n strikeOut=%s>" %
       [family.inspect, pointSize, weight, italic, bold, underline, strikeOut])
     end
   end
@@ -1024,11 +1044,6 @@ module Qt
     def format(*args)
       method_missing(:format, *args)
     end
-
-    def bindTexture(*args)
-      method_missing(:bindTexture, *args)
-    rescue
-    end
   end
 
   class GenericArgument < Qt::Base
@@ -1037,19 +1052,19 @@ module Qt
     end
   end
 
-  class Gradient < Qt::Base 
+  class Gradient < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsEllipseItem < Qt::Base 
+  class GraphicsEllipseItem < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsItem < Qt::Base 
+  class GraphicsItem < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1070,14 +1085,14 @@ module Qt
     end
   end
 
-  class GraphicsPathItem < Qt::Base 
+  class GraphicsPathItem < Qt::Base
     Type = 2
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsPixmapItem < Qt::Base 
+  class GraphicsPixmapItem < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1097,57 +1112,57 @@ module Qt
     end
   end
 
-  class GraphicsRectItem < Qt::Base 
+  class GraphicsRectItem < Qt::Base
     Type = 3
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSceneDragDropEvent < Qt::Base 
+  class GraphicsSceneDragDropEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSceneMouseEvent < Qt::Base 
+  class GraphicsSceneMouseEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSceneContextMenuEvent < Qt::Base 
+  class GraphicsSceneContextMenuEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSceneHoverEvent < Qt::Base 
+  class GraphicsSceneHoverEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSceneHelpEvent < Qt::Base 
+  class GraphicsSceneHelpEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSceneWheelEvent < Qt::Base 
+  class GraphicsSceneWheelEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSimpleTextItem < Qt::Base 
+  class GraphicsSimpleTextItem < Qt::Base
     Type = 9
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class GraphicsSvgItem < Qt::Base 
+  class GraphicsSvgItem < Qt::Base
     Type = 13
     def type(*args)
       method_missing(:type, *args)
@@ -1168,19 +1183,19 @@ module Qt
     end
   end
 
-  class HelpEvent < Qt::Base 
+  class HelpEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class HideEvent < Qt::Base 
+  class HideEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class HoverEvent < Qt::Base 
+  class HoverEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1202,19 +1217,19 @@ module Qt
     end
   end
 
-  class IconDragEvent < Qt::Base 
+  class IconDragEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class InputEvent < Qt::Base 
+  class InputEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class InputMethodEvent < Qt::Base 
+  class InputMethodEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1296,8 +1311,8 @@ module Qt
       method_missing(:select, *args)
     end
   end
-  
-  class KeyEvent < Qt::Base 
+
+  class KeyEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1315,7 +1330,7 @@ module Qt
       str = super
       str.sub(/>$/, " %s>" % toString)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " %s>" % toString)
@@ -1347,7 +1362,7 @@ module Qt
       str = super
       str.sub(/>$/, " text='%s'>" % text)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " text='%s'>" % text)
@@ -1397,7 +1412,7 @@ module Qt
       str = super
       str.sub(/>$/, " scope=%s, name=%s, keyValues=Array (%d element(s))>" % [scope, name, keyValues.length])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " scope=%s, name=%s, keyValues=Array (%d element(s))>" % [scope, name, keyValues.length])
@@ -1426,7 +1441,7 @@ module Qt
     def propertyNames(inherits = false)
       res = []
       if inherits
-        for p in 0...propertyCount() 
+        for p in 0...propertyCount()
           res.push property(p).name
         end
       else
@@ -1441,15 +1456,15 @@ module Qt
       res = []
       if inherits
         for m in 0...methodCount()
-          if method(m).methodType == Qt::MetaMethod::Slot 
-            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName, 
+          if method(m).methodType == Qt::MetaMethod::Slot
+            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName,
                       method(m).signature]
           end
         end
       else
         for m in methodOffset()...methodCount()
-          if method(m).methodType == Qt::MetaMethod::Slot 
-            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName, 
+          if method(m).methodType == Qt::MetaMethod::Slot
+            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName,
                       method(m).signature]
           end
         end
@@ -1461,15 +1476,15 @@ module Qt
       res = []
       if inherits
         for m in 0...methodCount()
-          if method(m).methodType == Qt::MetaMethod::Signal 
-            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName, 
+          if method(m).methodType == Qt::MetaMethod::Signal
+            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName,
                       method(m).signature]
           end
         end
       else
         for m in methodOffset()...methodCount()
-          if method(m).methodType == Qt::MetaMethod::Signal 
-            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName, 
+          if method(m).methodType == Qt::MetaMethod::Signal
+            res.push "%s %s" % [method(m).typeName == "" ? "void" : method(m).typeName,
                       method(m).signature]
           end
         end
@@ -1503,7 +1518,7 @@ module Qt
       str.chop!
       str << ">"
     end
-    
+
     def pretty_print(pp)
       str = to_s
       str.sub!(/>$/, "")
@@ -1547,13 +1562,13 @@ module Qt
     end
   end
 
-  class MouseEvent < Qt::Base 
+  class MouseEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class MoveEvent < Qt::Base 
+  class MoveEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1580,7 +1595,7 @@ module Qt
     end
   end
 
-  class PaintEvent < Qt::Base 
+  class PaintEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1609,25 +1624,25 @@ module Qt
       method_missing(:load, *args)
     end
   end
-  
+
   class Point < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " x=%d, y=%d>" % [self.x, self.y])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n x=%d,\n y=%d>" % [self.x, self.y])
     end
   end
-  
+
   class PointF < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " x=%f, y=%f>" % [self.x, self.y])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n x=%f,\n y=%f>" % [self.x, self.y])
@@ -1691,8 +1706,8 @@ module Qt
       method_missing(:abort, *args)
     end
   end
-  
-  class PushButton < Qt::Base 
+
+  class PushButton < Qt::Base
     def setShortcut(arg)
       if arg.kind_of?(String)
         return super(Qt::KeySequence.new(arg))
@@ -1711,25 +1726,25 @@ module Qt
       str = super
       str.sub(/>$/, " x1=%d, y1=%d, x2=%d, y2=%d>" % [x1, y1, x2, y2])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n x1=%d,\n y1=%d,\n x2=%d,\n y2=%d>" % [x1, y1, x2, y2])
     end
   end
-  
+
   class LineF < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " x1=%f, y1=%f, x2=%f, y2=%f>" % [x1, y1, x2, y2])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n x1=%f,\n y1=%f,\n x2=%f,\n y2=%f>" % [x1, y1, x2, y2])
     end
   end
-  
+
   class MetaType < Qt::Base
     def self.type(*args)
       method_missing(:type, *args)
@@ -1741,14 +1756,14 @@ module Qt
       str = super
       str.sub(/>$/, " valid?=%s, row=%s, column=%s>" % [valid?, row, column])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n valid?=%s,\n row=%s,\n column=%s>" % [valid?, row, column])
     end
   end
-  
-  class RadioButton < Qt::Base 
+
+  class RadioButton < Qt::Base
     def setShortcut(arg)
       if arg.kind_of?(String)
         return super(Qt::KeySequence.new(arg))
@@ -1767,26 +1782,26 @@ module Qt
       str = super
       str.sub(/>$/, " x=%d, y=%d, width=%d, height=%d>" % [self.x, self.y, width, height])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n x=%d,\n y=%d,\n width=%d,\n height=%d>" % [self.x, self.y, width, height])
     end
   end
-  
+
   class RectF < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " x=%f, y=%f, width=%f, height=%f>" % [self.x, self.y, width, height])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n x=%f,\n y=%f,\n width=%f,\n height=%f>" % [self.x, self.y, width, height])
     end
   end
 
-  class ResizeEvent < Qt::Base 
+  class ResizeEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1808,48 +1823,48 @@ module Qt
     end
   end
 
-  class ShortcutEvent < Qt::Base 
+  class ShortcutEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class ShowEvent < Qt::Base 
+  class ShowEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
-  
+
   class Size < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " width=%d, height=%d>" % [width, height])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n width=%d,\n height=%d>" % [width, height])
     end
   end
-  
+
   class SizeF < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " width=%f, height=%f>" % [width, height])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n width=%f,\n height=%f>" % [width, height])
     end
   end
-  
+
   class SizePolicy < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " horizontalPolicy=%d, verticalPolicy=%d>" % [horizontalPolicy, verticalPolicy])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n horizontalPolicy=%d,\n verticalPolicy=%d>" % [horizontalPolicy, verticalPolicy])
@@ -1934,12 +1949,12 @@ module Qt
     end
   end
 
-  class StandardItem < Qt::Base 
+  class StandardItem < Qt::Base
     def inspect
       str = super
       str.sub(/>$/, " text='%s'>" % [text])
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, "\n text='%s'>" % [text])
@@ -1954,13 +1969,13 @@ module Qt
     end
   end
 
-  class StandardItemModel < Qt::Base 
+  class StandardItemModel < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
 
-  class StatusTipEvent < Qt::Base 
+  class StatusTipEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
@@ -1997,7 +2012,7 @@ module Qt
       str = super
       str.sub(/>$/, " text='%s'>" % text)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " text='%s'>" % text)
@@ -2009,7 +2024,7 @@ module Qt
       method_missing(:open, *args)
     end
   end
-  
+
   class TextCursor < Qt::Base
     def select(*k)
       method_missing(:select, *k)
@@ -2073,7 +2088,7 @@ module Qt
       method_missing(:format, *args)
     end
   end
-  
+
   class Time < Qt::Base
     def initialize(*args)
       if args.size == 1 && args[0].class.name == "Time"
@@ -2087,19 +2102,25 @@ module Qt
       str = super
       str.sub(/>$/, " %s>" % toString)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " %s>" % toString)
     end
   end
 
-  class TimerEvent < Qt::Base 
+  class Timer < Qt::Base
+    def start(*args)
+      method_missing(:start, *args)
+    end
+  end
+
+  class TimerEvent < Qt::Base
     def type(*args)
       method_missing(:type, *args)
     end
   end
-  
+
   class TimeLine < Qt::Base
     def frameRange=(arg)
       if arg.kind_of? Range
@@ -2109,8 +2130,8 @@ module Qt
       end
     end
   end
-  
-  class ToolButton < Qt::Base 
+
+  class ToolButton < Qt::Base
     def setShortcut(arg)
       if arg.kind_of?(String)
         return super(Qt::KeySequence.new(arg))
@@ -2147,7 +2168,7 @@ module Qt
 
     def initialize(*args)
       # There is not way to distinguish between the copy constructor
-      # QTreeWidgetItem (const QTreeWidgetItem & other) 
+      # QTreeWidgetItem (const QTreeWidgetItem & other)
       # and
       # QTreeWidgetItem (QTreeWidgetItem * parent, const QStringList & strings, int type = Type)
       # when the latter has a single argument. So force the second variant to be called
@@ -2167,7 +2188,7 @@ module Qt
       end
       str.sub!(/,?$/, ">")
     end
-    
+
     def pretty_print(pp)
       str = to_s
       str.sub!(/>$/, "")
@@ -2207,7 +2228,7 @@ module Qt
       str = super
       str.sub(/>$/, " url=%s>" % toString)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " url=%s>" % toString)
@@ -2219,7 +2240,7 @@ module Qt
       method_missing(:name, *args)
     end
   end
-  
+
   class Uuid < Qt::Base
     Time = Qt::Enum.new(1, "QUuid::Version")
   end
@@ -2236,7 +2257,7 @@ module Qt
       elsif args.size == 1 && args[0].class.name == "Date"
         return super(Qt::Date.new(args[0]))
       elsif args.size == 1 && args[0].class.name == "DateTime"
-        return super(Qt::DateTime.new(  Qt::Date.new(args[0].year, args[0].month, args[0].day), 
+        return super(Qt::DateTime.new(  Qt::Date.new(args[0].year, args[0].month, args[0].day),
                         Qt::Time.new(args[0].hour, args[0].min, args[0].sec) ) )
       elsif args.size == 1 && args[0].class.name == "Time"
         return super(Qt::Time.new(args[0]))
@@ -2359,7 +2380,7 @@ module Qt
       str = super
       str.sub(/>$/, " typeName=%s>" % typeName)
     end
-    
+
     def pretty_print(pp)
       str = to_s
       pp.text str.sub(/>$/, " typeName=%s>" % typeName)
@@ -2378,7 +2399,7 @@ module Qt
     def initialize(value)
       if value.kind_of? Qt::Variant
         super(value)
-      else 
+      else
         super(Qt::Variant.new(value))
       end
     end
@@ -2479,7 +2500,7 @@ module Qt
         end
         return @smoke
       end
-      
+
       def initialize(smoke, index)
         @smoke = smoke
         @index = index
@@ -2543,12 +2564,12 @@ module Qt
         if typename =~ /^int&?$|^signed int&?$|^signed$|^qint32&?$/
           return 6 + const_point
         elsif typename =~ /^quint32&?$/
-          return 4 + const_point         
+          return 4 + const_point
         elsif typename =~ /^(?:short|ushort|unsigned short int|unsigned short|uchar|char|unsigned char|uint|long|ulong|unsigned long int|unsigned|float|double|WId|HBITMAP__\*|HDC__\*|HFONT__\*|HICON__\*|HINSTANCE__\*|HPALETTE__\*|HRGN__\*|HWND__\*|Q_PID|^quint16&?$|^qint16&?$)$/
           return 4 + const_point
         elsif typename =~ /^(quint|qint|qulong|qlong|qreal)/
           return 4 + const_point
-        else 
+        else
           t = typename.sub(/^const\s+/, '')
           t.sub!(/[&*]$/, '')
           if isEnum(t)
@@ -2564,7 +2585,7 @@ module Qt
           return 2 + const_point
         elsif typename =~ /^(?:short|ushort|uint|long|ulong|signed|unsigned|float|double)$/
           return 2 + const_point
-        else 
+        else
           t = typename.sub(/^const\s+/, '')
           t.sub!(/[&*]$/, '')
           if isEnum(t)
@@ -2623,7 +2644,7 @@ module Qt
           return 4 + const_point
         elsif classIsa(argtype, t)
           return 2 + const_point
-        elsif isEnum(argtype) and 
+        elsif isEnum(argtype) and
             (t =~ /int|qint32|uint|quint32|long|ulong/ or isEnum(t))
           return 2 + const_point
         end
@@ -2634,9 +2655,9 @@ module Qt
     def Internal.find_class(classname)
       @@classes[classname]
     end
-    
+
     # Runs the initializer as far as allocating the Qt C++ instance.
-    # Then use a throw to jump back to here with the C++ instance 
+    # Then use a throw to jump back to here with the C++ instance
     # wrapped in a new ruby variable of type T_DATA
     def Internal.try_initialize(instance, *args)
       initializer = instance.method(:initialize)
@@ -2644,7 +2665,7 @@ module Qt
         initializer.call(*args)
       end
     end
-    
+
     # If a block was passed to the constructor, then
     # run that now. Either run the context of the new instance
     # if no args were passed to the block. Or otherwise,
@@ -2666,16 +2687,14 @@ module Qt
     # klass   - Ruby class object
     # this    - instance of class
     # args    - arguments to method call
-    # 
+    #
     def Internal.do_method_missing(package, method, klass, this, *args)
-      return nil unless klass # Give up if no klass passed
       # Determine class name
       if klass.class == Module
         # If a module use the module's name - typically Qt
         classname = klass.name
       else
         # Lookup Qt class name from Ruby class name
-        classname = nil
         classname = @@cpp_names[klass.name]
         if classname.nil?
           # Make sure we haven't backed all the way up to Object
@@ -2688,19 +2707,19 @@ module Qt
           end
         end
       end
-     
-      # Modify constructor method name from new to the name of the Qt class 
-      # and remove any namespacing 
+
+      # Modify constructor method name from new to the name of the Qt class
+      # and remove any namespacing
       if method == "new"
-        method = classname.dup 
+        method = classname.dup
         method.gsub!(/^.*::/,"")
       end
 
-      # If the method contains no letters it must be an operator, append "operator" to the 
+      # If the method contains no letters it must be an operator, append "operator" to the
       # method name
       method = "operator" + method.sub("@","") if method !~ /[a-zA-Z]+/
 
-      # Change foobar= to setFoobar()          
+      # Change foobar= to setFoobar()
       method = 'set' + method[0,1].upcase + method[1,method.length].sub("=", "") if method =~ /.*[^-+%\/|=]=$/ && method != 'operator='
 
       # Build list of munged method names which is the methodname followed
@@ -2717,8 +2736,8 @@ module Qt
           # For each nil arg encountered, triple the number of munged method
           # templates, in order to cover all possible types that can match nil
           temp = []
-          methods.collect! do |meth| 
-            temp << meth + '?' 
+          methods.collect! do |meth|
+            temp << meth + '?'
             temp << meth + '#'
             meth << '$'
           end
@@ -2731,13 +2750,13 @@ module Qt
           methods.collect! { |meth| meth << '$' }
         end
       end
-     
-      # Create list of methodIds that match classname and munged method name 
+
+      # Create list of methodIds that match classname and munged method name
       methodIds = []
       methods.collect { |meth| methodIds.concat( findMethod(classname, meth) ) }
 
       # If we didn't find any methods and the method name contains an underscore
-      # then convert to camelcase and try again      
+      # then convert to camelcase and try again
       if method =~ /._./ && methodIds.length == 0
         # If the method name contains underscores, convert to camel case
         # form and try again
@@ -2753,12 +2772,12 @@ module Qt
         puts "candidate list:"
         prototypes = dumpCandidates(methodIds).split("\n")
         line_len = (prototypes.collect { |p| p.length }).max
-        prototypes.zip(methodIds) { 
-          |prototype,id| puts "#{prototype.ljust line_len}  (smoke: #{id.smoke} index: #{id.index})" 
+        prototypes.zip(methodIds) {
+          |prototype,id| puts "#{prototype.ljust line_len}  (smoke: #{id.smoke} index: #{id.index})"
         }
       end
-     
-      # Find the best match 
+
+      # Find the best match
       chosen = nil
       if methodIds.length > 0
         best_match = -1
@@ -2774,7 +2793,7 @@ module Qt
             current_match += score
             puts "        #{typename} (#{argtype}) score: #{score}" if debug_level >= DebugLevel::High
           end
-          
+
           # Note that if current_match > best_match, then chosen must be nil
           if current_match > best_match
             best_match = current_match
@@ -2825,27 +2844,27 @@ module Qt
       @@classes['Qt::Boolean'] = Qt::Boolean
       @@classes['Qt::Enum'] = Qt::Enum
     end
-    
+
     def Internal.get_qinteger(num)
       return num.value
     end
-    
+
     def Internal.set_qinteger(num, val)
       return num.value = val
     end
-    
+
     def Internal.create_qenum(num, enum_type)
       return Qt::Enum.new(num, enum_type)
     end
-    
+
     def Internal.get_qenum_type(e)
       return e.type
     end
-    
+
     def Internal.get_qboolean(b)
       return b.value
     end
-    
+
     def Internal.set_qboolean(b, val)
       return b.value = val
     end
@@ -2857,11 +2876,11 @@ module Qt
         getAllParents(c, res)
       end
     end
-  
+
     # Keeps a hash of strings against their corresponding offsets
     # within the qt_meta_stringdata sequence of null terminated
     # strings. Returns a proc to get an offset given a string.
-    # That proc also adds new strings to the 'data' array, and updates 
+    # That proc also adds new strings to the 'data' array, and updates
     # the corresponding 'pack_str' Array#pack template.
     def Internal.string_table_handler(data, pack_str)
       hsh = {}
@@ -2892,7 +2911,7 @@ module Qt
       data = [1,                 # revision
           string_table.call(classname),   # classname
           classinfos.length, classinfos.length > 0 ? 10 : 0,   # classinfo
-          signals.length + slots.length, 
+          signals.length + slots.length,
           10 + (2*classinfos.length),   # methods
           0, 0,               # properties
           0, 0]              # enums/sets
@@ -2930,7 +2949,7 @@ module Qt
 
       return [stringdata.pack(pack_string), data]
     end
-    
+
     def Internal.getMetaObject(klass, qobject)
       if klass.nil?
         klass = qobject.class
@@ -2943,19 +2962,19 @@ module Qt
 
       meta = Meta[klass.name]
       if meta.nil?
-        meta = Qt::MetaInfo.new(klass) 
+        meta = Qt::MetaInfo.new(klass)
       end
 
       if meta.metaobject.nil? or meta.changed
         stringdata, data = makeMetaData(  qobject.class.name,
-                          meta.classinfos,  
+                          meta.classinfos,
                           meta.dbus,
-                          meta.signals, 
+                          meta.signals,
                           meta.slots )
         meta.metaobject = make_metaObject(qobject, parentMeta, stringdata, data)
         meta.changed = false
       end
-      
+
       meta.metaobject
     end
 
@@ -3008,9 +3027,9 @@ module Qt
   end # Qt::Internal
 
   Meta = {}
-  
+
   # An entry for each signal or slot
-  # Example 
+  # Example
   #  int foobar(QString,bool)
   #  :name is 'foobar'
   #  :full_name is 'foobar(QString,bool)'
@@ -3032,7 +3051,7 @@ module Qt
       @changed = false
       Internal.addMetaObjectMethods(klass)
     end
-    
+
     def add_signals(signal_list, access)
       signal_names = []
       signal_list.each do |signal|
@@ -3041,9 +3060,9 @@ module Qt
         end
         signal = Qt::MetaObject.normalizedSignature(signal).to_s
         if signal =~ /^(([\w,<>:]*)\s+)?([^\s]*)\((.*)\)/
-          @signals.push QObjectMember.new(  $3, 
-                                              $3 + "(" + $4 + ")", 
-                                              $4, 
+          @signals.push QObjectMember.new(  $3,
+                                              $3 + "(" + $4 + ")",
+                                              $4,
                                               ($2 == 'void' || $2.nil?) ? "" : $2,
                                               access )
           signal_names << $3
@@ -3053,7 +3072,7 @@ module Qt
       end
       Internal.addSignalMethods(@klass, signal_names)
     end
-    
+
     # Return a list of signals, including inherited ones
     def get_signals
       all_signals = []
@@ -3067,7 +3086,7 @@ module Qt
       end
       return all_signals
     end
-    
+
     def add_slots(slot_list, access)
       slot_list.each do |slot|
         if slot.kind_of? Symbol
@@ -3075,9 +3094,9 @@ module Qt
         end
         slot = Qt::MetaObject.normalizedSignature(slot).to_s
         if slot =~ /^(([\w,<>:]*)\s+)?([^\s]*)\((.*)\)/
-          @slots.push QObjectMember.new(  $3, 
-                                          $3 + "(" + $4 + ")", 
-                                          $4, 
+          @slots.push QObjectMember.new(  $3,
+                                          $3 + "(" + $4 + ")",
+                                          $4,
                                           ($2 == 'void' || $2.nil?) ? "" : $2,
                                           access )
         else
@@ -3095,7 +3114,7 @@ module Qt
   end # Qt::MetaInfo
 
   # These values are from the enum WindowType in qnamespace.h.
-  # Some of the names such as 'Qt::Dialog', clash with QtRuby 
+  # Some of the names such as 'Qt::Dialog', clash with QtRuby
   # class names. So add some constants here to use instead,
   # renamed with an ending of 'Type'.
   WidgetType = 0x00000000
@@ -3109,7 +3128,7 @@ module Qt
   SplashScreenType = 0x0000000e | WindowType
   DesktopType = 0x00000010 | WindowType
   SubWindowType =  0x00000012
-    
+
 end # Qt
 
 class Object
@@ -3145,7 +3164,7 @@ class Object
   end unless defined? instance_exec
 end
 
-class Proc 
+class Proc
   # Part of the Rails Object#instance_exec implementation
   def bind(object)
     block, time = self, Time.now
@@ -3199,7 +3218,6 @@ class Module
     klass = self
     classid = Qt::Internal::ModuleIndex.new(0, 0)
     loop do
-      klass = klass.superclass unless klass.name
       classid = Qt::Internal::find_pclassid(klass.name)
       break if classid.index
 
@@ -3221,5 +3239,3 @@ class Module
     return meths.uniq
   end
 end
-
-# kate: space-indent false;

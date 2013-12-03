@@ -5,14 +5,14 @@ require 'Qt'
 
 windows = false
 processor, platform, *rest = RUBY_PLATFORM.split("-")
-windows = true if platform == 'mswin32' or platform == 'mingw32'
+windows = true if platform =~ /mswin32/ or platform =~ /mingw32/
 
 extension = ''
 extension = '.exe' if windows
 
-if RUBY_VERSION.split('.')[1].to_i == 8
-  path = File.expand_path(File.join(File.dirname(__FILE__), '1.8', "smokeapi#{extension}"))
-else
+if RUBY_VERSION.split('.')[0].to_i == 1
   path = File.expand_path(File.join(File.dirname(__FILE__), '1.9', "smokeapi#{extension}"))
+else
+  path = File.expand_path(File.join(File.dirname(__FILE__), '2.0', "smokeapi#{extension}"))
 end
 exec(path, *ARGV)

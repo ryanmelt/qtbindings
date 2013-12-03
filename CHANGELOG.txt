@@ -31,3 +31,18 @@ v4.6.3.3
 v4.6.3.4
 2011/08/06 - Accidently checked in ruby_check_stack instead of ruby_stack_check
 
+v4.8.3.0
+2012/03/28 - Fixed a bug when calling constants/methods and dealing with anonymous classes - Thanks Mon-Ouie!
+2012/06/20 - Updated to support Qt 4.8.x including plugins
+2012/06/21 - Update examples, known issues, and sync with latest smoke
+2012/07/13 - Fix additional examples
+2012/09/10 - Avoid warning on unused variable - Thanks stomar!
+2012/10/01 - Update to Qt 4.8.3
+
+v4.8.5.0
+2013/04/27 - Update FindRuby.cmake to support Gentoo - Thanks michalzielanski!
+2012/09/09 - Update to work with Ruby 2.0 - Thanks hur1can3!
+2013/09/27 - Fix OpenGL texture issue
+2013/12/03 - Changed garbage collection philosophy to not automatically destruct any Qt object.  Must call dispose manually.
+2013/12/03 - Officially add support for Ruby 2.0 and remove support for Ruby 1.8.x
+2013/12/03 - Enable Ruby Threading

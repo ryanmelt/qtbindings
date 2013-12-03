@@ -2,7 +2,7 @@ require 'rake'
 
 windows = false
 processor, platform, *rest = RUBY_PLATFORM.split("-")
-windows = true if platform == 'mswin32' or platform == 'mingw32'
+windows = true if platform =~ /mswin32/ or platform =~ /mingw32/
 
 if windows
   MAKE = 'mingw32-make'
@@ -94,4 +94,3 @@ task :build do
   Rake::Task[:all].execute
   Rake::Task[:install].execute
 end
-

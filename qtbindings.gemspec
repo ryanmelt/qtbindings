@@ -1,7 +1,7 @@
 require './lib/qtbindings_version'
 
 spec = Gem::Specification.new do |s|
-  s.authors = ['Richard Dale', 'Arno Rehn', 'Ryan Melton']
+  s.authors = ['Ryan Melton', 'Jason Thomas', 'Richard Dale', 'Arno Rehn']
   s.email = 'kde-bindings@kde.org'
   s.rubyforge_project = 'qtbindings'
   s.summary = "Qt bindings for ruby"
