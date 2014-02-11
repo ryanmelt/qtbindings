@@ -31,11 +31,11 @@ end
 
 Tested Environments
 --------------------
-Mac OSX 10.6.8 (Snow Leopard)
-XCode 3.2.6 (gcc 4.2.1)
-Brew - QT 4.8.5
-Cmake 2.8.11.2
-Ruby 1.9.3p448
+Mac OSX 10.9.1 (Mavericks)
+XCode 5 (clang)
+Brew - QT 4.8.6
+Cmake 2.8.9
+Ruby 2.0.0p353 - Must be compiled with clang (rvm install <version> --with-gcc=clang)
 
 Windows XP SP3
 QT SDK 4.8.5
@@ -52,7 +52,11 @@ Compiling qtbindings requires the following prerequisites:
 1. cmake 2.8.x installed and in your path
 2. QT 4.8.x installed and in your path
 3. Ruby installed and in your path
-4. gcc 4.x
+4. gcc 4.x (or clang for OSX 10.9)
+
+Note for OSX 10.9.  The default compiler has changed from gcc to clang.   All libraries 
+need to be compiled with clang or you will get segfaults.  This includes ruby, qt, and qtbindings.
+*** rvm does not compile with clang by default.  You must add --with-gcc=clang when installing a version of ruby *** 
 
 Additionally: all of the operating system prequisites for compiling,
 window system development, opengl, etc must be installed.
