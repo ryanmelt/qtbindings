@@ -3,6 +3,7 @@ platform = RUBY_PLATFORM.split("-")[1]
 windows = true if platform =~ /mswin32/ or platform =~ /mingw32/
 
 begin
+  require 'thread'
   require 'qtbindings-qt'
 rescue LoadError
   # Oh well - Hopefully not using the Windows binary gem
