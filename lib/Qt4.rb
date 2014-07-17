@@ -84,7 +84,20 @@ module Qt
     end
   end
 
-  def self.execute_in_main_thread (blocking = false, sleep_period = 0.001, delay_execution = false)
+  # Code which accesses the GUI must be executed in the main QT GUI thread.
+  # This method allows code in another thread to execute safely in the main GUI
+  # thread. By default it will block the main GUI thread until the code in the
+  # block completes althought this can be changed by passing false for the
+  # first parameter.
+  #
+  # @param blocking [Boolean] Whether to block the main thread until the code
+  #   in the block finishing executing. If false the main thread will be
+  #   allowed to continue and the block code will execute in parallel.
+  # @param sleep_period [Float] The amount of time to sleep between checking
+  #   whether the code in the block has finished executing
+  # @param delay_execution [Boolean] Only used if called from the main GUI
+  #   thread. Allows the block to be executed in parallel with the main thread.
+  def self.execute_in_main_thread (blocking = true, sleep_period = 0.001, delay_execution = false)
     if Thread.current != Thread.main
       complete = false
       RubyThreadFix.queue << lambda {|| yield; complete = true}
