@@ -21,12 +21,16 @@ highly recommended.
 
 Usage Notes
 ------------
-Ruby threading is now fully supported out of the box.   All GUI access however must be done
-inside the main thread.  To support updating the GUI using other threads, use the following function
+Ruby threading is now fully supported out of the box. All GUI access however must be done
+inside the main thread. To support updating the GUI using other threads, use the following function
 provided in Qt4.rb:
 
-Qt.execute_in_main_thread(true) do
-  # GUI code here
+Qt.execute_in_main_thread do # block the main thread
+  # GUI code which executes and then allows the main thread to execute
+end
+
+Qt.execute_in_main_thread(false) do # don't block the main thread
+  # GUI code which executes in parallel with the main thread
 end
 
 Tested Environments
@@ -42,6 +46,11 @@ QT SDK 4.8.5
 Cmake 2.8.8
 Ruby 1.9.3p448 and Ruby 2.0.0p353 installed from rubyinstaller.org
 
+Windows 7 SP1
+QT SDK 4.8.6
+Cmake 2.8.12.2
+Ruby 2.0.0p353 installed from rubyinstaller.org
+
 Ubuntu Linux 11.10
 QT SDK 4.8.1
 Cmake 2.8.5
@@ -53,6 +62,7 @@ Compiling qtbindings requires the following prerequisites:
 2. QT 4.8.x installed and in your path
 3. Ruby installed and in your path
 4. gcc 4.x (or clang for OSX 10.9)
+   For Windows this means getting MingGW-w64 from http://mingw-w64.sourceforge.net/download.php (Win-builds project)
 
 Note for OSX 10.9.  The default compiler has changed from gcc to clang.   All libraries 
 need to be compiled with clang or you will get segfaults.  This includes ruby, qt, and qtbindings.
@@ -76,6 +86,8 @@ Perform the following steps to build the gem on Windows:
      ruby -v #=> ruby 2.0.0
 5. rake build
 6. rake VERSION=4.8.x.y gemnative
+     Where the x is the subversion of QT and y is the patch level of qtbindings
+7. rake VERSION=4.8.x.y gemqt
      Where the x is the subversion of QT and y is the patch level of qtbindings
 
 Note: The gem is built twice to create the FAT binary which will work
@@ -104,7 +116,8 @@ Mac OSX Snow Leopard
 
 Windows - Note: Only necessary for debugging (binary gem available)
 --------
-1. mingw 4.4 in your path (from here or elsewhere: http://nosymbolfound.blogspot.com/2012/12/since-until-now-qt-under-windows-is.html#!/2012/12/since-until-now-qt-under-windows-is.html)
+QT 4.8.6 requires mingw 4.8.2 from http://mingw-w64.sourceforge.net/download.php (Win-builds project)
+QT 4.8.5 requires mingw 4.4 from here or elsewhere: http://nosymbolfound.blogspot.com/2012/12/since-until-now-qt-under-windows-is.html#!/2012/12/since-until-now-qt-under-windows-is.html)
 
 Install
 ------

@@ -1,6 +1,6 @@
 # Generates a Makefile that:
 # 1. Cleans up the build directory
-# 2. Runs cmake to build qtbind
+# 2. Runs cmake to build qtbindings
 # 3. Copies the built .so files into the correct places
 
 windows = false
@@ -16,14 +16,14 @@ if ruby_version_split[0].to_i == 1
     puts "Ruby 1.8.x is no longer supported. Install qtbindings 4.8.3.0. gem install qtbindings -v 4.8.3.0"
     exit
   end
-else
-  ruby_version = '2.0'
+else # Ruby 2.X
+  ruby_version = RUBY_VERSION
 end
 
 if windows
   # README! - Modify this path if you have QT installed somewhere else
   # or if you have a different version of QT you want to link to.
-  qt_sdk_path = "C:\\Qt\\4.8.5"
+  qt_sdk_path = "C:\\Qt\\4.8.6"
   begin
     File::Stat.new(qt_sdk_path)
   rescue
@@ -85,8 +85,8 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-del /F /Q qtbindings-*.gem"
     file.puts ""
     file.puts "build: makedirs"
-    file.puts "\tset CC=mingw32-gcc.exe"
-    file.puts "\tset CXX=mingw32-g++.exe"
+    file.puts "\tset CC=i686-w64-mingw32-gcc.exe"
+    file.puts "\tset CXX=i686-w64-mingw32-g++.exe"
     file.puts "\t-cd ext\\build && \\"
     file.puts "cmake \\"
     file.puts "-G \"MinGW Makefiles\" \\"
