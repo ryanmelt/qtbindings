@@ -13,5 +13,7 @@ target_link_libraries(pp ${KDE4_KDECORE_LIBS} kdev4cpprpp)
 
 if (WIN32)
 	# Realign the stack, for compatibility with an older ABI.
-	set_target_properties (pp PROPERTIES COMPILE_FLAGS -mstackrealign)
+	if(CMAKE_COMPILER_IS_GNUCXX)
+		set_target_properties(pp PROPERTIES COMPILE_FLAGS -mstackrealign)
+	endif()
 endif (WIN32)
