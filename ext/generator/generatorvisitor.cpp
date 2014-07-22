@@ -690,7 +690,7 @@ void GeneratorVisitor::visitParameterDeclaration(ParameterDeclarationAST* node)
                 className.append(last);
             }
 
-            QMap<int, QList<Type> > map = nc->templateArguments();
+            const QMap<int, QList<Type> > map = nc->templateArguments();
             for (QMap<int, QList<Type> >::const_iterator it = map.begin(); it != map.end(); it++) {
                 QString str("< ");
                 for (int i = 0; i < it.value().count(); i++) {
