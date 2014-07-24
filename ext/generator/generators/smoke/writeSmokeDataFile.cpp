@@ -66,7 +66,11 @@ SmokeDataFile::SmokeDataFile()
             declaredVirtualMethods[meth->getClass()] << meth;
         }
     }
-    
+
+    foreach (Type* type, usedTypes) {
+        insertTemplateParameters(*type);
+    }
+
     // if a class is used somewhere but not listed in the class list, mark it external
     for (QHash<QString, Class>::iterator iter = ::classes.begin(); iter != ::classes.end(); iter++) {
         if (iter.value().isTemplate() || Options::voidpTypes.contains(iter.key()))
@@ -93,6 +97,14 @@ SmokeDataFile::SmokeDataFile()
     int i = 1;
     for (QMap<QString, int>::iterator iter = classIndex.begin(); iter != classIndex.end(); iter++) {
         iter.value() = i++;
+    }
+}
+
+void SmokeDataFile::insertTemplateParameters(const Type& type)
+{
+    foreach(const Type& t, type.templateArguments()) {
+        usedTypes << Type::registerType(t);
+        insertTemplateParameters(t);
     }
 }
 
@@ -284,7 +296,9 @@ void SmokeDataFile::write()
         inheritanceIndex[&klass] = idx;
     }
     out << "};\n\n";
-    
+
+    Class& globalSpace = classes["QGlobalSpace"];
+
     // xenum functions
     out << "// These are the xenum functions for manipulating enum pointers\n";
     QSet<QString> enumClassesHandled;
@@ -306,8 +320,13 @@ void SmokeDataFile::write()
             smokeClassName.replace("::", "__");
             out << "void xenum_" << smokeClassName << "(Smoke::EnumOperation, Smoke::Index, void*&, long&);\n";
         } else if (smokeClassName.isEmpty() && it.value().access() != Access_private) {
-            if (enumClassesHandled.contains("QGlobalSpace"))
+            // see if we have actually put the enum into QGlobalSpace (might not be the case if it's already handled
+            // in a parent module)
+            if (   enumClassesHandled.contains("QGlobalSpace")
+                || !globalSpace.children().contains(const_cast<Enum*>(&it.value())))
+            {
                 continue;
+            }
             out << "void xenum_QGlobalSpace(Smoke::EnumOperation, Smoke::Index, void*&, long&);\n";
             enumClassesHandled << "QGlobalSpace";
         }
@@ -386,6 +405,16 @@ void SmokeDataFile::write()
         out << "    { \"" << it.key() << "\", " << classIdx << ", " << flags << " },\t//" << i++ << "\n";
     }
     out << "};\n\n";
+
+    QFile typeDefsFile(Options::outputDir.filePath(QString("%1.typedefs.txt").arg(Options::module)));
+    typeDefsFile.open(QFile::ReadWrite | QFile::Truncate);
+    QTextStream outTypeDefs(&typeDefsFile);
+
+    foreach (Typedef typeDef, typedefs.values()) {
+        outTypeDefs << typeDef.toString() << ";" << typeDef.resolve().toString() << "\n";
+    }
+    outTypeDefs.flush();
+    typeDefsFile.close();
     
     out << "static Smoke::Index argumentList[] = {\n";
     out << "    0,\t//0  (void)\n";
@@ -440,9 +469,13 @@ void SmokeDataFile::write()
             if (meth.parameters().size() > 0) {
                 outArgNames << ";";
                 for (int i = 0; i < meth.parameters().size(); i++) {
-                    QString paramName = meth.parameters()[i].name();
+                    Parameter parameter = meth.parameters()[i];
+                    QString paramName = parameter.name();
                     if (paramName == "") {
                         paramName = "arg" + QString::number(i + 1);
+                    }
+                    if (!parameter.defaultValue().isEmpty()) {
+                        paramName += " = " + parameter.defaultValue();
                     }
                     outArgNames << paramName;
                     if (i < meth.parameters().size() - 1) {
@@ -603,7 +636,7 @@ void SmokeDataFile::write()
 
                 int index = 0;
                 QHash<Type*, int>::const_iterator typeIt;
-                if ((typeIt = typeIndex.find(enumType)) == typeIndex.end()) {
+                if ((typeIt = typeIndex.constFind(enumType)) == typeIndex.constEnd()) {
                     // this enum doesn't have an index, so we don't want it here
                     continue;
                 } else {

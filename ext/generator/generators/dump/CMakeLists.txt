@@ -9,7 +9,9 @@ set_target_properties(generator_dump PROPERTIES PREFIX "")
 
 if (WIN32)
 	# Realign the stack, for compatibility with an older ABI.
-	set_target_properties (generator_dump PROPERTIES COMPILE_FLAGS -mstackrealign)
+	if(CMAKE_COMPILER_IS_GNUCXX)
+		set_target_properties(generator_dump PROPERTIES COMPILE_FLAGS -mstackrealign)
+	endif()
 endif (WIN32)
 
 install(TARGETS generator_dump LIBRARY DESTINATION ${LIB_INSTALL_DIR}/smokegen)

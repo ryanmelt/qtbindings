@@ -61,7 +61,12 @@
 #define HAS_BOOL
 #endif
 
+#include "time.h"
+#define timespec ming_timespec
+#define timezone ming_timezone
 #include <ruby.h>
+#undef timespec
+#undef timezone
 
 #include <smoke/smoke.h>
 #include <smoke/qtcore_smoke.h>
@@ -106,7 +111,7 @@ Q_GLOBAL_STATIC(PointerMap, pointer_map)
 int object_count = 0;
 
 // FIXME:
-// Don't the two following hashs create memory leaks by using pointers to Smoke::(Module)Index ?
+// Don't the two following hashes create memory leaks by using pointers to Smoke::(Module)Index ?
 QHash<QByteArray, Smoke::ModuleIndex *> methcache;
 QHash<QByteArray, Smoke::ModuleIndex *> classcache;
 
@@ -119,35 +124,35 @@ Smoke::ModuleIndex _current_method;
 smokeruby_object *
 alloc_smokeruby_object(bool allocated, Smoke * smoke, int classId, void * ptr)
 {
-    smokeruby_object * o = ALLOC(smokeruby_object);
-	o->classId = classId;
-	o->smoke = smoke;
-	o->ptr = ptr;
-	o->allocated = allocated;
-	return o;
+  smokeruby_object * o = ALLOC(smokeruby_object);
+  o->classId = classId;
+  o->smoke = smoke;
+  o->ptr = ptr;
+  o->allocated = allocated;
+  return o;
 }
 
 void
 free_smokeruby_object(smokeruby_object * o)
 {
-	o->ptr = 0;
-	xfree(o);
-	return;
+  o->ptr = 0;
+  xfree(o);
+  return;
 }
 
 smokeruby_object *value_obj_info(VALUE ruby_value) {  // ptr on success, null on fail
-	if (TYPE(ruby_value) != T_DATA) {
-		return 0;
-	}
+  if (TYPE(ruby_value) != T_DATA) {
+    return 0;
+  }
 
-    smokeruby_object * o = 0;
-    Data_Get_Struct(ruby_value, smokeruby_object, o);
-    return o;
+  smokeruby_object * o = 0;
+  Data_Get_Struct(ruby_value, smokeruby_object, o);
+  return o;
 }
 
 void *value_to_ptr(VALUE ruby_value) {  // ptr on success, null on fail
-    smokeruby_object *o = value_obj_info(ruby_value);
-    return o;
+  smokeruby_object *o = value_obj_info(ruby_value);
+  return o;
 }
 
 VALUE getPointerObject(void *ptr) {
