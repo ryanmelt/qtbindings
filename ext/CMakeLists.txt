@@ -17,7 +17,7 @@ include(CheckCXXSourceCompiles)
 # Call cmake/modules/FindQt4.cmake
 # We are using the version provided by the Github project Kitware/CMake
 # This sets a bunch of QT_XXX variables used throughout the build process
-FIND_PACKAGE (Qt4 REQUIRED)
+FIND_PACKAGE(Qt4 REQUIRED)
 
 # Add all the -D define flags to the compilation of source files
 add_definitions(${QT_DEFINITIONS} -DHAVE_CONFIG_H=1)
