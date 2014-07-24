@@ -34,7 +34,7 @@ endfunction (_print type message)
 
 ##############################
 # find individual smoke libs #
-##############################Smoke_FIND_REQUIRED
+##############################
 
 macro (find_smoke_component name)
     string(TOUPPER ${name} uppercase)
@@ -45,21 +45,12 @@ macro (find_smoke_component name)
 
         find_path(SMOKE_${uppercase}_INCLUDE_DIR 
             ${lowercase}_smoke.h 
-            PATH ${SMOKE_INCLUDE_DIR}
-            NO_DEFAULT_PATH
-            )
-        if(WIN32)
-		    # DLLs are in the bin directory.
-            find_library(SMOKE_${uppercase}_LIBRARY
-                smoke${lowercase}
-                PATHS "@CMAKE_INSTALL_PREFIX@/bin"
-                NO_DEFAULT_PATH)
-        else(WIN32)
-            find_library(SMOKE_${uppercase}_LIBRARY
-                smoke${lowercase}
-                PATHS "@SMOKE_LIBRARY_PREFIX@"
-                NO_DEFAULT_PATH)
-        endif(WIN32)
+            HINTS ${SMOKE_INCLUDE_DIR}
+	    PATH_SUFFIXES smoke)
+
+        find_library(SMOKE_${uppercase}_LIBRARY
+            smoke${lowercase}
+	    HINTS "@SMOKE_LIBRARY_PREFIX@")
 
         if (NOT SMOKE_${uppercase}_INCLUDE_DIR OR NOT SMOKE_${uppercase}_LIBRARY)
             if (Smoke_FIND_REQUIRED)
