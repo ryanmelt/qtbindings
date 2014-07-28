@@ -1,4 +1,4 @@
-IF(QT_QTDBUS_FOUND)
+IF(QT_QTDBUS_FOUND AND NOT WIN32)
     ADD_DEFINITIONS (-DQT_QTDBUS)
 ENDIF(QT_QTDBUS_FOUND)
 
@@ -27,7 +27,7 @@ set(qtruby_LIB_SRCS qtruby.cpp)
 add_library(qtruby4shared SHARED ${qtrubyshared_LIB_SRCS})
 add_library(qtruby4 MODULE ${qtruby_LIB_SRCS})
 
-if(QT_QTDBUS_FOUND)
+if(QT_QTDBUS_FOUND AND NOT WIN32)
   target_link_libraries(  qtruby4shared 
                               ${QT_QTCORE_LIBRARY} 
                               ${QT_QTGUI_LIBRARY} 

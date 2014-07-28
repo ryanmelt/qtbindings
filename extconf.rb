@@ -16,8 +16,8 @@ if ruby_version_split[0].to_i == 1
     puts "Ruby 1.8.x is no longer supported. Install qtbindings 4.8.3.0. gem install qtbindings -v 4.8.3.0"
     exit
   end
-else # Ruby 2.X
-  ruby_version = RUBY_VERSION
+else
+  ruby_version = '2.0'
 end
 
 if windows
@@ -89,8 +89,8 @@ File.open('Makefile', 'w') do |file|
     file.puts "\t-del /F /Q qtbindings-*.gem"
     file.puts ""
     file.puts "build: makedirs"
-    file.puts "\tset CC=i686-w64-mingw32-gcc.exe"
-    file.puts "\tset CXX=i686-w64-mingw32-g++.exe"
+    file.puts "\tset CC=mingw32-gcc.exe"
+    file.puts "\tset CXX=mingw32-g++.exe"
     file.puts "\t-cd ext\\build && \\"
     file.puts "cmake \\"
     file.puts "-G \"MinGW Makefiles\" \\"
@@ -99,26 +99,6 @@ File.open('Makefile', 'w') do |file|
     end
     file.puts "-DCMAKE_MAKE_PROGRAM=mingw32-make.exe \\"
     file.puts "-Wno-dev \\"
-    file.puts "-DENABLE_SMOKE=on \\"
-    file.puts "-DENABLE_QTCORE_SMOKE=on \\"
-    file.puts "-DENABLE_QTNETWORK_SMOKE=on \\"
-    file.puts "-DENABLE_QTDBUS_SMOKE=off \\"
-    file.puts "-DENABLE_QTGUI_SMOKE=on \\"
-    file.puts "-DENABLE_QTSVG_SMOKE=on \\"
-    file.puts "-DENABLE_QTSQL_SMOKE=on \\"
-    file.puts "-DENABLE_QTXML_SMOKE=on \\"
-    file.puts "-DENABLE_QTXMLPATTERNS_SMOKE=on \\"
-    file.puts "-DENABLE_QTOPENGL_SMOKE=on \\"
-    file.puts "-DENABLE_QTWEBKIT_SMOKE=on \\"
-    file.puts "-DENABLE_QTSCRIPT_SMOKE=on \\"
-    file.puts "-DENABLE_QTUITOOLS_SMOKE=on \\"
-    file.puts "-DENABLE_QTTEST_SMOKE=on \\"
-    file.puts "-DENABLE_QTMULTIMEDIA_SMOKE=on \\"
-    file.puts "-DENABLE_QTRUBY=on \\"
-    file.puts "-DENABLE_QTWEBKIT_RUBY=on \\"
-    file.puts "-DENABLE_QTUITOOLS_RUBY=on \\"
-    file.puts "-DENABLE_QTSCRIPT=on \\"
-    file.puts "-DENABLE_QTTEST=on \\"
     file.puts "-DRUBY_EXECUTABLE=#{File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['RUBY_INSTALL_NAME'])} \\"
     file.puts ".."
     file.puts "\tcd ext\\build && mingw32-make"
@@ -245,26 +225,6 @@ File.open('Makefile', 'w') do |file|
       file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
     end
     file.puts "-Wno-dev \\"
-    file.puts "-DENABLE_SMOKE=on \\"
-    file.puts "-DENABLE_QTCORE_SMOKE=on \\"
-    file.puts "-DENABLE_QTNETWORK_SMOKE=on \\"
-    file.puts "-DENABLE_QTDBUS_SMOKE=on \\"
-    file.puts "-DENABLE_QTGUI_SMOKE=on \\"
-    file.puts "-DENABLE_QTSVG_SMOKE=on \\"
-    file.puts "-DENABLE_QTSQL_SMOKE=on \\"
-    file.puts "-DENABLE_QTXML_SMOKE=on \\"
-    file.puts "-DENABLE_QTXMLPATTERNS_SMOKE=on \\"
-    file.puts "-DENABLE_QTOPENGL_SMOKE=on \\"
-    file.puts "-DENABLE_QTWEBKIT_SMOKE=on \\"
-    file.puts "-DENABLE_QTSCRIPT_SMOKE=on \\"
-    file.puts "-DENABLE_QTUITOOLS_SMOKE=on \\"
-    file.puts "-DENABLE_QTTEST_SMOKE=on \\"
-    file.puts "-DENABLE_QTMULTIMEDIA_SMOKE=on \\"
-    file.puts "-DENABLE_QTRUBY=on \\"
-    file.puts "-DENABLE_QTWEBKIT_RUBY=on \\"
-    file.puts "-DENABLE_QTUITOOLS_RUBY=on \\"
-    file.puts "-DENABLE_QTSCRIPT=on \\"
-    file.puts "-DENABLE_QTTEST=on \\"
     file.puts "-DRUBY_EXECUTABLE=#{File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['RUBY_INSTALL_NAME'])} \\"
     file.puts ".."
     file.puts "\tcd ext/build; make"
