@@ -1,0 +1,53 @@
+<config>
+    <moduleName>phonon</moduleName>
+    <parentModules>
+        <module>qtcore</module>
+        <module>qtgui</module>
+    </parentModules>
+    <parts>10</parts>
+    <scalarTypes>
+        <!-- QString is a class, but represented as a scalar (#) in munged names -->
+        <typeName>QString</typeName>
+    </scalarTypes>
+    <voidpTypes>
+        <!-- both are classes, but they are represented as Smoke::t_voidp -->
+        <typeName>QStringList</typeName>
+        <typeName>QString</typeName>
+    </voidpTypes>
+    <exclude>
+        <!-- private stuff -->
+        <signature>.*Phonon::.*::k_ptr</signature>
+        <signature>.*Phonon::.*::d_ptr</signature>
+        <signature>.*Phonon::.*::d</signature>
+    </exclude>
+    <classList>
+        <class>Phonon</class>
+        <class>Phonon::AbstractAudioOutput</class>
+        <class>Phonon::AbstractMediaStream</class>
+        <class>Phonon::AbstractVideoOutput</class>
+        <class>Phonon::AudioDataOutput</class>
+        <class>Phonon::AudioOutput</class>
+        <class>Phonon::Capture</class>
+        <class>Phonon::Effect</class>
+        <class>Phonon::EffectParameter</class>
+        <class>Phonon::EffectWidget</class>
+        <class>Phonon::GlobalConfig</class>
+        <class>Phonon::MediaController</class>
+        <class>Phonon::MediaController::NavigationMenu</class>
+        <class>Phonon::MediaNode</class>
+        <class>Phonon::MediaObject</class>
+        <class>Phonon::MediaSource</class>
+        <class>Phonon::Mrl</class>
+        <class>Phonon::ObjectDescriptionData</class>
+        <class>Phonon::ObjectDescriptionModelData</class>
+        <class>Phonon::Path</class>
+        <class>Phonon::PulseSupport</class>
+        <class>Phonon::SeekSlider</class>
+        <class>Phonon::StreamInterface2</class>
+        <class>Phonon::StreamInterface</class>
+        <class>Phonon::VideoPlayer</class>
+        <class>Phonon::VideoWidget</class>
+        <class>Phonon::VolumeFaderEffect</class>
+        <class>Phonon::VolumeSlider</class>
+    </classList>
+</config>
