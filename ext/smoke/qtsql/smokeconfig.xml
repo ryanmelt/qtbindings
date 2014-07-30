@@ -20,8 +20,6 @@
         <signature>.*::d_ptr</signature>
         <signature>.*::q_ptr</signature>
         <signature>.*\(.*Private.*\).*</signature>
-        <signature>.*QSqlRelationalDelegate::QSqlRelationalDelegate\(const QSqlRelationalDelegate&amp;\).*</signature>
-        <signature>.*QSqlRelationalTableModel::QSqlRelationalTableModel\(const QSqlRelationalTableModel&amp;\).*</signature>
         <!-- Thread related stuff belongs to the bindings language -->
         <signature>.*QtConcurrent.*</signature>
         <signature>.*QDomNode.*</signature>
@@ -49,10 +47,10 @@
         <class>QSqlField</class>
         <class>QSqlIndex</class>
         <class>QSqlQuery</class>
-        <class>QRelationalTableModel</class>
+        <class>QSqlQueryModel</class>
         <class>QSqlRecord</class>
         <class>QSqlRelation</class>
-        <class>QRelationalTableModel</class>
+        <class>QSqlRelationalDelegate</class>
         <class>QSqlRelationalTableModel</class>
         <class>QSqlResult</class>
         <class>QSqlTableModel</class>

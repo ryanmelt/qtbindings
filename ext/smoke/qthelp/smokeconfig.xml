@@ -21,11 +21,6 @@
         <signature>.*::d_ptr</signature>
         <signature>.*::q_ptr</signature>
         <signature>.*\(.*Private.*\).*</signature>
-        <signature>.*QHelpContentWidget::QHelpContentWidget\(const QHelpContentWidget&amp;\).*</signature>
-        <signature>.*QHelpEngine::QHelpEngine\(const QHelpEngine&amp;\).*</signature>
-        <signature>.*QHelpIndexWidget::QHelpIndexWidget\(const QHelpIndexWidget&amp;\).*</signature>
-        <signature>.*QHelpSearchQueryWidget::QHelpSearchQueryWidget\(const QHelpSearchQueryWidget&amp;\).*</signature>
-        <signature>.*QHelpSearchResultWidget::QHelpSearchResultWidget\(const QHelpSearchResultWidget&amp;\).*</signature>
         <!-- Thread related stuff belongs to the bindings language -->
         <signature>.*QtConcurrent.*</signature>
         <signature>.*QDomNode.*</signature>
@@ -46,7 +41,7 @@
     <classList>
         <class>QHelpContentItem</class>
         <class>QHelpContentModel</class>
-        <class>QHelpEngine</class>
+        <class>QHelpContentWidget</class>
         <class>QHelpEngine</class>
         <class>QHelpEngineCore</class>
         <class>QHelpIndexModel</class>

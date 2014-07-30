@@ -30,7 +30,7 @@
         <typeName>HWND__</typeName>
     </voidpTypes>
     <exclude>
-       <!-- we don't want private stuff in smoke.. -->
+        <!-- we don't want private stuff in smoke.. -->
         <signature>.*\(.*Private.*\).*</signature>
         <signature>.*::d_ptr</signature>
         <signature>.*::q_ptr</signature>
@@ -38,11 +38,6 @@
         <signature>.*QGraphicsSceneEvent::QGraphicsSceneEvent\(const QGraphicsSceneEvent&amp;\).*</signature>
         <signature>.*QGraphicsScene.*Event::QGraphicsScene.*Event\(const QGraphicsScene.*Event&amp;\).*</signature>
         <signature>.*QPainterPathStroker::QPainterPathStroker\(const QPainterPathStroker&amp;\)</signature>
-        <signature>.*QAbstractPageSetupDialog::QAbstractPageSetupDialog\(const QAbstractPageSetupDialog&amp;\).*</signature>
-        <signature>.*QPageSetupDialog::QPageSetupDialog\(const QPageSetupDialog&amp;\).*</signature>
-        <signature>.*QFormLayout::QFormLayout\(const QFormLayout&amp;\).*</signature>
-        <!-- QLayout is abstract so don't allow it to be constructed -->
-        <signature>.*QLayout::QLayout\(.*\).*</signature>
         <!-- Thread related stuff belongs to the bindings language -->
         <signature>.*QtConcurrent.*</signature>
         <!-- this doesn't link, internal stuff.. -->
