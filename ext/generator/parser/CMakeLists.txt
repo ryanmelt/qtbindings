@@ -43,9 +43,7 @@ install(TARGETS cppparser LIBRARY DESTINATION ${LIB_INSTALL_DIR}
     RUNTIME DESTINATION bin)
 if (WIN32)
 	# Realign the stack, for compatibility with an older ABI.
-	if(CMAKE_COMPILER_IS_GNUCXX)
-		set_target_properties(cppparser PROPERTIES COMPILE_FLAGS -mstackrealign)
-	endif()
+	set_target_properties (cppparser PROPERTIES COMPILE_FLAGS -mstackrealign)
 
     # Get rid of the "lib" prefix on archives/DLLs in Windows.
     set_target_properties(cppparser PROPERTIES PREFIX "" IMPORT_PREFIX "")

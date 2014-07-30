@@ -71,7 +71,7 @@ void LocationTable::anchor(std::size_t offset, Anchor anchor, const Preprocessed
     if (known.first == anchor && !anchor.collapsed && known.first.macroExpansion == anchor.macroExpansion)
       return;
   }
-  m_currentOffset = QMap<std::size_t, Anchor>::ConstIterator(m_offsetTable.insert(offset, anchor));
+  m_currentOffset = m_offsetTable.insert(offset, anchor);
 }
 
 LocationTable::AnchorInTable LocationTable::anchorForOffset(std::size_t offset, bool collapseIfMacroExpansion) const

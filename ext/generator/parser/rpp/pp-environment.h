@@ -32,7 +32,7 @@
 
 namespace rpp {
 
-struct pp_macro;
+class pp_macro;
 class pp;
 class LocationTable;
 
