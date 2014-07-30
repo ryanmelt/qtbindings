@@ -58,7 +58,7 @@ if(QT_QTDBUS_FOUND AND NOT WIN32)
                               smokeqtdbus 
                               smokeqtsvg
                               qtruby4shared )
-else(QT_QTDBUS_FOUND)
+else(QT_DBUS_FOUND)
   target_link_libraries(  qtruby4shared 
                               ${QT_QTCORE_LIBRARY} 
                               ${QT_QTGUI_LIBRARY} 
@@ -86,7 +86,7 @@ else(QT_QTDBUS_FOUND)
                               smokeqtnetwork 
                               smokeqtsvg
                               qtruby4shared )
-endif(QT_QTDBUS_FOUND)
+endif(QT_DBUS_FOUND)
 
 # target_link_libraries(qtrubyinternal ${QT_QTCORE_LIBRARY} ${RUBY_LIBRARY} ${QT_QTNETWORK_LIBRARY})
 
