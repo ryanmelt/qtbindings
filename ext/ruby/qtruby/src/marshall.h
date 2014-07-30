@@ -11,12 +11,7 @@
 #define MARSHALL_H
 
 #include <smoke/smoke.h>
-#include "time.h"
-#define timespec ming_timespec
-#define timezone ming_timezone
 #include <ruby.h>
-#undef timespec
-#undef timezone
 
 class SmokeType;
 
@@ -56,12 +51,12 @@ public:
     virtual bool cleanup() = 0;
 
     virtual ~Marshall() {}
-};
+};    
 
 class SmokeEnumWrapper {
 public:
-  Marshall *m;
-};
+	Marshall *m;
+};	
 
 class SmokeClassWrapper {
 public:

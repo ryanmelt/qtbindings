@@ -28,12 +28,7 @@ macro_optional_add_bindings(QT_QTSCRIPT_FOUND "QtScript" qtscript)
 macro_optional_add_bindings(QT_QTTEST_FOUND "QtTest" qttest)
 
 if (RUBY_EXECUTABLE AND RUBY_LIBRARY AND RUBY_INCLUDE_DIRS)
-    if(WIN32) # Add the -r devkit on Windows to successfully build
-      EXECUTE_PROCESS(COMMAND ${RUBY_EXECUTABLE} -r devkit -r mkmf -e "exit(have_func('rb_hash_foreach') ? 0 : 1)" RESULT_VARIABLE RUBY_HASH_FOREACH OUTPUT_QUIET)
-    else(WIN32)
-      EXECUTE_PROCESS(COMMAND ${RUBY_EXECUTABLE} -r mkmf -e "exit(have_func('rb_hash_foreach') ? 0 : 1)" RESULT_VARIABLE RUBY_HASH_FOREACH OUTPUT_QUIET)
-    endif(WIN32)
-
+    EXECUTE_PROCESS(COMMAND ${RUBY_EXECUTABLE} -r mkmf -e "exit(have_func('rb_hash_foreach') ? 0 : 1)" RESULT_VARIABLE RUBY_HASH_FOREACH OUTPUT_QUIET)
     if (RUBY_HASH_FOREACH EQUAL 0)
 
         set(CMAKE_REQUIRED_INCLUDES ${RUBY_INCLUDE_DIRS})
@@ -50,9 +45,17 @@ if (RUBY_EXECUTABLE AND RUBY_LIBRARY AND RUBY_INCLUDE_DIRS)
         endif(RubyCompiles)
 
     else (RUBY_HASH_FOREACH EQUAL 0)
-      message(STATUS "Failed to load the Ruby mkmf library. Please install the Ruby developer packages.")
-    endif (RUBY_HASH_FOREACH EQUAL 0)
 
+        # 2007-02-12 sebsauer; this is a workaround for the case we failed to load
+        # the "mkmf" library what is the case e.g. on some debian distributions.
+        #EXECUTE_PROCESS(COMMAND ${RUBY_EXECUTABLE} -r mkmf -e "exit(0)" RESULT_VARIABLE RUBY_HASH_FOREACH OUTPUT_QUIET ERROR_QUIET)
+        #if (${RUBY_HASH_FOREACH} EQUAL 0)
+        message(STATUS "The detected Ruby is too old for kross. A Ruby which has rb_hash_foreach is required. Upgrade to 1.8.2 or later")
+        #else (${RUBY_HASH_FOREACH} EQUAL 0)
+        #    message(STATUS "Failed to load the Ruby mkmf library. Please install the Ruby developer packages.")
+        #endif (${RUBY_HASH_FOREACH} EQUAL 0)
+
+    endif (RUBY_HASH_FOREACH EQUAL 0)
 endif (RUBY_EXECUTABLE AND RUBY_LIBRARY AND RUBY_INCLUDE_DIRS)
 message(STATUS "Ruby Executable: " ${RUBY_EXECUTABLE})
 message(STATUS "Ruby Libraries: " ${RUBY_LIBRARY})

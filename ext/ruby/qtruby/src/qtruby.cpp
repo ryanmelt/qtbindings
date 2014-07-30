@@ -57,12 +57,7 @@
 #include <smoke/qtdbus_smoke.h>
 #endif
 
-#include "time.h"
-#define timespec ming_timespec
-#define timezone ming_timezone
 #include <ruby.h>
-#undef timespec
-#undef timezone
 #undef read
 #undef write
 #undef connect

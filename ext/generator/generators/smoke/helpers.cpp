@@ -17,20 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <QFileInfo>
 #include <QHash>
 #include <QList>
-#include <QLibrary>
 #include <QStack>
-#include <QDir>
 
 #include <type.h>
-#include <smoke.h>
 
 #include "globals.h"
 #include "../../options.h"
-
-//typedef void (*InitSmokeFn)();
 
 QHash<QString, QString> Util::typeMap;
 QHash<const Method*, const Function*> Util::globalFunctionMap;
@@ -98,122 +92,19 @@ bool operator==(const EnumMember& lhs, const EnumMember& rhs)
     return (lhs.name() == rhs.name() && lhs.declaringType() == rhs.declaringType() && lhs.type() == rhs.type());
 }
 
-//static Smoke* loadSmokeModule(QString moduleName) {
-//    QLibrary lib;
-//#if defined(Q_OS_WIN32)
-//    QString libName = QLatin1String("smoke") + moduleName;
-//#else
-//    QString libName = QLatin1String("libsmoke") + moduleName;
-//#endif
-//
-//    // first, try <libdir>/moduleName/libsmokemoduleName
-//    lib.setFileName(Options::libDir.filePath(moduleName + '/' + libName));
-//
-//    // then <libdir>/libsmokemoduleName
-//    if (!lib.load()) {
-//        lib.setFileName(Options::libDir.filePath(libName));
-//    }
-//
-//    // use the plain library name if everything else fails
-//    if (!lib.load()) {
-//        lib.setFileName(libName);
-//    }
-//
-//    lib.load();
-//
-//    QString init_name = "init_" + moduleName + "_Smoke";
-//    InitSmokeFn init = (InitSmokeFn) lib.resolve(init_name.toLatin1());
-//
-//    if (!init) {
-//        qWarning("Couldn't resolve %s: %s", qPrintable(init_name), qPrintable(lib.errorString()));
-//        return 0;
-//    }
-//
-//    (*init)();
-//
-//    QString smoke_name = moduleName + "_Smoke";
-//    Smoke** smoke = (Smoke**) lib.resolve(smoke_name.toLatin1());
-//    if (!smoke) {
-//        qWarning("Couldn't resolve %s: %s", qPrintable(smoke_name), qPrintable(lib.errorString()));
-//        return 0;
-//    }
-//
-//    return *smoke;
-//}
-//
-//static bool compareArgs(const Method& method, const Smoke::Method& smokeMethod, Smoke* smoke) {
-//    if (method.parameters().count() != smokeMethod.numArgs) {
-//        return false;
-//    }
-//    for (int i = 0; i < method.parameters().count(); i++) {
-//        const Parameter& p = method.parameters()[i];
-//        if (p.type()->toString() != QLatin1String(smoke->types[smoke->argumentList[smokeMethod.args + i]].name)) {
-//            return false;
-//        }
-//    }
-//    return true;
-//}
-//
-//static bool isRepeating(const QList<Smoke*>& parentModules, const char* className, const Method& method) {
-//    QString mungedName = Util::mungedName(method).toLatin1();
-//    foreach (Smoke* smoke, parentModules) {
-//        Smoke::ModuleIndex methodIndex = smoke->findMethod(className, mungedName.toLatin1().constData());
-//        if (methodIndex.index) {
-//            Smoke::Index index = methodIndex.smoke->methodMaps[methodIndex.index].method;
-//            if (index >= 0) {
-//                if (compareArgs(method, methodIndex.smoke->methods[index], methodIndex.smoke)) {
-//                    return true;
-//                }
-//                continue;
-//            }
-//            index = -index;
-//            Smoke::Index i;
-//            while ((i = methodIndex.smoke->ambiguousMethodList[index++]) != 0) {
-//                if (compareArgs(method, methodIndex.smoke->methods[i], methodIndex.smoke)) {
-//                    return true;
-//                }
-//            }
-//        }
-//    }
-//    return false;
-//}
-//
-//// assuming that enums don't change between modules, checking for the first member only is sufficient
-//static bool isRepeating(const QList<Smoke*>& parentModules, const char* className, const Enum& eNum) {
-//    if (eNum.members().isEmpty())
-//        return false;
-//
-//    const EnumMember& firstMember = eNum.members().first();
-//
-//    foreach(Smoke *smoke, parentModules) {
-//        Smoke::ModuleIndex methodIndex = smoke->findMethod(className, firstMember.name().toLatin1().constData());
-//        if (methodIndex.index)
-//            return true;
-//    }
-//    return false;
-//}
-
 void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, const QList<QString>& keys)
 {
     Class& globalSpace = classes["QGlobalSpace"];
     globalSpace.setName("QGlobalSpace");
     globalSpace.setKind(Class::Kind_Class);
     globalSpace.setIsNameSpace(true);
-
-    //QList<Smoke*> parentModules;
-    //foreach (QString module, Options::parentModules) {
-    //    Smoke *smoke = loadSmokeModule(module);
-    //    if (smoke) {
-    //        parentModules << smoke;
-    //    }
-    //}
-
+    
     // add all functions as methods to a class called 'QGlobalSpace' or a class that represents a namespace
     for (QHash<QString, Function>::const_iterator it = functions.constBegin(); it != functions.constEnd(); it++) {
         const Function& fn = it.value();
-
+        
         QString fnString = fn.toString();
-
+        
         // gcc doesn't like this function... for whatever reason
         if (fn.name() == "_IO_ftrylockfile"
             // functions in named namespaces are covered by the class list - only check for top-level functions here
@@ -223,7 +114,7 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
             // we don't want that function...
             continue;
         }
-
+        
         Class* parent = &globalSpace;
         if (!fn.nameSpace().isEmpty()) {
             parent = &classes[fn.nameSpace()];
@@ -233,16 +124,13 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
                 parent->setIsNameSpace(true);
             }
         }
-
+        
         Method meth = Method(parent, fn.name(), fn.type(), Access_public, fn.parameters());
         meth.setFlag(Method::Static);
-        //if (isRepeating(parentModules, parent->name().toLatin1(), meth)) {
-        //    continue;
-        //}
         parent->appendMethod(meth);
         // map this method to the function, so we can later retrieve the header it was defined in
         globalFunctionMap[&parent->methods().last()] = &fn;
-
+        
         int methIndex = parent->methods().size() - 1;
         addOverloads(meth);
         // handle the methods appended by addOverloads()
@@ -253,13 +141,12 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
         foreach (const Parameter& param, meth.parameters())
             (*usedTypes) << param.type();
     }
-
+    
     // all enums that don't have a parent are put under QGlobalSpace, too
     for (QHash<QString, Enum>::iterator it = enums.begin(); it != enums.end(); it++) {
         Enum& e = it.value();
         if (!e.parent()) {
             Class* parent = &globalSpace;
-            // if the enum is defined in a namespace, make that the enum's parent
             if (!e.nameSpace().isEmpty()) {
                 parent = &classes[e.nameSpace()];
                 if (parent->name().isEmpty()) {
@@ -267,9 +154,6 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
                     parent->setKind(Class::Kind_Class);
                     parent->setIsNameSpace(true);
                 }
-            // else, see if it is already defined in a parent module
-            //} else if (isRepeating(parentModules, parent->name().toLatin1(), e)) {
-            //    continue;
             }
 
             Type *t = 0;
@@ -285,11 +169,7 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
             parent->appendChild(&e);
         }
     }
-
-    //foreach (Smoke* smoke, parentModules) {
-    //    delete smoke;
-    //}
-
+    
     foreach (const QString& key, keys) {
         Class& klass = classes[key];
         foreach (const Class::BaseClassSpecifier base, klass.baseClasses()) {
@@ -303,7 +183,7 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
             foreach (const Method& m, klass.methods()) {
                 if (m.access() == Access_private)
                     continue;
-                if (hasTypeNonPublicParts(*m.type())
+                if ((m.type()->getClass() && m.type()->getClass()->access() == Access_private)
                     || Options::typeExcluded(m.toString(false, true)))
                 {
                     klass.methodsRef().removeOne(m);
@@ -352,9 +232,9 @@ void Util::preparse(QSet<Type*> *usedTypes, QSet<const Class*> *superClasses, co
                     }
                 }
             }
-
+            
         }
-
+        
     }
 }
 
@@ -363,7 +243,7 @@ bool Util::canClassBeInstanciated(const Class* klass)
     static QHash<const Class*, bool> cache;
     if (cache.contains(klass))
         return cache[klass];
-
+    
     bool ctorFound = false, publicCtorFound = false, privatePureVirtualsFound = false;
     foreach (const Method& meth, klass->methods()) {
         if (meth.isConstructor()) {
@@ -376,7 +256,7 @@ bool Util::canClassBeInstanciated(const Class* klass)
             privatePureVirtualsFound = true;
         }
     }
-
+    
     // The class can be instanstiated if it has a public constructor or no constructor at all
     // because then it has a default one generated by the compiler.
     // If it has private pure virtuals, then it can't be instanstiated either.
@@ -404,7 +284,7 @@ bool Util::canClassBeCopied(const Class* klass)
             }
         }
     }
-
+    
     bool parentCanBeCopied = true;
     foreach (const Class::BaseClassSpecifier& base, klass->baseClasses()) {
         if (!canClassBeCopied(base.baseClass)) {
@@ -412,7 +292,7 @@ bool Util::canClassBeCopied(const Class* klass)
             break;
         }
     }
-
+    
     // if the parent can be copied and we didn't find a private copy c'tor, the class is copiable
     bool ret = (parentCanBeCopied && !privateCopyCtorFound);
     cache[klass] = ret;
@@ -432,7 +312,7 @@ bool Util::hasClassVirtualDestructor(const Class* klass)
             break;
         }
     }
-
+    
     bool superClassHasVirtualDtor = false;
     foreach (const Class::BaseClassSpecifier& bspec, klass->baseClasses()) {
         if (hasClassVirtualDestructor(bspec.baseClass)) {
@@ -440,7 +320,7 @@ bool Util::hasClassVirtualDestructor(const Class* klass)
             break;
         }
     }
-
+    
     // if the superclass has a virtual d'tor, then the descendants have one automatically, too
     bool ret = (virtualDtorFound || superClassHasVirtualDtor);
     cache[klass] = ret;
@@ -467,7 +347,7 @@ bool Util::hasClassPublicDestructor(const Class* klass)
             break;
         }
     }
-
+    
     cache[klass] = publicDtorFound;
     return publicDtorFound;
 }
@@ -491,7 +371,7 @@ const Method* Util::findDestructor(const Class* klass)
 void Util::checkForAbstractClass(Class* klass)
 {
     QList<const Method*> list;
-
+    
     bool hasPrivatePureVirtuals = false;
     foreach (const Method& meth, klass->methods()) {
         if ((meth.flags() & Method::PureVirtual) && meth.access() == Access_private)
@@ -499,7 +379,7 @@ void Util::checkForAbstractClass(Class* klass)
         if (meth.isConstructor())
             list << &meth;
     }
-
+    
     // abstract classes can't be instanstiated - remove the constructors
     if (hasPrivatePureVirtuals) {
         foreach (const Method* ctor, list) {
@@ -517,7 +397,7 @@ void Util::addDefaultConstructor(Class* klass)
         else if (meth.isDestructor() && meth.access() == Access_private)
             return;
     }
-
+    
     Type t = Type(klass);
     t.setPointerDepth(1);
     Method meth = Method(klass, klass->name(), Type::registerType(t));
@@ -538,13 +418,13 @@ void Util::addCopyConstructor(Class* klass)
             return;
         }
     }
-
+    
     // if the parent can't be copied, a copy c'tor is of no use
     foreach (const Class::BaseClassSpecifier& base, klass->baseClasses()) {
         if (!canClassBeCopied(base.baseClass))
             return;
     }
-
+    
     Type t = Type(klass);
     t.setPointerDepth(1);
     Method meth = Method(klass, klass->name(), Type::registerType(t));
@@ -565,7 +445,7 @@ void Util::addDestructor(Class* klass)
 
     Method meth = Method(klass, "~" + klass->name(), const_cast<Type*>(Type::Void));
     meth.setIsDestructor(true);
-
+    
     const Method* dtor = findDestructor(klass);
     if (dtor && dtor->hasExceptionSpec()) {
         meth.setHasExceptionSpec(true);
@@ -573,7 +453,7 @@ void Util::addDestructor(Class* klass)
             meth.appendExceptionType(t);
         }
     }
-
+    
     klass->appendMethod(meth);
 }
 
@@ -629,21 +509,6 @@ Type* Util::normalizeType(const Type* type) {
     return Type::registerType(normalizedType);
 }
 
-bool Util::hasTypeNonPublicParts(const Type& type)
-{
-    if (type.getClass() && type.getClass()->access() != Access_public) {
-        return true;
-    }
-
-    foreach (const Type& t, type.templateArguments()) {
-        if (hasTypeNonPublicParts(t)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 QString Util::stackItemField(const Type* type)
 {
     if (type->getTypedef()) {
@@ -662,10 +527,10 @@ QString Util::stackItemField(const Type* type)
     {
         return "s_class";
     }
-
+    
     if (type->getEnum())
         return "s_enum";
-
+    
     QString typeName = type->name();
     // replace the unsigned stuff, look the type up in Util::typeMap and if
     // necessary, add a 'u' for unsigned types at the beginning again
@@ -730,13 +595,13 @@ static bool operator==(const Method& rhs, const Method& lhs)
     bool ok = (rhs.name() == lhs.name() && rhs.isConst() == lhs.isConst() && rhs.parameters().count() == lhs.parameters().count());
     if (!ok)
         return false;
-
+    
     // now check the parameter types for equality
     for (int i = 0; i < rhs.parameters().count(); i++) {
         if (rhs.parameters()[i].type() != lhs.parameters()[i].type())
             return false;
     }
-
+    
     return true;
 }
 
@@ -756,18 +621,18 @@ void Util::addAccessorMethods(const Field& field, QSet<Type*> *usedTypes)
         getter.setFlag(Method::Static);
     klass->appendMethod(getter);
     fieldAccessors[&klass->methods().last()] = &field;
-
+    
     // constant field? (i.e. no setter method)
     if (field.type()->isConst() && field.type()->pointerDepth() == 0)
         return;
-
+    
     // foo => setFoo
     QString newName = field.name();
     newName[0] = newName[0].toUpper();
     Method setter = Method(klass, "set" + newName, const_cast<Type*>(Type::Void), field.access());
     if (field.flags() & Field::Static)
         setter.setFlag(Method::Static);
-
+    
     // reset
     type = field.type();
     // to avoid copying around more stuff than necessary, convert setFoo(Bar) to setFoo(const Bar&)
@@ -790,7 +655,7 @@ void Util::addOverloads(const Method& meth)
 {
     ParameterList params;
     Class* klass = meth.getClass();
-
+    
     for (int i = 0; i < meth.parameters().count(); i++) {
         const Parameter& param = meth.parameters()[i];
         if (!param.isDefault()) {
@@ -809,7 +674,7 @@ void Util::addOverloads(const Method& meth)
             params << param;
             continue;
         }
-
+        
         QStringList remainingDefaultValues;
         for (int j = i; j < meth.parameters().count(); j++) {
             const Parameter defParam = meth.parameters()[j];
@@ -820,7 +685,7 @@ void Util::addOverloads(const Method& meth)
         }
         overload.setRemainingDefaultValues(remainingDefaultValues);
         klass->appendMethod(overload);
-
+        
         params << param;
     }
 }
@@ -831,28 +696,28 @@ const Method* Util::isVirtualOverriden(const Method& meth, const Class* klass)
     // is the method virtual at all?
     if (!(meth.flags() & Method::Virtual) && !(meth.flags() & Method::PureVirtual))
         return 0;
-
+    
     // if the method is defined in klass, it can't be overriden there or in any parent class
     if (meth.getClass() == klass)
         return 0;
-
+    
     foreach (const Method& m, klass->methods()) {
         if (!(m.flags() & Method::Static) && m == meth)
             // the method m overrides meth
             return &m;
     }
-
+    
     foreach (const Class::BaseClassSpecifier& base, klass->baseClasses()) {
         // we reached the class in which meth was defined and we still didn't find any overrides => return
         if (base.baseClass == meth.getClass())
             return 0;
-
+        
         // recurse into the base classes
         const Method* m = 0;
         if ((m = isVirtualOverriden(meth, base.baseClass)))
             return m;
     }
-
+    
     return 0;
 }
 
@@ -867,14 +732,14 @@ static bool qListContainsMethodPointer(const QList<const Method*> list, const Me
 QList<const Method*> Util::virtualMethodsForClass(const Class* klass)
 {
     static QHash<const Class*, QList<const Method*> > cache;
-
+    
     // virtual method callbacks for classes that can't be instanstiated aren't useful
     if (!Util::canClassBeInstanciated(klass))
         return QList<const Method*>();
-
+    
     if (cache.contains(klass))
         return cache[klass];
-
+    
     QList<const Method*> ret;
 
     foreach (const Method* meth, Util::collectVirtualMethods(klass)) {

@@ -41,7 +41,6 @@ QStringList Options::classList;
 int Options::parts = 20;
 QString Options::module = "qt";
 QStringList Options::parentModules;
-QDir Options::libDir;
 QStringList Options::scalarTypes;
 QStringList Options::voidpTypes;
 bool Options::qtMode = false;
@@ -57,8 +56,7 @@ static void showUsage()
     "    -p <parts> (default: 20)" << std::endl <<
     "    -pm <comma-seperated list of parent modules>" << std::endl <<
     "    -st <comma-seperated list of types that should be munged to scalars>" << std::endl <<
-    "    -vt <comma-seperated list of types that should be mapped to Smoke::t_voidp>" << std::endl <<
-    "    -L <directory containing parent libs> (parent smoke libs can be located in a <modulename> subdirectory>)" << std::endl;
+    "    -vt <comma-seperated list of types that should be mapped to Smoke::t_voidp>" << std::endl;
 }
 
 extern "C" Q_DECL_EXPORT
@@ -70,9 +68,8 @@ int generate()
     
     const QStringList& args = QCoreApplication::arguments();
     for (int i = 0; i < args.count(); i++) {
-        if (  (args[i] == "-m" || args[i] == "-p" || args[i] == "-pm" || args[i] == "-o" ||
-               args[i] == "-st" || args[i] == "-vt" || args[i] == "-smokeconfig" || args[i] == "-L")
-            && i + 1 >= args.count())
+        if ((args[i] == "-m" || args[i] == "-p" || args[i] == "-pm" || args[i] == "-o" ||
+             args[i] == "-st" || args[i] == "-vt" || args[i] == "-smokeconfig") && i + 1 >= args.count())
         {
             qCritical() << "generator_smoke: not enough parameters for option" << args[i];
             return EXIT_FAILURE;
@@ -95,8 +92,6 @@ int generate()
             smokeConfig = QFileInfo(args[++i]);
         } else if (args[i] == "-o") {
             Options::outputDir = QDir(args[++i]);
-        } else if (args[i] == "-L") {
-            Options::libDir = QDir(args[++i]);
         } else if (args[i] == "-h" || args[i] == "--help") {
             showUsage();
             return EXIT_SUCCESS;

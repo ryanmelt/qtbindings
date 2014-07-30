@@ -76,13 +76,7 @@
 #ifndef __USE_XOPEN
 #define __USE_XOPEN
 #endif
-
-#include "time.h"
-#define timespec ming_timespec
-#define timezone ming_timezone
 #include <ruby.h>
-#undef timespec
-#undef timezone
 
 #include "marshall.h"
 #include "qtruby.h"

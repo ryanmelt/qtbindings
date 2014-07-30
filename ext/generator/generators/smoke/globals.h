@@ -47,7 +47,6 @@ struct Options
     static int parts;
     static QString module;
     static QStringList parentModules;
-    static QDir libDir;
     static QStringList scalarTypes;
     static QStringList voidpTypes;
     static QList<QFileInfo> headerList;
@@ -70,7 +69,6 @@ struct SmokeDataFile
     void write();
     bool isClassUsed(const Class* klass);
     QString getTypeFlags(const Type *type, int *classIdx);
-    void insertTemplateParameters(const Type& type);
 
     QMap<QString, int> classIndex;
     QHash<const Member*, int> methodIdx;
@@ -131,7 +129,6 @@ struct Util
     static QString mungedName(const Method&);
 
     static Type* normalizeType(const Type* type);
-    static bool hasTypeNonPublicParts(const Type& type);
 
     static QString stackItemField(const Type* type);
     static QString assignmentString(const Type* type, const QString& var);

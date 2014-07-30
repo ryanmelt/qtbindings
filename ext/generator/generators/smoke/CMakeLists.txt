@@ -12,9 +12,7 @@ set_target_properties(generator_smoke PROPERTIES PREFIX "")
 
 if (WIN32)
 	# Realign the stack, for compatibility with an older ABI.
-	if(CMAKE_COMPILER_IS_GNUCXX)
-		set_target_properties(generator_smoke PROPERTIES COMPILE_FLAGS -mstackrealign)
-	endif()
+	set_target_properties (generator_smoke PROPERTIES COMPILE_FLAGS -mstackrealign)
 endif (WIN32)
 
 install(TARGETS generator_smoke LIBRARY DESTINATION ${LIB_INSTALL_DIR}/smokegen/)
