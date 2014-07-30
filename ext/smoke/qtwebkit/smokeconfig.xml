@@ -14,6 +14,15 @@
         <typeName>QStringList</typeName>
         <typeName>QString</typeName>
     </voidpTypes>
+    <exclude>
+        <!-- we don't want private stuff in smoke.. -->
+        <signature>.*\(.*Private.*\).*</signature>
+        <signature>.*::d_ptr</signature>
+        <signature>.*::q_ptr</signature>
+        <signature>.*QGraphicsWebView::QGraphicsWebView\(const QGraphicsWebView&amp;\).*</signature>
+        <signature>.*QWebInspector::QWebInspector\(const QWebInspector&amp;\).*</signature>
+        <signature>.*QWebView::QWebView\(const QWebView&amp;\).*</signature>
+    </exclude>
     <classList>
         <class>QGraphicsWebView</class>
         <class>QWebDatabase</class>
