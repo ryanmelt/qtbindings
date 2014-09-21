@@ -476,10 +476,11 @@ module Qt
     # Otherwise, rb_gc_call_finalizer_at_exit() can delete
     # stuff that Qt::Application still needs for its cleanup.
     def exec
-      method_missing(:exec)
+      result = method_missing(:exec)
       disable_threading()
       self.dispose
       Qt::Internal.application_terminated = true
+      result
     end
 
     def type(*args)
