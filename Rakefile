@@ -6,8 +6,14 @@ windows = true if platform =~ /mswin32/ or platform =~ /mingw32/
 
 if windows
   MAKE = 'mingw32-make'
+  SLASH = '\\'
+  COPY = 'copy'
+  DEL = 'del'
 else
   MAKE = 'make'
+  SLASH = '/'
+  COPY = 'cp'
+  DEL = 'rm'
 end
 
 def warn_version
@@ -92,7 +98,9 @@ end
 task :gemnative do
   warn_version()
   set_version()
+  system("#{COPY} gemspecs#{SLASH}qtbindingsnative.gemspec .")
   system("gem build qtbindingsnative.gemspec")
+  system("#{DEL} qtbindingsnative.gemspec")
   clear_version()
 end
 
@@ -100,7 +108,9 @@ task :gemqt do
   warn_version()
   set_version()
   system("#{MAKE} installqt")
+  system("#{COPY} gemspecs#{SLASH}qtbindings-qt.gemspec .")
   system("gem build qtbindings-qt.gemspec")
+  system("#{DEL} qtbindings-qt.gemspec")
   clear_version()
 end
 
