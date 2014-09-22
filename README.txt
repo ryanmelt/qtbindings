@@ -10,7 +10,7 @@ Goals
 1. To make it easy to install a Qt binding for Ruby on all platforms using
    RubyGems
 2. To maintain an up-to-date binary gem for Windows that is bundled with
-   the latest version of Qt from http://qt.nokia.com
+   the latest version of Qt
 3. To reduce the scope and maintenance of the bindings to only bind to the
    libraries provided by the Qt SDK.
 4. To increase compatibility with non-linux platforms
@@ -137,6 +137,9 @@ qtbindings gem.
 License:
 This library is released under the LGPL Version 2.1.
 See COPYING.LIB.txt
+
+Contributing:
+Fork the project and submit pull requests.
 
 Disclaimer:
 Almost all of this code was written by the guys who worked on the KDE

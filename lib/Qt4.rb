@@ -9,19 +9,12 @@ rescue LoadError
   # Oh well - Hopefully not using the Windows binary gem
 end
 
-if RUBY_VERSION.split('.')[0].to_i == 1
-  if windows
-    ENV['PATH'] = File.join(File.dirname(__FILE__), '../bin') + ';' + File.join(File.dirname(__FILE__), '../lib/1.9') + ';' + File.join(File.dirname(__FILE__), '../bin/1.9') + ';' + ENV['PATH']
-  end
-  $: << File.join(File.dirname(__FILE__), '../lib/1.9')
-  require '1.9/qtruby4'
-else
-  if windows
-    ENV['PATH'] = File.join(File.dirname(__FILE__), '../bin') + ';' + File.join(File.dirname(__FILE__), '../lib/2.0') + ';' + File.join(File.dirname(__FILE__), '../bin/2.0') + ';' + ENV['PATH']
-  end
-  $: << File.join(File.dirname(__FILE__), '../lib/2.0')
-  require '2.0/qtruby4'
+ruby_version = RUBY_VERSION.split('.')[0..1].join('.')
+if windows
+  ENV['PATH'] = File.join(File.dirname(__FILE__), '../bin') + ';' + File.join(File.dirname(__FILE__), "../lib/#{ruby_version}") + ';' + File.join(File.dirname(__FILE__), "../bin/#{ruby_version}") + ';' + ENV['PATH']
 end
+$: << File.join(File.dirname(__FILE__), "../lib/#{ruby_version}")
+require "#{ruby_version}/qtruby4"
 
 module Qt
   class RubyThreadFix < Qt::Object

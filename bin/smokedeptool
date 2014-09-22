@@ -10,9 +10,5 @@ windows = true if platform =~ /mswin32/ or platform =~ /mingw32/
 extension = ''
 extension = '.exe' if windows
 
-if RUBY_VERSION.split('.')[0].to_i == 1
-  path = File.expand_path(File.join(File.dirname(__FILE__), '1.9', "smokedeptool#{extension}"))
-else
-  path = File.expand_path(File.join(File.dirname(__FILE__), '2.0', "smokedeptool#{extension}"))
-end
+path = File.expand_path(File.join(File.dirname(__FILE__), RUBY_VERSION.split('.')[0..1].join('.'), "smokedeptool#{extension}"))
 exec(path, *ARGV)

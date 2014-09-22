@@ -1248,7 +1248,7 @@ qvariant_from_value(int argc, VALUE * argv, VALUE self)
 			return result;
 		} else {
 			VALUE lasterr = rb_gv_get("$!");
-			VALUE klass = rb_class_path(CLASS_OF(lasterr));
+			VALUE klass = rb_class_name(CLASS_OF(lasterr));
 			if (qstrcmp(StringValuePtr(klass), "ArgumentError") == 0) {
 				// ArgumentError - no suitable constructor found
 				// Create a QVariant that contains an rObject
