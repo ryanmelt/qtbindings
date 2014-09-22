@@ -15,7 +15,7 @@ Goals
    libraries provided by the Qt SDK.
 4. To increase compatibility with non-linux platforms
 
-Note: This gem only supports Ruby 1.9.3 and Ruby 2.0.0 starting at qtbindings version 4.8.5.0.
+Note: This gem supports Ruby 1.9.3+ starting at qtbindings version 4.8.6.0.
 For Ruby 1.8.x you can try installing version 4.8.3.0, however upgrading Ruby is
 highly recommended.
 
