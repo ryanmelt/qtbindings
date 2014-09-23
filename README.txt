@@ -15,7 +15,8 @@ Goals
    libraries provided by the Qt SDK.
 4. To increase compatibility with non-linux platforms
 
-Note: This gem supports Ruby 1.9.3+ starting at qtbindings version 4.8.6.0.
+Note: This gem supports Ruby 2.0.0+ starting at qtbindings version 4.8.6.0.
+For Ruby 1.9.3 you should use version 4.8.5.2.
 For Ruby 1.8.x you can try installing version 4.8.3.0, however upgrading Ruby is
 highly recommended.
 
@@ -44,7 +45,7 @@ Ruby 2.0.0p353 - Must be compiled with clang (rvm install <version> --with-gcc=c
 Windows XP SP3
 QT SDK 4.8.5
 Cmake 2.8.8
-Ruby 1.9.3p448 and Ruby 2.0.0p353 installed from rubyinstaller.org
+Ruby Ruby 2.0.0p481 installed from rubyinstaller.org
 
 Windows 7 SP1
 QT SDK 4.8.6
@@ -78,12 +79,12 @@ Perform the following steps to build the gem on Unix or Mac:
      Where the x is the subversion of QT and y is the patch level of qtbindings
 
 Perform the following steps to build the gem on Windows:
-1. Ensure you are running Ruby 1.9.3
-     ruby -v #=> ruby 1.9.3
+1. Ensure you are running Ruby 2.0.0
+     ruby -v #=> ruby 2.0.0
 2. rake distclean
 3. rake build
-4. Switch to Ruby 2.0.0
-     ruby -v #=> ruby 2.0.0
+4. Switch to Ruby 2.1.3
+     ruby -v #=> ruby 2.1.3
 5. rake build
 6. rake VERSION=4.8.x.y gemnative
      Where the x is the subversion of QT and y is the patch level of qtbindings
@@ -91,7 +92,7 @@ Perform the following steps to build the gem on Windows:
      Where the x is the subversion of QT and y is the patch level of qtbindings
 
 Note: The gem is built twice to create the FAT binary which will work
-on both Ruby 1.9 and 2.0. The Windows utility called pik is useful for
+on both Ruby 2.0 and 2.1. The Windows utility called pik is useful for
 switching between Ruby versions.
 
 After building the gem, verify the examples work by running:
