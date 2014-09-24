@@ -9,7 +9,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://github.com/ryanmelt/qtbindings"
   s.name = 'qtbindings'
   s.version = QTBINDINGS_VERSION
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.0.0'
   s.add_dependency 'qtbindings-qt', QTBINDINGS_VERSION.split('.')[0..-2].join('.')
   s.require_path = 'lib'
   s.files = Dir['lib/**/*', 'bin/**/*', 'examples/**/*', '*.txt', 'extconf.rb', '*.gemspec', 'Rakefile'].to_a
