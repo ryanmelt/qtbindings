@@ -34,6 +34,9 @@ Qt.execute_in_main_thread(false) do # don't block the main thread
   # GUI code which executes in parallel with the main thread
 end
 
+To use Qt plugins (Reading jpgs, etc) on Windows, you should add this line after creating your Qt::Application.
+Qt::Application.instance.addLibraryPath(Qt::PLUGIN_PATH)
+
 Tested Environments
 --------------------
 Mac OSX 10.9.1 (Mavericks)
