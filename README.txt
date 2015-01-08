@@ -64,7 +64,7 @@ Compiling
 Compiling qtbindings requires the following prerequisites:
 1. cmake 2.8.x installed and in your path
 2. QT 4.8.x installed and in your path
-3. Ruby installed and in your path
+3. Ruby installed and in your path (Ruby must be compiled with --enable-shared on all platforms and with --with-gcc=clang on OSX)
 4. gcc 4.x (or clang for OSX 10.9)
    For Windows this means getting MingGW-w64 from http://mingw-w64.sourceforge.net/download.php (Win-builds project)
 
