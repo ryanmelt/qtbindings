@@ -7,6 +7,7 @@ packaging into a Ruby gem.
 
 Goals
 -----
+
 1. To make it easy to install a Qt binding for Ruby on all platforms using
    RubyGems
 2. To maintain an up-to-date binary gem for Windows that is bundled with
@@ -26,16 +27,17 @@ Ruby threading is now fully supported out of the box. All GUI access however mus
 inside the main thread. To support updating the GUI using other threads, use the following function
 provided in Qt4.rb:
 
-Qt.execute_in_main_thread do # block the main thread
-  # GUI code which executes and then allows the main thread to execute
-end
+    Qt.execute_in_main_thread do # block the main thread
+      # GUI code which executes and then allows the main thread to execute
+    end
 
-Qt.execute_in_main_thread(false) do # don't block the main thread
-  # GUI code which executes in parallel with the main thread
-end
+    Qt.execute_in_main_thread(false) do # don't block the main thread
+      # GUI code which executes in parallel with the main thread
+    end
 
 To use Qt plugins (Reading jpgs, etc) on Windows, you should add this line after creating your Qt::Application.
-Qt::Application.instance.addLibraryPath(Qt::PLUGIN_PATH)
+
+    Qt::Application.instance.addLibraryPath(Qt::PLUGIN_PATH)
 
 Tested Environments
 --------------------
@@ -62,6 +64,7 @@ Cmake 2.8.5
 Compiling
 ---------
 Compiling qtbindings requires the following prerequisites:
+
 1. cmake 2.8.x installed and in your path
 2. QT 4.8.x installed and in your path
 3. Ruby installed and in your path (Ruby must be compiled with --enable-shared on all platforms and with --with-gcc=clang on OSX)
@@ -78,20 +81,22 @@ window system development, opengl, etc must be installed.
 Rakefile
 --------
 Perform the following steps to build the gem on Unix or Mac:
-1. rake VERSION=4.8.x.y gem
+
+1. `rake VERSION=4.8.x.y gem`
      Where the x is the subversion of QT and y is the patch level of qtbindings
 
 Perform the following steps to build the gem on Windows:
+
 1. Ensure you are running Ruby 2.0.0
-     ruby -v #=> ruby 2.0.0
-2. rake distclean
-3. rake build
+     `ruby -v #=> ruby 2.0.0`
+2. `rake distclean`
+3. `rake build`
 4. Switch to Ruby 2.1.3
-     ruby -v #=> ruby 2.1.3
-5. rake build
-6. rake VERSION=4.8.x.y gemnative
+     `ruby -v #=> ruby 2.1.3`
+5. `rake build`
+6. `rake VERSION=4.8.x.y gemnative`
      Where the x is the subversion of QT and y is the patch level of qtbindings
-7. rake VERSION=4.8.x.y gemqt
+7. `rake VERSION=4.8.x.y gemqt`
      Where the x is the subversion of QT and y is the patch level of qtbindings
 
 Note: The gem is built twice to create the FAT binary which will work
@@ -99,24 +104,30 @@ on both Ruby 2.0 and 2.1. The Windows utility called pik is useful for
 switching between Ruby versions.
 
 After building the gem, verify the examples work by running:
-1. rake examples
+
+1. `rake examples`
 
 Operating Systems Notes:
 
 Debian Linux
 ------------
+
 1. The following should get you the packages you need:
+
+```
 sudo aptitude install build-essential bison openssl libreadline5
   libreadline-dev curl git-core zlib1g zlib1g-dev libssl-dev vim
   libsqlite3-0 libsqlite3-dev sqlite3
   libxml2-dev git-core subversion autoconf xorg-dev libgl1-mesa-dev
   libglu1-mesa-dev
+```
 
 Mac OSX Snow Leopard
 -----------------------
+
 1. XCode
 2. Brew (http://mxcl.github.com/homebrew/)
-   Install qt with 'brew install qt'
+   Install qt with `brew install qt`
 
 Windows - Note: Only necessary for debugging (binary gem available)
 --------
@@ -128,7 +139,7 @@ Install
 On linux/MacOSX you must make sure you have all the necessary prerequisites
 installed or the compile will fail.
 
-gem install qtbindings
+    gem install qtbindings
 
 This should always work flawlessly on Windows because everything is nicely
 packaged into a binary gem. However, the gem is very large ~90MB, so please
