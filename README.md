@@ -122,6 +122,14 @@ sudo aptitude install build-essential bison openssl libreadline5
   libglu1-mesa-dev
 ```
 
+Fedora Linux
+------------
+
+You will also need these packages:
+```
+sudo yum install qtwebkit-devel qtwebkit
+```
+
 Mac OSX Snow Leopard
 -----------------------
 
