@@ -79,7 +79,7 @@ File.open('Makefile', 'w') do |file|
     file.puts "\tset CC=mingw32-gcc.exe"
     file.puts "\tset CXX=mingw32-g++.exe"
     file.puts "\t-cd ext\\build && \\"
-    file.puts "cmake \\"
+    file.puts "cmake -DCMAKE_MINIMUM_REQUIRED_VERSION=2.6 \\"
     file.puts "-G \"MinGW Makefiles\" \\"
     if ARGV[0] == '-d'
       file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
@@ -200,7 +200,7 @@ File.open('Makefile', 'w') do |file|
     file.puts ""
     file.puts "build: makedirs"
     file.puts "\t-cd ext/build; \\"
-    file.puts "cmake \\"
+    file.puts "cmake -DCMAKE_MINIMUM_REQUIRED_VERSION=2.6 \\"
     file.puts "-G \"Unix Makefiles\" \\"
     if ARGV[0] == '-d'
       file.puts "-DCMAKE_BUILD_TYPE=Debug \\"
