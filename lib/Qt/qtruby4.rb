@@ -486,6 +486,14 @@ module Qt
     def type(*args)
       method_missing(:type, *args)
     end
+
+    def self.translate(*args)
+      if args[3] and args[3].value == Qt::Application::UnicodeUTF8.value
+        return method_missing(:translate,*args).force_encoding('utf-8')
+      else
+        return method_missing(:translate,*args)
+      end
+    end
   end
 
   class Buffer < Qt::Base
@@ -626,6 +634,14 @@ module Qt
 
     def exit(*args)
       method_missing(:exit, *args)
+    end
+
+    def self.translate(*args)
+      if args[3] and args[3].value == Qt::Application::UnicodeUTF8.value
+        return method_missing(:translate,*args).force_encoding('utf-8')
+      else
+        return method_missing(:translate,*args)
+      end
     end
   end
 
