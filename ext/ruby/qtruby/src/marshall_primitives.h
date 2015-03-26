@@ -234,7 +234,7 @@ unsigned char* ruby_to_primitive<unsigned char *>(VALUE rv)
 {
 	if(rv == Qnil)
 		return 0;
-	
+
 	return (unsigned char*)StringValuePtr(rv);
 }
 
@@ -244,7 +244,7 @@ VALUE primitive_to_ruby<int*>(int* sv)
 	if(!sv) {
 		return Qnil;
 	}
-	
+
 	return primitive_to_ruby<int>(*sv);
 }
 
@@ -257,7 +257,11 @@ WId ruby_to_primitive<WId>(VALUE v)
 #ifdef Q_WS_MAC32
 	return (WId) NUM2INT(v);
 #else
+#if __x86_64__
+  return (WId) NUM2LL(v);
+#else
 	return (WId) NUM2LONG(v);
+#endif
 #endif
 }
 
@@ -267,7 +271,11 @@ VALUE primitive_to_ruby<WId>(WId sv)
 #ifdef Q_WS_MAC32
 	return INT2NUM((unsigned long) sv);
 #else
+#if __x86_64__
+  return LL2NUM((unsigned long long) sv);
+#else
 	return LONG2NUM((unsigned long) sv);
+#endif
 #endif
 }
 
@@ -276,14 +284,22 @@ Q_PID ruby_to_primitive<Q_PID>(VALUE v)
 {
 	if(v == Qnil)
 		return 0;
-	
+
+#if __x86_64__
+  return (Q_PID) NUM2ULL(v);
+#else
 	return (Q_PID) NUM2ULONG(v);
+#endif
 }
 
 template <>
 VALUE primitive_to_ruby<Q_PID>(Q_PID sv)
 {
+#if __x86_64__
+  return ULL2NUM((unsigned long long) sv);
+#else
 	return ULONG2NUM((unsigned long) sv);
+#endif
 }
 #endif
 

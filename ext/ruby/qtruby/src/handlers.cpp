@@ -66,6 +66,7 @@
 
 #include <smoke/smoke.h>
 
+#include <ruby.h>
 #undef DEBUG
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
@@ -76,7 +77,6 @@
 #ifndef __USE_XOPEN
 #define __USE_XOPEN
 #endif
-#include <ruby.h>
 
 #include "marshall.h"
 #include "qtruby.h"
@@ -889,6 +889,7 @@ marshall_basetype(Marshall *m)
 		break;
 
 		case Smoke::t_ulong:
+    case Smoke::t_size_t:
 			marshall_it<unsigned long>(m);
 		break;
 
@@ -1807,14 +1808,23 @@ void marshall_voidP(Marshall *m) {
 	{
 	    VALUE rv = *(m->var());
 	    if (rv != Qnil)
+
+#if __x86_64__
+    m->item().s_voidp = (void*)NUM2LL(*(m->var()));
+#else
 		m->item().s_voidp = (void*)NUM2LONG(*(m->var()));
+#endif
 	    else
 		m->item().s_voidp = 0;
 	}
 	break;
       case Marshall::ToVALUE:
 	{
-	    *(m->var()) = LONG2NUM((unsigned long) m->item().s_voidp);
+#if __x86_64__
+	    *(m->var()) = LL2NUM((unsigned long long) m->item().s_voidp);
+#else
+      *(m->var()) = LONG2NUM((unsigned long) m->item().s_voidp);
+#endif
 	}
 	break;
       default:
