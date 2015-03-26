@@ -2588,6 +2588,8 @@ Q_DECL_EXPORT TypeHandler Qt_handlers[] = {
     { "HPALETTE__*", marshall_voidP },
     { "HRGN__*", marshall_voidP },
     { "HWND__*", marshall_voidP },
+    { "tagMSG*", marshall_voidP },
+    { "long*", marshall_voidP },
     { "QFlags&", marshall_it<int *> },
 #if QT_VERSION >= 0x40200
     { "QList<QGraphicsItem*>", marshall_QGraphicsItemList },
