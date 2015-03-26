@@ -96,11 +96,11 @@ public:
         Index index;
         ModuleIndex() : smoke(0), index(0) {}
         ModuleIndex(Smoke * s, Index i) : smoke(s), index(i) {}
-        
+
         inline bool operator==(const Smoke::ModuleIndex& other) const {
             return index == other.index && smoke == other.smoke;
         }
-        
+
         inline bool operator!=(const Smoke::ModuleIndex& other) const {
             return index != other.index || smoke != other.smoke;
         }
@@ -108,8 +108,8 @@ public:
     /**
      * A ModuleIndex with both fields set to 0.
      */
-    static ModuleIndex NullModuleIndex; 
-    
+    static ModuleIndex NullModuleIndex;
+
     typedef std::map<std::string, ModuleIndex> ClassMap;
     static ClassMap classMap;
 
@@ -219,6 +219,7 @@ public:
 	double s_double;
         long s_enum;
         void* s_class;
+        size_t s_size_t;
     };
     enum TypeId {
 	t_voidp,
@@ -235,6 +236,7 @@ public:
 	t_double,
         t_enum,
         t_class,
+        t_size_t,
 	t_last		// number of pre-defined types
     };
 
@@ -332,15 +334,15 @@ public:
         if (castFn == 0) {
             return ptr;
         }
-        
+
         if (from.smoke == to.smoke) {
             return (*castFn)(ptr, from.index, to.index);
         }
-        
+
         const Smoke::Class &klass = to.smoke->classes[to.index];
         return (*castFn)(ptr, from.index, idClass(klass.className, true).index);
     }
-    
+
     inline void *cast(void *ptr, Index from, Index to) {
     if(!castFn) return ptr;
     return (*castFn)(ptr, from, to);
@@ -516,13 +518,13 @@ public:
     static inline bool isDerivedFrom(const ModuleIndex& classId, const ModuleIndex& baseClassId) {
         return isDerivedFrom(classId.smoke, classId.index, baseClassId.smoke, baseClassId.index);
     }
-    
+
     static inline bool isDerivedFrom(Smoke *smoke, Index classId, Smoke *baseSmoke, Index baseId) {
 	if (!classId || !baseId || !smoke || !baseSmoke)
 	    return false;
 	if (smoke == baseSmoke && classId == baseId)
 	    return true;
-	
+
 	for(Index p = smoke->classes[classId].parents; smoke->inheritanceList[p]; p++) {
 	    Class& cur = smoke->classes[smoke->inheritanceList[p]];
 	    if (cur.external) {
