@@ -28,8 +28,6 @@ require './qrc_mice.rb'
 require './mouse.rb'
 
 MouseCount = 7
-require 'memory_profiler'
-report = MemoryProfiler.report do
 app = Qt::Application.new(ARGV)
 
 scene =  Qt::GraphicsScene.new
@@ -53,7 +51,3 @@ view.resize(400, 300)
 view.show
 
 app.exec
-end
-time = Time.now
-timestamp = sprintf("%04u_%02u_%02u_%02u_%02u_%02u", time.year, time.month, time.mday, time.hour, time.min, time.sec)
-File.open("#{timestamp}_memory.txt","w") {|file| report.pretty_print(file) }

@@ -2505,8 +2505,6 @@ module Qt
     @@classes   = {}
     @@cpp_names = {}
     @@idclass   = []
-    # Initialize all instances to false since nil can be a valid entry
-    @@method_lookup_cache = Hash.new(false)
 
     @@normalize_procs = []
 
@@ -2579,7 +2577,7 @@ module Qt
 
     def Internal.checkarg(argtype, typename)
       const_point = typename =~ /^const\s+/ ? -1 : 0
-      if argtype == 'i'.freeze
+      if argtype == 'i'
         if typename =~ /^int&?$|^signed int&?$|^signed$|^qint32&?$/
           return 6 + const_point
         elsif typename =~ /^quint32&?$/
@@ -2595,7 +2593,7 @@ module Qt
             return 2
           end
         end
-      elsif argtype == 'n'.freeze
+      elsif argtype == 'n'
         if typename =~ /^double$|^qreal$/
           return 6 + const_point
         elsif typename =~ /^float$/
@@ -2611,11 +2609,11 @@ module Qt
             return 2 + const_point
           end
         end
-      elsif argtype == 'B'.freeze
+      elsif argtype == 'B'
         if typename =~ /^(?:bool)[*&]?$/
           return 2 + const_point
         end
-      elsif argtype == 's'.freeze
+      elsif argtype == 's'
         if typename =~ /^(const )?((QChar)[*&]?)$/
           return 6 + const_point
         elsif typename =~ /^(?:(u(nsigned )?)?char\*)$/
@@ -2625,7 +2623,7 @@ module Qt
         elsif typename =~ /^(?:(?:const )?(QString)[*&]?)$/
           return 8 + const_point
         end
-      elsif argtype == 'a'.freeze
+      elsif argtype == 'a'
         # FIXME: shouldn't be hardcoded. Installed handlers should tell what ruby type they expect.
         if typename =~ /^(?:
             const\ QCOORD\*|
@@ -2639,7 +2637,7 @@ module Qt
                   )$/x
           return 2 + const_point
         end
-      elsif argtype == 'u'.freeze
+      elsif argtype == 'u'
         # Give nil matched against string types a higher score than anything else
         if typename =~ /^(?:u?char\*|const u?char\*|(?:const )?((Q(C?)String))[*&]?)$/
           return 4 + const_point
@@ -2649,7 +2647,7 @@ module Qt
         else
           return 2 + const_point
         end
-      elsif argtype == 'U'.freeze
+      elsif argtype == 'U'
         if typename =~ /QStringList/
           return 4 + const_point
         else
@@ -2726,17 +2724,10 @@ module Qt
           end
         end
       end
-      lookup_str = "#{classname}::#{method}::#{args.collect {|arg| arg.class.to_s} }"
-      lookup = @@method_lookup_cache[lookup_str]
-      # @@method_lookup_cache is initialized to return false values on a cache miss
-      if lookup != false
-        setCurrentMethod(lookup) if lookup
-        return nil
-      end
 
       # Modify constructor method name from new to the name of the Qt class
       # and remove any namespacing
-      if method == "new".freeze
+      if method == "new"
         method = classname.dup
         method.gsub!(/^.*::/,"")
       end
@@ -2746,7 +2737,7 @@ module Qt
       method = "operator" + method.sub("@","") if method !~ /[a-zA-Z]+/
 
       # Change foobar= to setFoobar()
-      method = 'set' + method[0,1].upcase + method[1,method.length].sub("=", "") if method =~ /.*[^-+%\/|=]=$/ && method != 'operator='.freeze
+      method = 'set' + method[0,1].upcase + method[1,method.length].sub("=", "") if method =~ /.*[^-+%\/|=]=$/ && method != 'operator='
 
       # Build list of munged method names which is the methodname followed
       # by symbols that indicate the basic type of the method's arguments
@@ -2852,7 +2843,6 @@ module Qt
       end
 
       # Select the chosen method
-      @@method_lookup_cache[lookup_str] = chosen
       setCurrentMethod(chosen) if chosen
       return nil
     end
