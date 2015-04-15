@@ -27,6 +27,8 @@ require 'Qt'
 require './qrc_systray.rb'
 require './window.rb'
 
+require 'memory_profiler'
+report = MemoryProfiler.report do
 app = Qt::Application.new(ARGV)
 
 if !Qt::SystemTrayIcon.isSystemTrayAvailable
@@ -39,3 +41,7 @@ end
 window = Window.new
 window.show
 app.exec
+end
+time = Time.now
+timestamp = sprintf("%04u_%02u_%02u_%02u_%02u_%02u", time.year, time.month, time.mday, time.hour, time.min, time.sec)
+File.open("#{timestamp}_memory.txt","w") {|file| report.pretty_print(file) }

@@ -27,6 +27,8 @@ require 'Qt'
 require './qrc_simpletreemodel.rb'
 require './treemodel.rb'
 
+require 'memory_profiler'
+report = MemoryProfiler.report do
 app = Qt::Application.new(ARGV)
 file = Qt::File.new(":/default.txt")
 file.open(Qt::IODevice::ReadOnly)
@@ -39,3 +41,7 @@ view.windowTitle = "Simple Tree Model"
 view.show
 
 app.exec
+end
+time = Time.now
+timestamp = sprintf("%04u_%02u_%02u_%02u_%02u_%02u", time.year, time.month, time.mday, time.hour, time.min, time.sec)
+File.open("#{timestamp}_memory.txt","w") {|file| report.pretty_print(file) }
