@@ -241,7 +241,7 @@ module Qt
       Qt::Internal::getAllParents(classid, ids)
       ids << classid
       ids.each { |c| Qt::Internal::findAllMethodNames(meths, c, flags) }
-      return meths.uniq
+      return meths.uniq.map! {|a| a.intern}
     end
   end # Qt::Base
 
@@ -3263,6 +3263,6 @@ class Module
     end
     ids << classid
     ids.each { |c| Qt::Internal::findAllMethodNames(meths, c, flags) }
-    return meths.uniq
+    return meths.uniq.map! {|a| a.intern}
   end
 end

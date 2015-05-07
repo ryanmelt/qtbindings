@@ -825,10 +825,18 @@ method_missing(int argc, VALUE * argv, VALUE self)
     VALUE retval = Qnil;
 
 	// Look for 'thing?' methods, and try to match isThing() or hasThing() in the Smoke runtime
-static QByteArray * pred = 0;
+  static QByteArray * pred = 0;
+  static VALUE mainThread = Qnil;
 	if (pred == 0) {
 		pred = new QByteArray();
 	}
+  if (mainThread == Qnil) {
+    mainThread = rb_thread_main();
+  }
+
+  if (rb_thread_current() != mainThread) {
+    rb_raise(rb_eRuntimeError, "Qt methods cannot be called from outside of the main thread");
+  }
 
 	*pred = methodName;
 	if (pred->endsWith("?")) {
@@ -980,10 +988,19 @@ class_method_missing(int argc, VALUE * argv, VALUE klass)
 	VALUE retval = Qnil;
 	const char * methodName = rb_id2name(SYM2ID(argv[0]));
 	VALUE * temp_stack = ALLOCA_N(VALUE, argc+3);
+  static VALUE mainThread = Qnil;
+  if (mainThread == Qnil) {
+    mainThread = rb_thread_main();
+  }
     temp_stack[0] = rb_str_new2("Qt");
     temp_stack[1] = rb_str_new2(methodName);
     temp_stack[2] = klass;
     temp_stack[3] = Qnil;
+
+    if (rb_thread_current() != mainThread) {
+      rb_raise(rb_eRuntimeError, "Qt methods cannot be called from outside of the main thread");
+    }
+
     for (int count = 1; count < argc; count++) {
 		temp_stack[count+3] = argv[count];
     }
