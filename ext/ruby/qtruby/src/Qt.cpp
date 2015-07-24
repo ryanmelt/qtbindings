@@ -497,7 +497,6 @@ InvokeNativeSlot::cleanup()
 
 }
 
-/*
 VALUE qt_rb_str_catf(VALUE self, const char *format, ...)
 {
 #define CAT_BUFFER_SIZE 2048
@@ -510,7 +509,7 @@ static char p[CAT_BUFFER_SIZE];
 	va_end(ap);
 	return self;
 }
-*/
+
 const char *
 resolve_classname(smokeruby_object * o)
 {
