@@ -497,7 +497,8 @@ InvokeNativeSlot::cleanup()
 
 }
 
-VALUE rb_str_catf(VALUE self, const char *format, ...)
+/*
+VALUE qt_rb_str_catf(VALUE self, const char *format, ...)
 {
 #define CAT_BUFFER_SIZE 2048
 static char p[CAT_BUFFER_SIZE];
@@ -509,7 +510,7 @@ static char p[CAT_BUFFER_SIZE];
 	va_end(ap);
 	return self;
 }
-
+*/
 const char *
 resolve_classname(smokeruby_object * o)
 {
@@ -1312,16 +1313,16 @@ VALUE prettyPrintMethod(Smoke::Index id)
     VALUE r = rb_str_new2("");
     const Smoke::Method &meth = qtcore_Smoke->methods[id];
     const char *tname = qtcore_Smoke->types[meth.ret].name;
-    if(meth.flags & Smoke::mf_static) rb_str_catf(r, "static ");
-    rb_str_catf(r, "%s ", (tname ? tname:"void"));
-    rb_str_catf(r, "%s::%s(", qtcore_Smoke->classes[meth.classId].className, qtcore_Smoke->methodNames[meth.name]);
+    if(meth.flags & Smoke::mf_static) qt_rb_str_catf(r, "static ");
+    qt_rb_str_catf(r, "%s ", (tname ? tname:"void"));
+    qt_rb_str_catf(r, "%s::%s(", qtcore_Smoke->classes[meth.classId].className, qtcore_Smoke->methodNames[meth.name]);
     for(int i = 0; i < meth.numArgs; i++) {
-	if(i) rb_str_catf(r, ", ");
+	if(i) qt_rb_str_catf(r, ", ");
 	tname = qtcore_Smoke->types[qtcore_Smoke->argumentList[meth.args+i]].name;
-	rb_str_catf(r, "%s", (tname ? tname:"void"));
+	qt_rb_str_catf(r, "%s", (tname ? tname:"void"));
     }
-    rb_str_catf(r, ")");
-    if(meth.flags & Smoke::mf_const) rb_str_catf(r, " const");
+    qt_rb_str_catf(r, ")");
+    if(meth.flags & Smoke::mf_const) qt_rb_str_catf(r, " const");
     return r;
 }
 }
