@@ -94,7 +94,10 @@ struct Option
           autoConnection(1),
           dependencies(0),
           extractImages(0),
+#ifdef QT_UIC_RUBY_GENERATOR
           execCode(0),
+          useKDE(0),
+#endif
           generator(RubyGenerator),
           prefix(QLatin1String("Ui_"))
     { indent.fill(QLatin1Char(' '), 4); }
