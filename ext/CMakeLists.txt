@@ -1,5 +1,13 @@
 project(qtbind)
 
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CXXVERSION ${CMAKE_CXX_COMPILER_VERSION}) 
+    if((CXXVERSION VERSION_GREATER 4) AND (CXXVERSION VERSION_LESS 6)) 
+        message(WARNING "changing compile standard to c++03 due to gcc 5 incompabilities")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
+    endif()
+endif()
+
 add_subdirectory(generator)
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
