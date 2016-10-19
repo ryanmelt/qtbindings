@@ -1,12 +1,7 @@
 project(qtbind)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CXXVERSION ${CMAKE_CXX_COMPILER_VERSION}) 
-    if((CXXVERSION VERSION_GREATER 4)) 
-        message(WARNING "changing compile standard to c++03 due to gcc 5+ incompabilities")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
-    endif()
-endif()
+# Always force c++03 standard
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
 
 add_subdirectory(generator)
 
