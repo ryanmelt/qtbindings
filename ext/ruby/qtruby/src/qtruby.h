@@ -159,7 +159,7 @@ extern Q_DECL_EXPORT void mapPointer(VALUE obj, smokeruby_object *o, Smoke::Inde
 extern Q_DECL_EXPORT void unmapPointer(smokeruby_object *, Smoke::Index, void*);
 
 extern Q_DECL_EXPORT const char * resolve_classname(smokeruby_object * o);
-extern Q_DECL_EXPORT VALUE rb_str_catf(VALUE self, const char *format, ...) __attribute__ ((format (printf, 2, 3)));
+extern Q_DECL_EXPORT VALUE qt_rb_str_catf(VALUE self, const char *format, ...) __attribute__ ((format (printf, 2, 3)));
 
 extern Q_DECL_EXPORT VALUE findMethod(VALUE self, VALUE c_value, VALUE name_value);
 extern Q_DECL_EXPORT VALUE findAllMethods(int argc, VALUE * argv, VALUE self);

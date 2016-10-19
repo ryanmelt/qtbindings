@@ -2167,27 +2167,27 @@ dumpCandidates(VALUE /*self*/, VALUE rmeths)
 	if(rmeths != Qnil) {
 	int count = RARRAY_LEN(rmeths);
 		for(int i = 0; i < count; i++) {
-		rb_str_catf(errmsg, "\t");
+		qt_rb_str_catf(errmsg, "\t");
 		int id = NUM2INT(rb_funcall(rb_ary_entry(rmeths, i), rb_intern("index"), 0));
 		Smoke* smoke = smokeList[NUM2INT(rb_funcall(rb_ary_entry(rmeths, i), rb_intern("smoke"), 0))];
 		const Smoke::Method &meth = smoke->methods[id];
 		const char *tname = smoke->types[meth.ret].name;
 		if(meth.flags & Smoke::mf_enum) {
-			rb_str_catf(errmsg, "enum ");
-			rb_str_catf(errmsg, "%s::%s", smoke->classes[meth.classId].className, smoke->methodNames[meth.name]);
-			rb_str_catf(errmsg, "\n");
+			qt_rb_str_catf(errmsg, "enum ");
+			qt_rb_str_catf(errmsg, "%s::%s", smoke->classes[meth.classId].className, smoke->methodNames[meth.name]);
+			qt_rb_str_catf(errmsg, "\n");
 		} else {
-			if(meth.flags & Smoke::mf_static) rb_str_catf(errmsg, "static ");
-			rb_str_catf(errmsg, "%s ", (tname ? tname:"void"));
-			rb_str_catf(errmsg, "%s::%s(", smoke->classes[meth.classId].className, smoke->methodNames[meth.name]);
+			if(meth.flags & Smoke::mf_static) qt_rb_str_catf(errmsg, "static ");
+			qt_rb_str_catf(errmsg, "%s ", (tname ? tname:"void"));
+			qt_rb_str_catf(errmsg, "%s::%s(", smoke->classes[meth.classId].className, smoke->methodNames[meth.name]);
 			for(int i = 0; i < meth.numArgs; i++) {
-			if(i) rb_str_catf(errmsg, ", ");
+			if(i) qt_rb_str_catf(errmsg, ", ");
 			tname = smoke->types[smoke->argumentList[meth.args+i]].name;
-			rb_str_catf(errmsg, "%s", (tname ? tname:"void"));
+			qt_rb_str_catf(errmsg, "%s", (tname ? tname:"void"));
 			}
-			rb_str_catf(errmsg, ")");
-			if(meth.flags & Smoke::mf_const) rb_str_catf(errmsg, " const");
-			rb_str_catf(errmsg, "\n");
+			qt_rb_str_catf(errmsg, ")");
+			if(meth.flags & Smoke::mf_const) qt_rb_str_catf(errmsg, " const");
+			qt_rb_str_catf(errmsg, "\n");
 			}
 		}
 	}
