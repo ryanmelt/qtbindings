@@ -910,6 +910,52 @@ qitemselection_count(VALUE self)
 }
 
 static VALUE
+qpolygon_at(VALUE self, VALUE i)
+{
+	smokeruby_object *o = value_obj_info(self);
+	QPolygon * item = (QPolygon *) o->ptr;
+	QPoint point = item->at(NUM2INT(i));
+
+	smokeruby_object  * result = alloc_smokeruby_object(	true,
+															qtcore_Smoke,
+															qtcore_Smoke->idClass("QPoint").index,
+															new QPoint(point) );
+
+	return set_obj_info("Qt::Point", result);
+}
+
+static VALUE
+qpolygon_count(VALUE self)
+{
+	smokeruby_object *o = value_obj_info(self);
+	QPolygon * item = (QPolygon *) o->ptr;
+	return INT2NUM(item->count());
+}
+
+static VALUE
+qpolygonf_at(VALUE self, VALUE i)
+{
+	smokeruby_object *o = value_obj_info(self);
+	QPolygonF * item = (QPolygonF *) o->ptr;
+	QPointF point = item->at(NUM2INT(i));
+
+	smokeruby_object  * result = alloc_smokeruby_object(	true,
+															qtcore_Smoke,
+															qtcore_Smoke->idClass("QPointF").index,
+															new QPointF(point) );
+
+	return set_obj_info("Qt::PointF", result);
+}
+
+static VALUE
+qpolygonf_count(VALUE self)
+{
+	smokeruby_object *o = value_obj_info(self);
+	QPolygonF * item = (QPolygonF *) o->ptr;
+	return INT2NUM(item->count());
+}
+
+static VALUE
 metaObject(VALUE self)
 {
 	VALUE metaObject = rb_funcall(qt_internal_module, rb_intern("getMetaObject"), 2, Qnil, self);
@@ -2364,6 +2410,17 @@ create_qt_class(VALUE /*self*/, VALUE package_value, VALUE module_value)
 		rb_define_method(klass, "at", (VALUE (*) (...)) qitemselection_at, 1);
 		rb_define_method(klass, "count", (VALUE (*) (...)) qitemselection_count, 0);
 		rb_define_method(klass, "length", (VALUE (*) (...)) qitemselection_count, 0);
+	} else if (packageName == "Qt::Polygon") {
+		rb_define_method(klass, "[]", (VALUE (*) (...)) qpolygon_at, 1);
+		rb_define_method(klass, "at", (VALUE (*) (...)) qpolygon_at, 1);
+		rb_define_method(klass, "count", (VALUE (*) (...)) qpolygon_count, 0);
+		rb_define_method(klass, "length", (VALUE (*) (...)) qpolygon_count, 0);
+	} else if (packageName == "Qt::PolygonF") {
+		rb_define_method(klass, "[]", (VALUE (*) (...)) qpolygonf_at, 1);
+		rb_define_method(klass, "at", (VALUE (*) (...)) qpolygonf_at, 1);
+		rb_define_method(klass, "count", (VALUE (*) (...)) qpolygonf_count, 0);
+		rb_define_method(klass, "length", (VALUE (*) (...)) qpolygonf_count, 0);
+		rb_define_method(klass, "point", (VALUE (*) (...)) qpolygonf_at, 1);
 	} else if (packageName == "Qt::Painter") {
 		rb_define_method(klass, "drawLines", (VALUE (*) (...)) qpainter_drawlines, -1);
 		rb_define_method(klass, "draw_lines", (VALUE (*) (...)) qpainter_drawlines, -1);
