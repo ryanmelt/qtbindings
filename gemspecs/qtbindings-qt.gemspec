@@ -13,5 +13,5 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'qtlib'
   s.files = Dir['qtlib/**/*', 'qtbin/**/*'].to_a
   s.description = 'qtbindings-qt contains the compiled qt dlls'
-  s.licenses = ['LGPLv2.1']
+  s.licenses = ['LGPL-2.1']
 end

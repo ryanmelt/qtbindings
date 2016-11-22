@@ -18,11 +18,11 @@ end
 if windows
   # README! - Modify this path if you have QT installed somewhere else
   # or if you have a different version of QT you want to link to.
-  qt_sdk_path = "C:\\Qt\\4.8.6"
+  qt_sdk_path = ENV['QTBINDINGS_QT_PATH']
   begin
     File::Stat.new(qt_sdk_path)
   rescue
-    puts "ERROR! QT SDK doesn't exist at #{qt_sdk_path}"
+    puts "ERROR! QT SDK doesn't exist at #{qt_sdk_path}. Please set environment QTBINDINGS_QT_PATH"
     exit # Not much we can do if the QT SDK doesn't exist
   end
 end

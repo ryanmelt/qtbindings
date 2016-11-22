@@ -14,5 +14,5 @@ spec = Gem::Specification.new do |s|
   s.extensions = ['extconf.rb']
   s.executables = ['smokeapi', 'smokedeptool', 'rbrcc', 'rbuic4', 'rbqtapi']
   s.description = 'qtbindings provides ruby bindings to QT4.x. It is derived from the kdebindings project.'
-  s.licenses = ['LGPLv2.1']
+  s.licenses = ['LGPL-2.1']
 end

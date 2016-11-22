@@ -27,9 +27,9 @@ def set_version
       file.write("QTBINDINGS_RELEASE_DATE = '#{Time.now}'\n")
     end
     File.open('qtlib/qtbindings_qt_version.rb', 'w') do |file|
-      file.write("QTBINDINGS_QT_VERSION = '#{ENV['VERSION'].split('.')[0..-2].join('.')}'\n")
+      file.write("QTBINDINGS_QT_VERSION = '#{ENV['VERSION']}'\n")
       file.write("QTBINDINGS_QT_RELEASE_DATE = '#{Time.now}'\n")
-    end    
+    end
   end
 end
 
@@ -39,10 +39,10 @@ def clear_version
       file.write("QTBINDINGS_VERSION = '0.0.0.0'\n")
       file.write("QTBINDINGS_RELEASE_DATE = ''\n")
     end
-    File.open('lib/qtbindings_qt_version.rb', 'w') do |file|
-      file.write("QTBINDINGS_QT_VERSION = '0.0.0'\n")
+    File.open('qtlib/qtbindings_qt_version.rb', 'w') do |file|
+      file.write("QTBINDINGS_QT_VERSION = '0.0.0.0'\n")
       file.write("QTBINDINGS_QT_RELEASE_DATE = ''\n")
-    end    
+    end
   end
 end
 

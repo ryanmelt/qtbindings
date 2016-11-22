@@ -10,10 +10,10 @@ spec = Gem::Specification.new do |s|
   s.name = 'qtbindings'
   s.version = QTBINDINGS_VERSION
   s.required_ruby_version = '>= 2.0.0'
-  s.add_dependency 'qtbindings-qt', QTBINDINGS_VERSION.split('.')[0..-2].join('.')
+  s.add_dependency 'qtbindings-qt', "~> #{QTBINDINGS_VERSION.split('.')[0..-2].join('.')}.0"
   s.require_path = 'lib'
   s.files = Dir['lib/**/*', 'bin/**/*', 'examples/**/*', '*.txt', 'extconf.rb', '*.gemspec', 'Rakefile'].to_a
   s.executables = ['smokeapi', 'smokedeptool', 'rbrcc', 'rbuic4', 'rbqtapi']
   s.description = 'qtbindings provides ruby bindings to QT4.x. It is derived from the kdebindings project.'
-  s.licenses = ['LGPLv2.1']
+  s.licenses = ['LGPL-2.1']
 end
