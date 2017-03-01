@@ -37,7 +37,9 @@ end
 
 To use Qt plugins (Reading jpgs, etc) on Windows, you should add this line after creating your Qt::Application.
 
-    Qt::Application.instance.addLibraryPath(Qt::PLUGIN_PATH)
+```ruby
+Qt::Application.instance.addLibraryPath(Qt::PLUGIN_PATH)
+```
 
 Tested Environments
 --------------------
@@ -143,7 +145,7 @@ Qt should be rebuilt using Devkit before building.
 2. Run vendor\PatchDevkit64.bat
 3. Run vendor\PatchRuby20.bat
 4. Copy vendor\BuildQt4Win32.bat to C:\Qt\4.8.6 and run it
-5. Copy vendor\BuildQt4Win64.bat to C:\Qt\4.8.6-64 and run it
+5. Copy vendor\BuildQt4Win64.bat to C:\Qt\4.8.6-x64 and run it
 
 Install
 ------
@@ -165,5 +167,5 @@ Contributing:
 Fork the project and submit pull requests.
 
 Disclaimer:
-Almost all of this code was written by the guys who worked on the KDE bindings project, particurly Arno Rehn and Richard Dale. I hope to increase the adoption and use of the code that they have written.
+Almost all of this code was written by the guys who worked on the KDE bindings project, particurly Arno Rehn and Richard Dale. This project aims to increase the adoption and use of the code that they have written.
 
