@@ -15,4 +15,3 @@ app.connect(quit, SIGNAL('clicked()'), app, SLOT('quit()'))
 
 window.show
 app.exec
-

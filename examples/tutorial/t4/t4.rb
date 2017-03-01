@@ -4,8 +4,7 @@ $VERBOSE = true; $:.unshift File.dirname($0)
 require 'Qt'
 
 class MyWidget < Qt::Widget
-
-def initialize(parent = nil)
+  def initialize(parent = nil)
     super
     setFixedSize(200, 120)
 
@@ -14,8 +13,7 @@ def initialize(parent = nil)
     quit.setFont(Qt::Font.new('Times', 18, Qt::Font::Bold))
 
     connect(quit, SIGNAL('clicked()'), $qApp, SLOT('quit()'))
-end
-
+  end
 end
 
 app = Qt::Application.new(ARGV)

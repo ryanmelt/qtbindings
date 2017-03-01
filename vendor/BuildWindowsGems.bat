@@ -26,16 +26,16 @@ IF [%1]==[] (
 set DEVKIT_32_PATH=C:\Devkit32
 set DEVKIT_64_PATH=C:\Devkit64
 set QT_32_PATH=C:\Qt\4.8.6
-set Qt_64_PATH=C:\Qt\4.8.6-64
+set Qt_64_PATH=C:\Qt\4.8.6-x64
 set RUBY20_32_PATH=C:\Ruby200p648
 set RUBY20_64_PATH=C:\Ruby200p648-x64
-set RUBY21_32_PATH=C:\Ruby219
-set RUBY21_64_PATH=C:\Ruby219-x64
-set RUBY22_32_PATH=C:\Ruby225
-set RUBY22_64_PATH=C:\Ruby225-x64
-set RUBY23_32_PATH=C:\Ruby231
-set RUBY23_64_PATH=C:\Ruby231-x64
-set CMAKE_PATH="C:\Program Files (x86)\CMake 2.8"
+set RUBY21_32_PATH=C:\Ruby219p490
+set RUBY21_64_PATH=C:\Ruby219p490-x64
+set RUBY22_32_PATH=C:\Ruby226p396
+set RUBY22_64_PATH=C:\Ruby226p396-x64
+set RUBY23_32_PATH=C:\Ruby233p222
+set RUBY23_64_PATH=C:\Ruby233p222-x64
+set CMAKE_PATH="C:\CMake3.6.3"
 
 :: Down to the main directory
 cd ..

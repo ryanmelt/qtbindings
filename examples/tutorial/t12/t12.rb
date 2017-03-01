@@ -2,65 +2,64 @@
 $VERBOSE = true; $:.unshift File.dirname($0)
 
 require 'Qt'
-require './lcdrange.rb'
-require './cannon.rb'
+require_relative 'lcdrange.rb'
+require_relative 'cannon.rb'
 
 class MyWidget < Qt::Widget
+  def initialize(parent = nil)
+    super
+    quit = Qt::PushButton.new('&Quit')
+    quit.setFont(Qt::Font.new('Times', 18, Qt::Font::Bold))
 
-    def initialize(parent = nil)
-        super
-        quit = Qt::PushButton.new('&Quit')
-        quit.setFont(Qt::Font.new('Times', 18, Qt::Font::Bold))
-    
-        connect(quit, SIGNAL('clicked()'), $qApp, SLOT('quit()'))
-    
-        angle = LCDRange.new( 'ANGLE' )
-        angle.range = 5..70
-        
-        force  = LCDRange.new( 'FORCE' )
-        force.range = 10..50
-        
-        cannonField = CannonField.new( self )
+    connect(quit, SIGNAL('clicked()'), $qApp, SLOT('quit()'))
 
-        connect( angle, SIGNAL('valueChanged(int)'),
-                cannonField, SLOT('setAngle(int)') )
-        connect( cannonField, SIGNAL('angleChanged(int)'),
-                angle, SLOT('setValue(int)') )
+    angle = LCDRange.new('ANGLE')
+    angle.range = 5..70
 
-        connect( force, SIGNAL('valueChanged(int)'),
-                cannonField, SLOT('setForce(int)') )
-        connect( cannonField, SIGNAL('forceChanged(int)'),
-                force, SLOT('setValue(int)') )
-        
-        shoot = Qt::PushButton.new( '&Shoot' )
-        shoot.setFont( Qt::Font.new( 'Times', 18, Qt::Font::Bold ) )
+    force = LCDRange.new('FORCE')
+    force.range = 10..50
 
-        connect( shoot, SIGNAL('clicked()'), cannonField, SLOT('shoot()') )
-            
-        topLayout = Qt::HBoxLayout.new
-        topLayout.addWidget(shoot)
-        topLayout.addStretch(1)
+    cannonField = CannonField.new(self)
 
-        leftLayout = Qt::VBoxLayout.new()
-        leftLayout.addWidget( angle )
-        leftLayout.addWidget( force )
+    connect(angle, SIGNAL('valueChanged(int)'),
+            cannonField, SLOT('setAngle(int)'))
+    connect(cannonField, SIGNAL('angleChanged(int)'),
+            angle, SLOT('setValue(int)'))
 
-        gridLayout = Qt::GridLayout.new
-        gridLayout.addWidget( quit, 0, 0 )
-        gridLayout.addLayout(topLayout, 0, 1)
-        gridLayout.addLayout(leftLayout, 1, 0)
-        gridLayout.addWidget( cannonField, 1, 1, 2, 1 )
-        gridLayout.setColumnStretch( 1, 10 )
-		setLayout(gridLayout)
-    
-        angle.setValue( 60 )
-        force.setValue( 25 )
-        angle.setFocus()
-    end
-end    
+    connect(force, SIGNAL('valueChanged(int)'),
+            cannonField, SLOT('setForce(int)'))
+    connect(cannonField, SIGNAL('forceChanged(int)'),
+            force, SLOT('setValue(int)'))
+
+    shoot = Qt::PushButton.new('&Shoot')
+    shoot.setFont(Qt::Font.new('Times', 18, Qt::Font::Bold))
+
+    connect(shoot, SIGNAL('clicked()'), cannonField, SLOT('shoot()'))
+
+    topLayout = Qt::HBoxLayout.new
+    topLayout.addWidget(shoot)
+    topLayout.addStretch(1)
+
+    leftLayout = Qt::VBoxLayout.new()
+    leftLayout.addWidget(angle)
+    leftLayout.addWidget(force)
+
+    gridLayout = Qt::GridLayout.new
+    gridLayout.addWidget(quit, 0, 0)
+    gridLayout.addLayout(topLayout, 0, 1)
+    gridLayout.addLayout(leftLayout, 1, 0)
+    gridLayout.addWidget(cannonField, 1, 1, 2, 1)
+    gridLayout.setColumnStretch(1, 10)
+    setLayout(gridLayout)
+
+    angle.setValue(60)
+    force.setValue(25)
+    angle.setFocus()
+  end
+end
 
 app = Qt::Application.new(ARGV)
 widget = MyWidget.new
-widget.setGeometry( 100, 100, 500, 355 )
+widget.setGeometry(100, 100, 500, 355)
 widget.show
 app.exec
