@@ -3245,6 +3245,7 @@ class Module
     klass = self
     classid = Qt::Internal::ModuleIndex.new(0, 0)
     loop do
+      next if !klass.name
       classid = Qt::Internal::find_pclassid(klass.name)
       break if classid.index
 
