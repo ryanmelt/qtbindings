@@ -2208,7 +2208,7 @@ isObject(VALUE /*self*/, VALUE obj)
 {
 	void * ptr = 0;
 	ptr = value_to_ptr(obj);
-	return (ptr > 0 ? Qtrue : Qfalse);
+	return (ptr > (void *)0 ? Qtrue : Qfalse);
 }
 
 static VALUE
