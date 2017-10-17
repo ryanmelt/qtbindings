@@ -40,41 +40,85 @@ set RUBY23_32_PATH=C:\Ruby233
 set RUBY23_64_PATH=C:\Ruby233-x64
 set RUBY24_32_PATH=C:\Ruby242
 set RUBY24_64_PATH=C:\Ruby242-x64
-set CMAKE_PATH=C:\Program Files (x86)\CMake 2.8
 
 :: Down to the main directory
 cd ..
 mkdir release
 
-set PATH=!CMAKE_PATH!\bin;%PATH%
 
 :: 32-bit version
 
 :: Cleanup
+
 set QTBINDINGS_QT_PATH=!QT_32_PATH!
-set PATH=!DEVKIT_32_PATH!\mingw\bin;!QT_32_PATH!\bin;%PATH%
-set PATH=!RUBY22_32_PATH!\bin;%PATH%
+set PATH=!DEVKIT_32_PATH!\mingw\bin;!QT_32_PATH!\bin;!PATH!
+set PATH=!RUBY22_32_PATH!\bin;!PATH!
+echo.
+echo Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
-set PATH=!RUBY23_32_PATH!\bin;%PATH%
+
+set PATH=!RUBY23_32_PATH!\bin;!PATH!
+echo.
+echo Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
+
 set QTBINDINGS_QT_PATH=!QT_32_RUBY24_PATH!
-set PATH=!MSYS64_32_PATH!\mingw32\bin;!QT_32_RUBY24_PATH!\bin;%PATH%
-set PATH=!RUBY24_32_PATH!\bin;%PATH%
+set PATH=!MSYS64_32_PATH!\mingw32\bin;!QT_32_RUBY24_PATH!\bin;!PATH!
+set PATH=!RUBY24_32_PATH!\bin;!PATH!
+echo.
+echo Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
 
 :: Build 32-bit
+echo.
+echo Building 32-bit gem
+echo.
+
 set QTBINDINGS_QT_PATH=!QT_32_PATH!
-set PATH=!DEVKIT_32_PATH!\mingw\bin;!QT_32_PATH!\bin;%PATH%
-set PATH=!RUBY22_32_PATH!\bin;%PATH%
+set PATH=!DEVKIT_32_PATH!\mingw\bin;!QT_32_PATH!\bin;!PATH!
+set PATH=!RUBY22_32_PATH!\bin;!PATH!
+echo.
+echo Pre Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
+
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
-set PATH=!RUBY23_32_PATH!\bin;%PATH%
+
+set PATH=!RUBY23_32_PATH!\bin;!PATH!
+echo.
+echo Ruby 2.3
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
+
 set QTBINDINGS_QT_PATH=!QT_32_RUBY24_PATH!
-set PATH=!MSYS64_32_PATH!\mingw32\bin;!QT_32_RUBY24_PATH!\bin;%PATH%
-set PATH=!RUBY24_32_PATH!\bin;%PATH%
+set PATH=!MSYS64_32_PATH!\mingw32\bin;!QT_32_RUBY24_PATH!\bin;!PATH!
+set PATH=!RUBY24_32_PATH!\bin;!PATH!
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
+
+echo.
+echo Build 32-bit qtbindings gem
+echo.
 call rake VERSION=%1 gemnative
+
+echo.
+echo Build 32-bit qtbindings-qt gem
+echo.
 call rake VERSION=%1 gemqt
 
 move *.gem release
@@ -83,34 +127,82 @@ move release\*.gemspec .
 :: 64-bit version
 
 :: Cleanup
+
 set QTBINDINGS_QT_PATH=!QT_64_PATH!
-set PATH=!DEVKIT_64_PATH!\mingw\bin;!QT_64_PATH!\bin;%PATH%
-set PATH=!RUBY22_64_PATH!\bin;%PATH%
+set PATH=!DEVKIT_64_PATH!\mingw\bin;!QT_64_PATH!\bin;!PATH!
+set PATH=!RUBY22_64_PATH!\bin;!PATH!
+echo.
+echo Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
-set PATH=!RUBY23_64_PATH!\bin;%PATH%
+
+set PATH=!RUBY23_64_PATH!\bin;!PATH!
+echo.
+echo Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
+
 set QTBINDINGS_QT_PATH=!QT_64_RUBY24_PATH!
-set PATH=!MSYS64_64_PATH!\mingw64\bin;!QT_64_RUBY24_PATH!\bin;%PATH%
-set PATH=!RUBY24_64_PATH!\bin;%PATH%
+set PATH=!MSYS64_64_PATH!\mingw64\bin;!QT_64_RUBY24_PATH!\bin;!PATH!
+set PATH=!RUBY24_64_PATH!\bin;!PATH!
+echo.
+echo Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
 
 :: Build 64-bit
+echo.
+echo Building 64-bit gem
+echo.
+
 set QTBINDINGS_QT_PATH=!QT_64_PATH!
-set PATH=!DEVKIT_64_PATH!\mingw\bin;!QT_64_PATH!\bin;%PATH%
-set PATH=!RUBY22_64_PATH!\bin;%PATH%
+set PATH=!DEVKIT_64_PATH!\mingw\bin;!QT_64_PATH!\bin;!PATH!
+set PATH=!RUBY22_64_PATH!\bin;!PATH!
+echo.
+echo Pre Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
+
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
-set PATH=!RUBY23_64_PATH!\bin;%PATH%
+
+set PATH=!RUBY23_64_PATH!\bin;!PATH!
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
+
 set QTBINDINGS_QT_PATH=!QT_64_RUBY24_PATH!
-set PATH=!MSYS64_64_PATH!\mingw64\bin;!QT_64_RUBY24_PATH!\bin;%PATH%
-set PATH=!RUBY24_64_PATH!\bin;%PATH%
+set PATH=!MSYS64_64_PATH!\mingw64\bin;!QT_64_RUBY24_PATH!\bin;!PATH!
+set PATH=!RUBY24_64_PATH!\bin;!PATH!
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
+
+echo.
+echo Build 64-bit qtbindings gem
+echo.
 call rake VERSION=%1 gemnative
+
+echo.
+echo Build 64-bit qtbindings-qt gem
+echo.
 call rake VERSION=%1 gemqt
 
 move *.gem release
 move release\*.gemspec .
 
 :exit
+
+ENDLOCAL
 
