@@ -12,6 +12,14 @@ end
 ruby_version = RUBY_VERSION.split('.')[0..1].join('.')
 if windows
   ENV['PATH'] = File.join(File.dirname(__FILE__), '../bin') + ';' + File.join(File.dirname(__FILE__), "../lib/#{ruby_version}") + ';' + File.join(File.dirname(__FILE__), "../bin/#{ruby_version}") + ';' + ENV['PATH']
+  begin
+    require 'ruby_installer'
+    RubyInstaller::Runtime.add_dll_directory(File.join(File.dirname(__FILE__), '../bin'))
+    RubyInstaller::Runtime.add_dll_directory(File.join(File.dirname(__FILE__), "../lib/#{ruby_version}"))
+    RubyInstaller::Runtime.add_dll_directory(File.join(File.dirname(__FILE__), "../bin/#{ruby_version}"))
+  rescue
+    # Oh well - Hopefully not Ruby 2.4+ on windows
+  end
 end
 $: << File.join(File.dirname(__FILE__), "../lib/#{ruby_version}")
 require "#{ruby_version}/qtruby4"
