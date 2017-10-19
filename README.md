@@ -3,6 +3,8 @@
 [![qtbindings Version](https://badge.fury.io/rb/qtbindings.svg)](https://badge.fury.io/rb/qtbindings)
 [![qtbindings-qt Version](https://badge.fury.io/rb/qtbindings-qt.svg)](https://badge.fury.io/rb/qtbindings-qt)
 
+Note: The current windows gem (4.8.6.4) only works with Ruby 2.4.  To use Ruby 2.0 to Ruby 2.3 please install version 4.8.6.3
+
 This project provides bindings that allow the QT Gui toolkit to be used from the
 Ruby Programming language. Overall it is a repackaging of a subset of the KDE
 bindings ruby and smoke systems into a format that lends itself well to
@@ -11,7 +13,7 @@ packaging into a Ruby gem.
 Goals
 -----
 1.  To make it easy to install a Qt binding for Ruby on all platforms using RubyGems
-2.  To maintain an up-to-date binary gem for Windows that is bundled with the latest version of Qt
+2.  To maintain an up-to-date binary gem for Windows that is bundled with the latest version of Qt 4
 3.  To reduce the scope and maintenance of the bindings to only bind to the libraries provided by the Qt SDK.
 4.  To increase compatibility with non-linux platforms
 
@@ -52,13 +54,10 @@ Ruby 2.0.0p353 - Must be compiled with clang (rvm install <version> --with-gcc=c
 Windows 7 SP1  
 QT SDK 4.8.6-1  
 CMake 3.6.3  
-Ruby 2.0.0p648 installed from rubyinstaller.org  
-Ruby 2.1.9p490 installed from rubyinstaller.org  
-Ruby 2.2.6p396 installed from rubyinstaller.org  
-Ruby 2.3.3p222 installed from rubyinstaller.org  
+Ruby 2.4.2 installed from rubyinstaller.org  
 
-Ubuntu Linux 11.10  
-QT SDK 4.8.1  
+Ubuntu Linux 16.04
+QT SDK 4.8.6
 Cmake 2.8.5  
 
 Compiling
@@ -67,20 +66,14 @@ Compiling qtbindings requires the following prerequisites:
 
 1.  Ruby (Ruby must be compiled with --enable-shared on all platforms and with --with-gcc=clang on OSX)  
     On Windows use the latest from [RubyInstaller](http://rubyinstaller.org/downloads/)  
-    You'll need both the 32bit and 64bit installers to make the fat binary gem  
-    On Windows get the DevKit from [RubyInstaller](http://rubyinstaller.org/downloads/)  
-    You'll need both the 32bit and 64bit Devkits to make the fat binary gem  
-    Install the DevKit to C:\Devkit32 and C:\Devkit64  
+    You'll need both the 32bit and 64bit installers to make the fat binary gem 
 2.  [CMake 3.6.x](https://cmake.org/download)
 3.  On Windows get [OpenSSL 1.0.2 x64](http://slproweb.com/products/Win32OpenSSL.html) (not Light)  
     Install with all defaults to C:\OpenSSL-Win64  
 4.  [QT 4.8.6](https://download.qt.io/official_releases/qt/4.8/4.8.6/) (mingw version for Windows)  
-    On Windows install to C:\Qt\4.8.6 (when installing specify the mingw inside the 32bit DevKit)  
-    On Windows install a second copy to C:\Qt\4.8.6-x64 (when installing specify the mingw inside the 64bit DevKit)  
-    Install [Jom](https://wiki.qt.io/Jom) to C:\Qt\4.8.6-x64 (or anywhere in your path)  
-    Copy qtbindings/vendor/QtConfigureWin64.bat to C:\Qt\4.8.6-x64 and edit paths to match your system  
-    Run the batch file to configure the system (this takes several minutes)  
-    Type 'jom' to build (this takes a long time)  
+    On Windows install to C:\Qt\4.8.6-Ruby24 (when installing specify the mingw inside the 32bit DevKit)  
+    On Windows install a second copy to C:\Qt\4.8.6-64-Ruby24 (when installing specify the mingw inside the 64bit DevKit)  
+    Install [Jom](https://wiki.qt.io/Jom) to C:\Qt\4.8.6-64-Ruby24 (or anywhere in your path)  
 5.  gcc 4.x, 5.x, or 6.x (or clang for OSX 10.9)  
     On Windows gcc 4.x is included in the DevKit  
 
@@ -101,7 +94,7 @@ Perform the following steps to build the gem on Windows:
 2. Edit BuildWindowsGems.bat to ensure all paths are correct
 3. Run: BuildWindowsGems.bat
 
-Note: The gem is built eight times to create two FAT binaries which will work on Ruby 2.0, 2.1, 2.2 and 2.3 (x64/x86).
+Note: The gem is built two times to create two FAT binaries which will work on Ruby 2.4 (x64/x86).
 
 After building the gem, verify the examples work by running:
 
@@ -141,11 +134,9 @@ Windows - Note: Only necessary for debugging (binary gem available)
 --------
 Qt should be rebuilt using Devkit before building.
 
-1. Run vendor\PatchDevkit32.bat
-2. Run vendor\PatchDevkit64.bat
-3. Run vendor\PatchRuby20.bat
-4. Copy vendor\BuildQt4Win32.bat to C:\Qt\4.8.6 and run it
-5. Copy vendor\BuildQt4Win64.bat to C:\Qt\4.8.6-x64 and run it
+1. Run vendor\PatchQt4.8.6Ruby24.bat
+2. Copy vendor\BuildQt4Win32Ruby24.bat to C:\Qt\4.8.6-Ruby24 and run it
+3. Copy vendor\BuildQt4Win64Ruby24.bat to C:\Qt\4.8.6-64-Ruby24 and run it
 
 Install
 ------
