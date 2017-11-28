@@ -108,10 +108,10 @@ Debian Linux
 1. The following should get you the packages you need:
 
 ```
-sudo aptitude install build-essential bison openssl libreadline5
-  libreadline-dev curl git-core zlib1g zlib1g-dev libssl-dev vim
-  libsqlite3-0 libsqlite3-dev sqlite3
-  libxml2-dev git-core subversion autoconf xorg-dev libgl1-mesa-dev
+sudo aptitude install build-essential bison openssl libreadline5 \
+  libreadline-dev curl git-core zlib1g zlib1g-dev libssl-dev vim \
+  libsqlite3-0 libsqlite3-dev sqlite3 \
+  libxml2-dev git-core subversion autoconf xorg-dev libgl1-mesa-dev \
   libglu1-mesa-dev
 ```
 
