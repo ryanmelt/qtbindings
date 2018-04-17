@@ -27,6 +27,8 @@ set QT_32_RUBY24_PATH=C:\Qt\4.8.6-Ruby24
 set Qt_64_RUBY24_PATH=C:\Qt\4.8.6-64-Ruby24
 set RUBY24_32_PATH=C:\Ruby242
 set RUBY24_64_PATH=C:\Ruby242-x64
+set RUBY25_32_PATH=C:\Ruby251
+set RUBY25_64_PATH=C:\Ruby251-x64
 
 :: Down to the main directory
 cd ..
@@ -50,6 +52,13 @@ echo.
 echo Building 32-bit
 echo.
 
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
+call rake build
+
+set PATH=!RUBY25_32_PATH!\bin;!PATH!
 echo.
 echo Ruby
 call ruby -e "puts RUBY_VERSION"
@@ -87,6 +96,13 @@ echo.
 echo Building 64-bit
 echo.
 
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
+call rake build
+
+set PATH=!RUBY25_64_PATH!\bin;!PATH!
 echo.
 echo Ruby
 call ruby -e "puts RUBY_VERSION"
