@@ -3,7 +3,7 @@
 [![qtbindings Version](https://badge.fury.io/rb/qtbindings.svg)](https://badge.fury.io/rb/qtbindings)
 [![qtbindings-qt Version](https://badge.fury.io/rb/qtbindings-qt.svg)](https://badge.fury.io/rb/qtbindings-qt)
 
-Note: The current windows gem (4.8.6.4) only works with Ruby 2.4.  To use Ruby 2.0 to Ruby 2.3 please install version 4.8.6.3
+Note: The current windows gem (since 4.8.6.4) only works with Ruby 2.4.  To use Ruby 2.0 to Ruby 2.3 please install version 4.8.6.3
 
 This project provides bindings that allow the QT Gui toolkit to be used from the
 Ruby Programming language. Overall it is a repackaging of a subset of the KDE
@@ -45,11 +45,11 @@ Qt::Application.instance.addLibraryPath(Qt::PLUGIN_PATH)
 
 Tested Environments
 --------------------
-Mac OSX 10.9.1 (Mavericks)  
+Mac OSX 10.13.6 (High Sierra)  
 XCode 5 (clang)  
 Brew - QT 4.8.6  
-CMake 2.8.9  
-Ruby 2.0.0p353 - Must be compiled with clang (rvm install <version> --with-gcc=clang)  
+CMake 3.10.2
+Ruby 2.6.5 - Must be compiled with clang (rvm install <version> --with-gcc=clang)
 
 Windows 7 SP1  
 QT SDK 4.8.6-1  
@@ -94,7 +94,7 @@ Perform the following steps to build the gem on Windows:
 2. Edit BuildWindowsGems.bat to ensure all paths are correct
 3. Run: BuildWindowsGems.bat
 
-Note: The gem is built two times to create two FAT binaries which will work on Ruby 2.4 (x64/x86).
+Note: The gem is built two times to create two FAT binaries which will work on Ruby 2.4 and higher (x64/x86).
 
 After building the gem, verify the examples work by running:
 

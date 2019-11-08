@@ -46,3 +46,40 @@ v4.8.5.0
 2013/12/03 - Changed garbage collection philosophy to not automatically destruct any Qt object.  Must call dispose manually.
 2013/12/03 - Officially add support for Ruby 2.0 and remove support for Ruby 1.8.x
 2013/12/03 - Enable Ruby Threading
+
+v4.8.5.1
+2013/12/04 - Rebuild gem
+
+v4.8.5.2
+2014/01/07 - Break gem into two parts: qtbindings & qtbindings-qt. The QT DLLs are in the qtbindings-qt project.
+
+v4.8.6.0
+2014/03/09 - Fix Qt:RubyThreadFix error
+2014/06/16 - Create Qt.execute_in_main_thread example and make it blocking by default
+2014/07/24 - Fix Ruby 1.9 and add support for Ruby 2.1.0. Update to latest smokeqt project. Update CMAKE modules.
+2014/09/10 - Move gemspecs, remove unsupported examples
+2014/09/24 - Update to work with Mac OS 10.9.1 (Mavericks). Added note about clang compiler on OS X.
+2014/09/24 - Built against QT 4.8.6
+
+v4.8.6.1
+2015/02/05 - Change README to markdown and note plugin patch
+2015/03/26 - Support 64 bit on Windows
+
+v4.8.6.2
+2015/04/15 - Implement method caching
+2015/05/08 - Make executables executable. Build 64 bit QT on Windows.
+
+v4.8.6.3
+2015/07/23 - Rename rb_str_catf to avoid name collision
+2015/10/29 - Add Polygon count and at methods
+2016/07/15 - Added std=c++03 compiler fallback due to smoke errors on ubuntu16.04/gcc5
+2016/11/22 - Checkin DevKit modifications. Improve building on Windows.
+
+v4.8.6.4
+2017/03/01 - Update README and tutorials
+2017/10/11 - Cast 0 to void* ptr
+2017/10/12 - Update build for Ruby 2.4, Fix msys build
+2017/10/18 - Windows gem will support only Ruby 2.4
+
+v4.8.6.5
+2018/04/17 - Update windows build for Ruby 2.5
