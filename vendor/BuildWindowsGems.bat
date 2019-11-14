@@ -1,19 +1,18 @@
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Builds Windows 32-bit and 64-bit gems for Windows
+:: Builds Windows 64-bit gems for Windows
 :: Usage: BuildWindowsGems VERSION
 ::
 :: Make sure you have installed the following before running:
 ::   a. Windows SDK for Windows version you are on
 ::   b. Cmake
-::   c. The 32-bit and 64-bit versions of Devkit
-::      And you have run PatchDevkit32.bat and PatchDevkit64.bat
-::   d. Qt built with Devkit for both 32-bit and 64-bit
-::      See BuildQt4Win32.bat and BuildQt4Win64.bat
-::   e. Ruby version 2.0 to 2.3 both 32-bit and 64-bit version
+::   c. The 64-bit versions of msys2 for Ruby 2.6
+::   d. Qt built with msys2 for 64-bit Ruby 2.6
+::      See BuildQt4Win64Ruby24.bat
+::   e. Ruby version 2.4, 2.5, 2.6 64-bit version
 ::   f. Update all the paths below to your installations
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-@echo off
+@echo on
 SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 
 IF [%1]==[] (
@@ -23,85 +22,80 @@ IF [%1]==[] (
   set COSMOS_INSTALL=%~1
 )
 
-set DEVKIT_32_PATH=C:\Devkit32
-set DEVKIT_64_PATH=C:\Devkit64
-set QT_32_PATH=C:\Qt\4.8.6
-set Qt_64_PATH=C:\Qt\4.8.6-x64
-set RUBY20_32_PATH=C:\Ruby200p648
-set RUBY20_64_PATH=C:\Ruby200p648-x64
-set RUBY21_32_PATH=C:\Ruby219p490
-set RUBY21_64_PATH=C:\Ruby219p490-x64
-set RUBY22_32_PATH=C:\Ruby226p396
-set RUBY22_64_PATH=C:\Ruby226p396-x64
-set RUBY23_32_PATH=C:\Ruby233p222
-set RUBY23_64_PATH=C:\Ruby233p222-x64
-set CMAKE_PATH="C:\CMake3.6.3"
+set CMAKE_PATH="C:\Program Files\CMake\bin"
+set QT_PATH=C:\Qt\4.8.6
+set RUBY24_64_PATH=C:\Ruby24-x64
+set RUBY25_64_PATH=C:\Ruby25-x64
+set RUBY26_64_PATH=C:\Ruby26-x64
+set MINGW_PATH=!RUBY26_64_PATH!\msys64\mingw64
+set PERL_PATH=C:\Strawberry\perl\bin
 
-:: Down to the main directory
+cd !QT_PATH!
+copy "!MINGW_PATH!\bin\libgcc_s_seh-1.dll" bin
+copy "!MINGW_PATH!\bin\libstdc++-6.dll" bin
+copy "!MINGW_PATH!\bin\libwinpthread-1.dll" bin
+set INCLUDE=!MINGW_PATH!\x86_64-w64-mingw32\include;
+set LIB=!MINGW_PATH!\x86_64-w64-mingw32\lib;
+set PATH=!MINGW_PATH!\bin;!QT_PATH!;!QT_PATH!\bin;!PERL_PATH!
+echo !PATH!
+call configure -opensource -confirm-license -release -platform win32-g++-4.6 -opengl desktop -webkit -openssl -qt-style-windowsxp -qt-style-windowsvista -I C:\OpenSSL-Win64\include -L C:\OpenSSL-Win64 -nomake examples -nomake demos
+call make clean
+jom
+
+:: Go back to where we started
+cd "%~dp0"
 cd ..
 mkdir release
 
-:: 32-bit version
-
-set QTBINDINGS_QT_PATH=!QT_32_PATH!
-set PATH=!DEVKIT_32_PATH!\mingw\bin;!CMAKE_PATH!\bin;!QT_32_PATH!\bin;%PATH%
-
 :: Cleanup
-set PATH=!RUBY20_32_PATH!\bin;%PATH%
-call rake distclean
-set PATH=!RUBY21_32_PATH!\bin;%PATH%
-call rake distclean
-set PATH=!RUBY22_32_PATH!\bin;%PATH%
-call rake distclean
-set PATH=!RUBY23_32_PATH!\bin;%PATH%
-call rake distclean
 
-:: Build 32-bit
-set PATH=!RUBY20_32_PATH!\bin;%PATH%
-call rake distclean
-call rake build
-set PATH=!RUBY21_32_PATH!\bin;%PATH%
-call rake build
-set PATH=!RUBY22_32_PATH!\bin;%PATH%
-call rake build
-set PATH=!RUBY23_32_PATH!\bin;%PATH%
-call rake build
-call rake VERSION=%1 gemnative
-call rake VERSION=%1 gemqt
-
-move *.gem release
-move release\*.gemspec .
-
-:: 64-bit version
-
-set QTBINDINGS_QT_PATH=!QT_64_PATH!
-set PATH=!DEVKIT_64_PATH!\mingw\bin;!CMAKE_PATH!\bin;!QT_64_PATH!\bin;%PATH%
-
-:: Cleanup
-set PATH=!RUBY20_64_PATH!\bin;%PATH%
-call rake distclean
-set PATH=!RUBY21_64_PATH!\bin;%PATH%
-call rake distclean
-set PATH=!RUBY22_64_PATH!\bin;%PATH%
-call rake distclean
-set PATH=!RUBY23_64_PATH!\bin;%PATH%
+set QTBINDINGS_QT_PATH=!QT_PATH!
+set PATH=!CMAKE_PATH!;!MINGW_PATH!\bin;!QT_PATH!\bin;!RUBY24_64_PATH!\bin
+echo.
+echo Cleanup
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake distclean
 
 :: Build 64-bit
-set PATH=!RUBY20_64_PATH!\bin;%PATH%
-call rake distclean
+echo.
+echo Building 64-bit
+echo.
+
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
-set PATH=!RUBY21_64_PATH!\bin;%PATH%
+
+set PATH=!RUBY25_64_PATH!\bin;!PATH!
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
-set PATH=!RUBY22_64_PATH!\bin;%PATH%
+
+set PATH=!RUBY26_64_PATH!\bin;!PATH!
+echo.
+echo Ruby
+call ruby -e "puts RUBY_VERSION"
+echo.
 call rake build
-set PATH=!RUBY23_64_PATH!\bin;%PATH%
-call rake build
+
+echo.
+echo Build 64-bit qtbindings gem
+echo.
 call rake VERSION=%1 gemnative
+
+echo.
+echo Build 64-bit qtbindings-qt gem
+echo.
 call rake VERSION=%1 gemqt
 
 move *.gem release
 move release\*.gemspec .
 
 :exit
+
+ENDLOCAL
 
