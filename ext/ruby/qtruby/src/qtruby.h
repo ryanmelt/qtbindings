@@ -44,6 +44,12 @@
 #define StringValueCStr(s) STR2CSTR(s)
 #endif
 
+// Ruby 2.6 introduced an optimization which breaks QT compilation
+// See https://github.com/ruby/ruby/commit/df9a70900a7380bc9b42b12ab90cf182988bcd45
+// See also https://github.com/ruby/ruby/commit/8699a7a00655253ee9e4eedd55fbaea42f975788
+#undef ALLOCA_N
+#define ALLOCA_N(type,n) ((type*)alloca(sizeof(type)*(n)))
+
 inline uint qHash(const Smoke::ModuleIndex& mi) {
 	return qHash(mi.index) ^ qHash(mi.smoke);
 }
