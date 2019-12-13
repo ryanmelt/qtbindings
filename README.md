@@ -3,7 +3,7 @@
 [![qtbindings Version](https://badge.fury.io/rb/qtbindings.svg)](https://badge.fury.io/rb/qtbindings)
 [![qtbindings-qt Version](https://badge.fury.io/rb/qtbindings-qt.svg)](https://badge.fury.io/rb/qtbindings-qt)
 
-Note: The current windows gem (since 4.8.6.4) only works with Ruby 2.4.  To use Ruby 2.0 to Ruby 2.3 please install version 4.8.6.3
+Note: The current windows gem (since 4.8.6.4) only works with Ruby 2.4 and Ruby 2.5.  To use Ruby 2.0 to Ruby 2.3 please install version 4.8.6.3
 
 This project provides bindings that allow the QT Gui toolkit to be used from the
 Ruby Programming language. Overall it is a repackaging of a subset of the KDE
@@ -54,7 +54,7 @@ Ruby 2.6.5 - Must be compiled with clang (rvm install <version> --with-gcc=clang
 Windows 7 SP1  
 QT SDK 4.8.6-1  
 CMake 3.6.3  
-Ruby 2.4.2 installed from rubyinstaller.org  
+Ruby 2.5.7 installed from rubyinstaller.org  
 
 Ubuntu Linux 16.04
 QT SDK 4.8.6
