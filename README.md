@@ -2,6 +2,7 @@
 
 [![qtbindings Version](https://badge.fury.io/rb/qtbindings.svg)](https://badge.fury.io/rb/qtbindings)
 [![qtbindings-qt Version](https://badge.fury.io/rb/qtbindings-qt.svg)](https://badge.fury.io/rb/qtbindings-qt)
+![Ruby](https://github.com/Lykos/qtbindings/workflows/Ruby/badge.svg)
 
 Note: The current windows gem (since 4.8.6.4) only works with Ruby 2.4 and Ruby 2.5.  To use Ruby 2.0 to Ruby 2.3 please install version 4.8.6.3
 
@@ -112,7 +113,7 @@ sudo aptitude install build-essential bison openssl libreadline5 \
   libreadline-dev curl git-core zlib1g zlib1g-dev libssl-dev vim \
   libsqlite3-0 libsqlite3-dev sqlite3 \
   libxml2-dev git-core subversion autoconf xorg-dev libgl1-mesa-dev \
-  libglu1-mesa-dev
+  libglu1-mesa-dev ruby-dev libqt4-dev
 ```
 
 Fedora Linux
