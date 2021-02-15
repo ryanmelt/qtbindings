@@ -4,6 +4,8 @@
 [![qtbindings-qt Version](https://badge.fury.io/rb/qtbindings-qt.svg)](https://badge.fury.io/rb/qtbindings-qt)
 ![Ruby](https://github.com/ryanmelt/qtbindings/workflows/Ruby/badge.svg)
 
+Warning: This project is no longer maintained. It only supports Qt4 which the latest linux distributions no longer include in their package repos. No future releases or changes are planned. If you would like to take over, please fork, and make the changes to support Qt5/Qt6. This will be really difficult as the Smoke libraries used in this project do not work well with C++11+. Its been a fun 10 years maintaining this for the Ruby community, but at this point I would recommend using Python if you want to create a modern desktop application using Qt. I'm personally switching to developing web apps using Vue.
+
 Note: The current windows gem (since 4.8.6.4) only works with Ruby 2.4 and Ruby 2.5.  To use Ruby 2.0 to Ruby 2.3 please install version 4.8.6.3
 
 This project provides bindings that allow the QT Gui toolkit to be used from the
