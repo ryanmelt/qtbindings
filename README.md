@@ -69,14 +69,12 @@ Compiling qtbindings requires the following prerequisites:
 
 1.  Ruby (Ruby must be compiled with --enable-shared on all platforms and with --with-gcc=clang on OSX)  
     On Windows use the latest from [RubyInstaller](http://rubyinstaller.org/downloads/)  
-    You'll need both the 32bit and 64bit installers to make the fat binary gem 
 2.  [CMake 3.6.x](https://cmake.org/download)
 3.  On Windows get [OpenSSL 1.0.2 x64](http://slproweb.com/products/Win32OpenSSL.html) (not Light)  
     Install with all defaults to C:\OpenSSL-Win64  
-4.  [QT 4.8.6](https://download.qt.io/official_releases/qt/4.8/4.8.6/) (mingw version for Windows)  
-    On Windows install to C:\Qt\4.8.6-Ruby24 (when installing specify the mingw inside the 32bit DevKit)  
-    On Windows install a second copy to C:\Qt\4.8.6-64-Ruby24 (when installing specify the mingw inside the 64bit DevKit)  
-    Install [Jom](https://wiki.qt.io/Jom) to C:\Qt\4.8.6-64-Ruby24 (or anywhere in your path)  
+4.  [QT 4.8.6](https://download.qt.io/archive/qt/4.8/4.8.6/) (mingw version for Windows)  
+    On Windows install to C:\Qt\4.8.6  (when installing specify C:\Ruby26-x64\msys64\mingw64 as the mingw installation)  
+    Install [Jom](https://wiki.qt.io/Jom) to C:\Qt\4.8.6 (or anywhere in your path)  
 5.  gcc 4.x, 5.x, or 6.x (or clang for OSX 10.9)  
     On Windows gcc 4.x is included in the DevKit  
 
